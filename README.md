@@ -4,6 +4,8 @@
 
 本项目每天自动拉取 arXiv 计算机科学（cs）大类下的所有最新论文，并保存为 json 文件，供后续处理和前端展示。
 
+github page: https://zhangtaochn.github.io/daily-arxiv/
+
 ## 依赖
 
 - Python 3.7+
