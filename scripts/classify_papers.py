@@ -88,21 +88,53 @@ def main():
         print("数据文件格式不正确")
         return
     categories = read_categories()
-    # 只处理前40篇论文（测试阶段）
+    # 只处理前TOP_N篇论文（测试阶段）
     papers = papers[:TOP_N] if TOP_N > 0 else papers
-    results = []
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        future_to_paper = {executor.submit(classify_paper, paper, categories): paper for paper in papers}
-        for future in as_completed(future_to_paper):
-            paper = future.result()
-            results.append(paper)
-            print(f"{paper['title'][:30]}... => {paper['category']}")
-    # 保存分类结果
+
+    # 新增：读取已分类结果，复用未失败的分类
     today = datetime.now().strftime('%Y-%m-%d')
-    out_path = os.path.join(DATA_DIR, f"{today}-classified.json")
-    with open(out_path, "w", encoding="utf-8") as f:
+    classified_path = os.path.join(DATA_DIR, f"{today}-classified.json")
+    classified_dict = {}
+    if os.path.exists(classified_path):
+        with open(classified_path, "r", encoding="utf-8") as f:
+            classified_data = json.load(f)
+        old_papers = classified_data["papers"] if isinstance(classified_data, dict) and "papers" in classified_data else classified_data
+        for p in old_papers:
+            # 用标题和摘要联合做唯一键，防止重复
+            key = p.get("title", "") + "|||" + p.get("summary", "")
+            classified_dict[key] = p
+
+    results = []
+    to_classify = []
+    idx_map = {}  # 记录原始顺序
+    for idx, paper in enumerate(papers):
+        key = paper.get("title", "") + "|||" + paper.get("summary", "")
+        old = classified_dict.get(key)
+        if old and "category" in old and old["category"] != ["Classification Failed"]:
+            results.append(old)
+        else:
+            to_classify.append((idx, paper))
+            idx_map[idx] = paper
+    # 并发分类需要保留顺序
+    classified_new = {}
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        future_to_idx = {executor.submit(classify_paper, paper, categories): idx for idx, paper in to_classify}
+        for future in as_completed(future_to_idx):
+            idx = future_to_idx[future]
+            paper = future.result()
+            classified_new[idx] = paper
+            print(f"{paper['title'][:30]}... => {paper['category']}")
+    # 合并结果，按原始顺序
+    for idx, paper in enumerate(papers):
+        key = paper.get("title", "") + "|||" + paper.get("summary", "")
+        if key in classified_dict and "category" in classified_dict[key] and classified_dict[key]["category"] != ["Classification Failed"]:
+            continue  # 已加到results
+        if idx in classified_new:
+            results.append(classified_new[idx])
+    # 保存分类结果
+    with open(classified_path, "w", encoding="utf-8") as f:
         json.dump({"papers": results}, f, ensure_ascii=False, indent=2)
-    print(f"分类结果已保存到 {out_path}")
+    print(f"分类结果已保存到 {classified_path}")
 
 if __name__ == "__main__":
     main() 
