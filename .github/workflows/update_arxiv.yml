@@ -30,13 +30,13 @@ jobs:
           python scripts/classify_papers.py
       - name: Commit and push changes
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'zhangtaochn'
+          git config --global user.email 'zhangtao-1994@qq.com'
           git add data/
           git commit -m "Update arxiv papers [skip ci]" || echo "No changes to commit"
           git push
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: . 
