@@ -29,14 +29,11 @@ jobs:
         run: |
           python scripts/classify_papers.py
       - name: Commit and push changes
-        run: |
-          git config --global user.name 'zhangtaochn'
-          git config --global user.email 'zhangtao-1994@qq.com'
-          git add data/
-          git commit -m "Update arxiv papers [skip ci]" || echo "No changes to commit"
-          git push
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: github-actions-x/commit@v2.9
         with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          publish_dir: . 
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "push all update"
+          files: "./*"
+          rebase: 'true'
+          name: 'zhangtaochn'
+          email: 'zhangtao-1994@qq.com'
