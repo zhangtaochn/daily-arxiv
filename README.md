@@ -26,4 +26,8 @@ python scripts/fetch_arxiv.py
 
 会自动抓取 arXiv cs 大类下的最新论文，生成的数据文件可直接用于后续分类和前端展示。
 
+## 数据索引与前端自动加载
+
+分类脚本（classify_papers.py）会在每次分类后自动生成/更新 data/index.json，内容为所有 *-classified.json 文件名（按日期降序）。前端页面会自动读取 index.json 并加载最新的分类数据，无需手动修改 main.js。
+
 

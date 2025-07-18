@@ -136,5 +136,13 @@ def main():
         json.dump({"papers": results}, f, ensure_ascii=False, indent=2)
     print(f"分类结果已保存到 {classified_path}")
 
+    # 新增：生成/更新 index.json
+    classified_files = [f for f in os.listdir(DATA_DIR) if f.endswith("-classified.json")]
+    classified_files.sort(reverse=True)  # 日期降序
+    index_path = os.path.join(DATA_DIR, "index.json")
+    with open(index_path, "w", encoding="utf-8") as f:
+        json.dump(classified_files, f, ensure_ascii=False, indent=2)
+    print(f"索引文件已更新: {index_path}")
+
 if __name__ == "__main__":
     main() 

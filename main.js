@@ -6,10 +6,20 @@ let currentPage = 1;
 const pageSize = 20;
 
 // 获取最新的已分类数据文件名（data/xxxx-xx-xx-classified.json）
-function getLatestClassifiedFile() {
-  // 简单实现：假设只有一个最新的文件，实际可用后端API或更智能方式
-  // 这里写死为 2025-07-17-classified.json，可根据实际情况动态获取
-  return 'data/2025-07-17-classified.json';
+async function getLatestClassifiedFile() {
+  // 读取 data/index.json，获取最新的文件名
+  try {
+    const resp = await fetch('data/index.json');
+    if (!resp.ok) throw new Error('Failed to load index.json');
+    const files = await resp.json();
+    const classifiedFiles = Array.isArray(files) ? files.filter(f => f.endsWith('-classified.json')) : [];
+    if (classifiedFiles.length === 0) throw new Error('No classified data files found');
+    classifiedFiles.sort().reverse(); // 日期降序
+    return 'data/' + classifiedFiles[0];
+  } catch (e) {
+    // 兜底：返回原本写死的文件名
+    return 'data/2025-07-17-classified.json';
+  }
 }
 
 function renderPapers(papers, page = 1) {
@@ -147,7 +157,7 @@ async function loadPapers() {
   const container = document.getElementById('papers-container');
   container.innerHTML = '<p>Loading data...</p>';
 
-  const dataFile = getLatestClassifiedFile();
+  const dataFile = await getLatestClassifiedFile();
 
   let lastUpdated = '';
 
