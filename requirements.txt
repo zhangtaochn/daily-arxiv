@@ -1,4 +1,4 @@
-arxiv
 requests 
 fire
 openai
+pyyaml
