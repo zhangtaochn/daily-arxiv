@@ -27,6 +27,7 @@ jobs:
           TOP_N: ${{ vars.TOP_N }}
           KEYWORDS: ${{ vars.KEYWORDS }}
         run: |
+          mkdir data
           python run.py run_pipeline
 
       - name: Commit and push changes
