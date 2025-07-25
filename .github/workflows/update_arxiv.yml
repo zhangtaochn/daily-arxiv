@@ -30,14 +30,12 @@ jobs:
           mkdir data
           python run.py run_pipeline
 
-      - name: Set up git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
       - name: Push changes
-        env:
-          GH_PAT: ${{ secrets.ACCESS_TOKEN }}
-        run: |
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}
-          git push --follow-tags --set-upstream origin main
+        uses: github-actions-x/commit@v2.9
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Arxiv Papers Update"
+          files: data/all_papers.json
+          rebase: 'true'
+          name: zhangtaochn
+          email: zhangtao-1994@qq.com
