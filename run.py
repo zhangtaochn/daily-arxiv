@@ -160,7 +160,6 @@ def paper_cls(papers, keywords):
 
 
 def merge_papers():
-    index_files = json.load(open('web/file_index.json', 'r', encoding='utf-8'))
     paper_ids = set() 
     all_papers = list()  
     for filename in sorted(os.listdir(DATA_DIR)):
