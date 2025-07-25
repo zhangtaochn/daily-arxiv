@@ -35,7 +35,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Arxiv Papers Update"
-          files: data/all_papers.json
+          files: web/all_papers.json data/*
           rebase: 'true'
           name: zhangtaochn
           email: zhangtao-1994@qq.com
