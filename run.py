@@ -149,9 +149,6 @@ Please provide your answer as a json with two fields: reason (str), category_lis
     return paper
 
 def paper_cls(papers, keywords):
-    # 测试阶段只处理前TOP_N篇论文
-    if TOP_N > 0:
-        papers = {k: v for k, v in list(papers.items())[0:TOP_N]}
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         future_to_idx = {executor.submit(classify_paper, paper, keywords) for paper in papers.values()}
         for future in as_completed(future_to_idx):
