@@ -4,6 +4,10 @@ let allPapers = [];
 let filteredPapers = [];
 let currentPage = 1;
 const pageSize = 20;
+let categoryStats = {};
+let countTodayPapers = {};
+let countAllPapers = {};
+let updateTimeGlobal = '';
 
 function adaptRawData(raw) {
   // 兼容对象或数组
@@ -136,13 +140,15 @@ function fillCategorySelect(papers) {
 function applyFilters() {
   const cat = document.getElementById('category-select').value;
   if (cat === 'ALL') {
-    // 只包含非 Other 的 paper
-    filteredPapers = allPapers.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'));
+    // 只包含非 Other 的 paper，并按时间排序
+    filteredPapers = allPapers.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'))
+      .sort((a, b) => new Date(b.published) - new Date(a.published));
   } else {
     filteredPapers = allPapers.filter(paper => Array.isArray(paper.category) && paper.category.includes(cat));
   }
   currentPage = 1;
   renderPapers(filteredPapers, currentPage);
+  updateLastUpdated(cat);
 }
 
 async function loadAllPapers() {
@@ -152,17 +158,39 @@ async function loadAllPapers() {
     const response = await fetch('web/all_papers.json');
     if (!response.ok) throw new Error('Failed to load papers data');
     const raw = await response.json();
-    allPapers = adaptRawData(raw);
-    // 初始化时只显示非 Other 的论文
-    filteredPapers = allPapers.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'));
+    
+    // 适配新的数据结构
+    const papersList = raw.all_papers_list || raw;
+    allPapers = adaptRawData(papersList);
+    
+    // 初始化时只显示非 Other 的论文，并按时间排序
+    filteredPapers = allPapers.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'))
+      .sort((a, b) => new Date(b.published) - new Date(a.published));
+    
     fillCategorySelect(allPapers);
     currentPage = 1;
     renderPapers(filteredPapers, currentPage);
-    document.getElementById('last-updated').textContent = `Total ${allPapers.length} papers`;
+    
+    // 保存全局和分类统计信息
+    countTodayPapers = raw.count_today_papers || {};
+    countAllPapers = raw.count_all_papers || {};
+    updateTimeGlobal = raw.current_update_time || '';
+
+    // 显示全局统计
+    updateLastUpdated('ALL');
   } catch (err) {
     container.innerHTML = `<p style=\"color:red;\">${err.message}</p>`;
     document.getElementById('pagination').innerHTML = '';
   }
+}
+
+function updateLastUpdated(category) {
+  // category 可能是 'ALL'，也可能是具体分类
+  let key = category === 'ALL' ? 'All' : category;
+  let todayCount = countTodayPapers[key] || 0;
+  let totalCount = countAllPapers[key] || 0;
+  document.getElementById('last-updated').textContent =
+    `Updated Time: ${updateTimeGlobal} | Updated: ${todayCount} | Total: ${totalCount} `;
 }
 
 async function init() {

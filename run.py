@@ -6,6 +6,7 @@ import traceback
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import xml.etree.ElementTree as ET
+from collections import defaultdict
 from openai import OpenAI
 import fire 
 
@@ -161,14 +162,32 @@ def paper_cls(papers, keywords):
 
 def merge_papers():
     paper_ids = set() 
-    all_papers = list()  
+    all_papers = dict()
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    count_today_papers = defaultdict(int)
+    total_count_papers = defaultdict(int)
+    all_merge_papers = list() 
     for filename in sorted(os.listdir(DATA_DIR)):
         if filename.endswith('.json'):
             papers = json.load(open(os.path.join(DATA_DIR, filename), 'r', encoding='utf-8'))
             for paper_id, paper in papers.items():
                 if paper_id not in paper_ids:
+                    total_count_papers["All"] += 1
+                    for category in paper["llm_cls_result"]:
+                        total_count_papers[category] += 1
                     paper_ids.add(paper_id)
-                    all_papers.append(paper)
+                    if paper["published"].startswith(current_time[0:10]):
+                        count_today_papers["All"] += 1
+                        for category in paper["llm_cls_result"]:
+                            count_today_papers[category] += 1
+                    all_merge_papers.append(paper)
+
+    print(f"Today papers: {count_today_papers}")
+    print(f"Total papers: {total_count_papers}")
+    all_papers["current_update_time"] = current_time
+    all_papers["count_today_papers"] = count_today_papers
+    all_papers["count_all_papers"] = total_count_papers
+    all_papers["all_papers_list"] = all_merge_papers
 
     json.dump(all_papers, open('web/all_papers.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
 
