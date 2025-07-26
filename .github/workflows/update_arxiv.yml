@@ -31,11 +31,12 @@ jobs:
           python run.py run_pipeline
 
       - name: Push changes
-      uses: github-actions-x/commit@v2.9
-      with:
-        github-token: ${{ secrets.ACCESS_TOKEN }}
-        commit-message: "Arxiv Papers Update"
-        files: web/all_papers.json data/*
-        rebase: 'true'
-        name: zhangtaochn
-        email: zhangtao-1994@qq.com
+        uses: github-actions-x/commit@v2.9
+        with:
+          github-token: ${{ secrets.ACCESS_TOKEN }}
+          commit-message: "Arxiv Papers Update"
+          files: web/all_papers.json data/*
+          rebase: 'true'
+          name: zhangtaochn
+          email: zhangtao-1994@qq.com
+          
