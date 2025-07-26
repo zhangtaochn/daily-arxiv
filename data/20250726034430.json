@@ -1,0 +1,129 @@
+{
+  "2507.18618v1": {
+    "title": "TRPrompt: Bootstrapping Query-Aware Prompt Optimization from Textual\n  Rewards",
+    "summary": "Prompt optimization improves the reasoning abilities of large language models\n(LLMs) without requiring parameter updates to the target model. Following\nheuristic-based \"Think step by step\" approaches, the field has evolved in two\nmain directions: while one group of methods uses textual feedback to elicit\nimproved prompts from general-purpose LLMs in a training-free way, a concurrent\nline of research relies on numerical rewards to train a special prompt model,\ntailored for providing optimal prompts to the target model. In this paper, we\nintroduce the Textual Reward Prompt framework (TRPrompt), which unifies these\napproaches by directly incorporating textual feedback into training of the\nprompt model. Our framework does not require prior dataset collection and is\nbeing iteratively improved with the feedback on the generated prompts. When\ncoupled with the capacity of an LLM to internalize the notion of what a \"good\"\nprompt is, the high-resolution signal provided by the textual rewards allows us\nto train a prompt model yielding state-of-the-art query-specific prompts for\nthe problems from the challenging math datasets GSMHard and MATH.",
+    "published": "2025-07-24T17:54:44Z",
+    "updated": "2025-07-24T17:54:44Z",
+    "id": "2507.18618v1",
+    "authors": [
+      "Andreea Nica",
+      "Ivan Zakazov",
+      "Nicolas Mario Baldwin",
+      "Saibo Geng",
+      "Robert West"
+    ],
+    "arxiv_abstract_url": "http://arxiv.org/abs/2507.18618v1",
+    "arxiv_pdf_url": "http://arxiv.org/pdf/2507.18618v1.pdf",
+    "alphaxiv_url": "http://alphaxiv.org/abs/2507.18618v1",
+    "keywords": [
+      "LLM",
+      "Dataset"
+    ],
+    "cls_reason": "The paper discusses prompt optimization for improving the reasoning abilities of large language models (LLMs) and introduces a framework (TRPrompt) that incorporates textual feedback into training. This aligns with topics related to LLM reasoning and optimization.",
+    "llm_cls_result": [
+      "LLM",
+      "Reasoning"
+    ]
+  },
+  "2507.18607v1": {
+    "title": "Explainable Mapper: Charting LLM Embedding Spaces Using\n  Perturbation-Based Explanation and Verification Agents",
+    "summary": "Large language models (LLMs) produce high-dimensional embeddings that capture\nrich semantic and syntactic relationships between words, sentences, and\nconcepts. Investigating the topological structures of LLM embedding spaces via\nmapper graphs enables us to understand their underlying structures.\nSpecifically, a mapper graph summarizes the topological structure of the\nembedding space, where each node represents a topological neighborhood\n(containing a cluster of embeddings), and an edge connects two nodes if their\ncorresponding neighborhoods overlap. However, manually exploring these\nembedding spaces to uncover encoded linguistic properties requires considerable\nhuman effort. To address this challenge, we introduce a framework for\nsemi-automatic annotation of these embedding properties. To organize the\nexploration process, we first define a taxonomy of explorable elements within a\nmapper graph such as nodes, edges, paths, components, and trajectories. The\nannotation of these elements is executed through two types of customizable\nLLM-based agents that employ perturbation techniques for scalable and automated\nanalysis. These agents help to explore and explain the characteristics of\nmapper elements and verify the robustness of the generated explanations. We\ninstantiate the framework within a visual analytics workspace and demonstrate\nits effectiveness through case studies. In particular, we replicate findings\nfrom prior research on BERT's embedding properties across various layers of its\narchitecture and provide further observations into the linguistic properties of\ntopological neighborhoods.",
+    "published": "2025-07-24T17:43:40Z",
+    "updated": "2025-07-24T17:43:40Z",
+    "id": "2507.18607v1",
+    "authors": [
+      "Xinyuan Yan",
+      "Rita Sevastjanova",
+      "Sinie van der Ben",
+      "Mennatallah El-Assady",
+      "Bei Wang"
+    ],
+    "arxiv_abstract_url": "http://arxiv.org/abs/2507.18607v1",
+    "arxiv_pdf_url": "http://arxiv.org/pdf/2507.18607v1.pdf",
+    "alphaxiv_url": "http://alphaxiv.org/abs/2507.18607v1",
+    "keywords": [
+      "LLM"
+    ],
+    "cls_reason": "The paper focuses on exploring and explaining the topological structures of LLM embedding spaces using perturbation-based techniques and LLM-based agents. It directly involves research on Large Language Models (LLM) and their embedding spaces, which falls under the 'LLM' category. Additionally, the use of agents to explore and verify properties aligns with the 'RL' category, as it involves automated analysis and verification processes that could be related to reinforcement learning techniques.",
+    "llm_cls_result": [
+      "LLM",
+      "RL"
+    ]
+  },
+  "2507.18597v1": {
+    "title": "Linear Memory SE(2) Invariant Attention",
+    "summary": "Processing spatial data is a key component in many learning tasks for\nautonomous driving such as motion forecasting, multi-agent simulation, and\nplanning. Prior works have demonstrated the value in using SE(2) invariant\nnetwork architectures that consider only the relative poses between objects\n(e.g. other agents, scene features such as traffic lanes). However, these\nmethods compute the relative poses for all pairs of objects explicitly,\nrequiring quadratic memory. In this work, we propose a mechanism for SE(2)\ninvariant scaled dot-product attention that requires linear memory relative to\nthe number of objects in the scene. Our SE(2) invariant transformer\narchitecture enjoys the same scaling properties that have benefited large\nlanguage models in recent years. We demonstrate experimentally that our\napproach is practical to implement and improves performance compared to\ncomparable non-invariant architectures.",
+    "published": "2025-07-24T17:28:57Z",
+    "updated": "2025-07-24T17:28:57Z",
+    "id": "2507.18597v1",
+    "authors": [
+      "Ethan Pronovost",
+      "Neha Boloor",
+      "Peter Schleede",
+      "Noureldin Hendy",
+      "Andres Morales",
+      "Nicholas Roy"
+    ],
+    "arxiv_abstract_url": "http://arxiv.org/abs/2507.18597v1",
+    "arxiv_pdf_url": "http://arxiv.org/pdf/2507.18597v1.pdf",
+    "alphaxiv_url": "http://alphaxiv.org/abs/2507.18597v1",
+    "keywords": [
+      "LLM"
+    ],
+    "cls_reason": "The paper discusses a mechanism for SE(2) invariant scaled dot-product attention that requires linear memory, which is related to memory optimization in models. However, it does not directly align with the provided topics such as LLM, RL, MLLM, etc.",
+    "llm_cls_result": [
+      "Other"
+    ]
+  },
+  "2507.18584v1": {
+    "title": "AQuilt: Weaving Logic and Self-Inspection into Low-Cost, High-Relevance\n  Data Synthesis for Specialist LLMs",
+    "summary": "Despite the impressive performance of large language models (LLMs) in general\ndomains, they often underperform in specialized domains. Existing approaches\ntypically rely on data synthesis methods and yield promising results by using\nunlabeled data to capture domain-specific features. However, these methods\neither incur high computational costs or suffer from performance limitations,\nwhile also demonstrating insufficient generalization across different tasks. To\naddress these challenges, we propose AQuilt, a framework for constructing\ninstruction-tuning data for any specialized domains from corresponding\nunlabeled data, including Answer, Question, Unlabeled data, Inspection, Logic,\nand Task type. By incorporating logic and inspection, we encourage reasoning\nprocesses and self-inspection to enhance model performance. Moreover,\ncustomizable task instructions enable high-quality data generation for any\ntask. As a result, we construct a dataset of 703k examples to train a powerful\ndata synthesis model. Experiments show that AQuilt is comparable to DeepSeek-V3\nwhile utilizing just 17% of the production cost. Further analysis demonstrates\nthat our generated data exhibits higher relevance to downstream tasks. Source\ncode, models, and scripts are available at https://github.com/Krueske/AQuilt.",
+    "published": "2025-07-24T17:03:27Z",
+    "updated": "2025-07-24T17:03:27Z",
+    "id": "2507.18584v1",
+    "authors": [
+      "Xiaopeng Ke",
+      "Hexuan Deng",
+      "Xuebo Liu",
+      "Jun Rao",
+      "Zhenxi Song",
+      "Jun Yu",
+      "Min Zhang"
+    ],
+    "arxiv_abstract_url": "http://arxiv.org/abs/2507.18584v1",
+    "arxiv_pdf_url": "http://arxiv.org/pdf/2507.18584v1.pdf",
+    "alphaxiv_url": "http://alphaxiv.org/abs/2507.18584v1",
+    "keywords": [
+      "LLM",
+      "Dataset"
+    ],
+    "cls_reason": "The paper discusses a framework for constructing instruction-tuning data for specialized domains using unlabeled data, which involves reasoning processes and self-inspection to enhance model performance. This aligns with topics related to LLM reasoning and dataset construction for specialized domains.",
+    "llm_cls_result": [
+      "Reasoning",
+      "Dataset"
+    ]
+  },
+  "2507.18583v1": {
+    "title": "DR.EHR: Dense Retrieval for Electronic Health Record with Knowledge\n  Injection and Synthetic Data",
+    "summary": "Electronic Health Records (EHRs) are pivotal in clinical practices, yet their\nretrieval remains a challenge mainly due to semantic gap issues. Recent\nadvancements in dense retrieval offer promising solutions but existing models,\nboth general-domain and biomedical-domain, fall short due to insufficient\nmedical knowledge or mismatched training corpora. This paper introduces\n\\texttt{DR.EHR}, a series of dense retrieval models specifically tailored for\nEHR retrieval. We propose a two-stage training pipeline utilizing MIMIC-IV\ndischarge summaries to address the need for extensive medical knowledge and\nlarge-scale training data. The first stage involves medical entity extraction\nand knowledge injection from a biomedical knowledge graph, while the second\nstage employs large language models to generate diverse training data. We train\ntwo variants of \\texttt{DR.EHR}, with 110M and 7B parameters, respectively.\nEvaluated on the CliniQ benchmark, our models significantly outperforms all\nexisting dense retrievers, achieving state-of-the-art results. Detailed\nanalyses confirm our models' superiority across various match and query types,\nparticularly in challenging semantic matches like implication and abbreviation.\nAblation studies validate the effectiveness of each pipeline component, and\nsupplementary experiments on EHR QA datasets demonstrate the models'\ngeneralizability on natural language questions, including complex ones with\nmultiple entities. This work significantly advances EHR retrieval, offering a\nrobust solution for clinical applications.",
+    "published": "2025-07-24T17:02:46Z",
+    "updated": "2025-07-24T17:02:46Z",
+    "id": "2507.18583v1",
+    "authors": [
+      "Zhengyun Zhao",
+      "Huaiyuan Ying",
+      "Yue Zhong",
+      "Sheng Yu"
+    ],
+    "arxiv_abstract_url": "http://arxiv.org/abs/2507.18583v1",
+    "arxiv_pdf_url": "http://arxiv.org/pdf/2507.18583v1.pdf",
+    "alphaxiv_url": "http://alphaxiv.org/abs/2507.18583v1",
+    "keywords": [
+      "LLM"
+    ],
+    "cls_reason": "The paper focuses on dense retrieval models for Electronic Health Records (EHRs) and utilizes large language models for generating training data, but it does not directly align with the provided topics which are more centered around LLM architectures, multimodal models, or general AI research.",
+    "llm_cls_result": [
+      "Other"
+    ]
+  }
+}
