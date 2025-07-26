@@ -38,7 +38,12 @@ jobs:
           git commit -m "Arxiv Papers Update" || echo "Nothing to commit"
 
       - name: Push changes
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: |
           git config user.name "zhangtaochn"
           git config user.email "zhangtao-1994@qq.com"
-          git push https://zhangtaochn:${{ secrets.ACCESS_TOKEN }}@github.com/zhangtaochn/daily-arxiv.git HEAD:main
+          git remote set-url origin https://zhangtaochn:${ACCESS_TOKEN}@github.com/zhangtaochn/daily-arxiv.git
+          git add web/all_papers.json data/*
+          git commit -m "Arxiv Papers Update" || echo "Nothing to commit"
+          git push origin HEAD:main
