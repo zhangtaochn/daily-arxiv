@@ -39,4 +39,6 @@ jobs:
 
       - name: Push changes
         run: |
+          git config user.name "zhangtaochn"
+          git config user.email "zhangtao-1994@qq.com"
           git push https://zhangtaochn:${{ secrets.ACCESS_TOKEN }}@github.com/zhangtaochn/daily-arxiv.git HEAD:main
