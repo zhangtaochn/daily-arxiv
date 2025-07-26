@@ -139,7 +139,7 @@ async function loadAllPapers() {
   container.innerHTML = '<p>Loading all papers...</p>';
   try {
     const response = await fetch('web/all_papers.json');
-    if (!response.ok) throw new Error('Failed to load all_papers.json');
+    if (!response.ok) throw new Error('Failed to load papers data');
     const raw = await response.json();
     allPapers = adaptRawData(raw);
     filteredPapers = allPapers;
