@@ -109,7 +109,10 @@ function renderPagination(total, page) {
 
 function fillCategorySelect(papers) {
   const select = document.getElementById('category-select');
-  const categories = Array.from(new Set(papers.flatMap(p => Array.isArray(p.category) ? p.category : []).filter(Boolean)));
+  // 获取所有类别，排除 Other
+  let categories = Array.from(new Set(papers.flatMap(p => Array.isArray(p.category) ? p.category : []).filter(Boolean)));
+  const hasOther = categories.includes('Other');
+  categories = categories.filter(cat => cat !== 'Other');
   select.innerHTML = '';
   const optAll = document.createElement('option');
   optAll.value = 'ALL';
@@ -121,12 +124,20 @@ function fillCategorySelect(papers) {
     opt.textContent = cat;
     select.appendChild(opt);
   });
+  // "Other" 作为最后一个选项
+  if (hasOther) {
+    const optOther = document.createElement('option');
+    optOther.value = 'Other';
+    optOther.textContent = 'Other';
+    select.appendChild(optOther);
+  }
 }
 
 function applyFilters() {
   const cat = document.getElementById('category-select').value;
   if (cat === 'ALL') {
-    filteredPapers = allPapers;
+    // 只包含非 Other 的 paper
+    filteredPapers = allPapers.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'));
   } else {
     filteredPapers = allPapers.filter(paper => Array.isArray(paper.category) && paper.category.includes(cat));
   }
@@ -142,7 +153,8 @@ async function loadAllPapers() {
     if (!response.ok) throw new Error('Failed to load papers data');
     const raw = await response.json();
     allPapers = adaptRawData(raw);
-    filteredPapers = allPapers;
+    // 初始化时只显示非 Other 的论文
+    filteredPapers = allPapers.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'));
     fillCategorySelect(allPapers);
     currentPage = 1;
     renderPapers(filteredPapers, currentPage);
