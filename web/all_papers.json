@@ -1,19 +1,19 @@
 {
-  "current_update_time": "2025-07-26 20:28:19",
+  "current_update_time": "2025-07-27 20:19:45",
   "count_today_papers": {},
   "count_all_papers": {
-    "All": 3597,
-    "LLM": 2010,
-    "Reasoning": 1332,
-    "RL": 679,
-    "Other": 292,
-    "Dataset": 239,
-    "Memory": 310,
-    "Benchmark": 648,
-    "MLLM": 663,
-    "VLA": 402,
+    "All": 3615,
+    "LLM": 2022,
+    "Reasoning": 1334,
+    "RL": 683,
+    "Other": 297,
+    "Dataset": 242,
+    "Memory": 311,
+    "Benchmark": 651,
+    "MLLM": 664,
+    "VLA": 403,
     "Pretrain": 161,
-    "AGI": 256,
+    "AGI": 258,
     "Scaling": 258,
     "MoE": 277
   },
@@ -95517,6 +95517,461 @@
       "cls_reason": "The paper focuses on enhancing instruction-following models with stylistic transfer using LoRA, which involves adapting LLMs to specific stylistic characteristics without compromising their core functionalities. This aligns with research on Large Language Models (LLM) and their adaptation techniques.",
       "llm_cls_result": [
         "LLM"
+      ]
+    },
+    {
+      "title": "SIFOTL: A Principled, Statistically-Informed Fidelity-Optimization\n  Method for Tabular Learning",
+      "summary": "Identifying the factors driving data shifts in tabular datasets is a\nsignificant challenge for analysis and decision support systems, especially\nthose focusing on healthcare. Privacy rules restrict data access, and noise\nfrom complex processes hinders analysis. To address this challenge, we propose\nSIFOTL (Statistically-Informed Fidelity-Optimization Method for Tabular\nLearning) that (i) extracts privacy-compliant data summary statistics, (ii)\nemploys twin XGBoost models to disentangle intervention signals from noise with\nassistance from LLMs, and (iii) merges XGBoost outputs via a Pareto-weighted\ndecision tree to identify interpretable segments responsible for the shift.\nUnlike existing analyses which may ignore noise or require full data access for\nLLM-based analysis, SIFOTL addresses both challenges using only privacy-safe\nsummary statistics. Demonstrating its real-world efficacy, for a MEPS panel\ndataset mimicking a new Medicare drug subsidy, SIFOTL achieves an F1 score of\n0.85, substantially outperforming BigQuery Contribution Analysis (F1=0.46) and\nstatistical tests (F1=0.20) in identifying the segment receiving the subsidy.\nFurthermore, across 18 diverse EHR datasets generated based on Synthea ABM,\nSIFOTL sustains F1 scores of 0.86-0.96 without noise and >= 0.75 even with\ninjected observational noise, whereas baseline average F1 scores range from\n0.19-0.67 under the same tests. SIFOTL, therefore, provides an interpretable,\nprivacy-conscious workflow that is empirically robust to observational noise.",
+      "published": "2025-07-23T23:00:24Z",
+      "updated": "2025-07-23T23:00:24Z",
+      "id": "2507.17979v1",
+      "authors": [
+        "Shubham Mohole",
+        "Sainyam Galhotra"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.17979v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.17979v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.17979v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper focuses on a method for tabular learning that involves privacy-compliant data summary statistics and employs XGBoost models with assistance from LLMs. However, the primary focus is not on LLMs or their architectures, but rather on a specific application involving tabular data and privacy concerns.",
+      "llm_cls_result": [
+        "Other"
+      ]
+    },
+    {
+      "title": "SV3.3B: A Sports Video Understanding Model for Action Recognition",
+      "summary": "This paper addresses the challenge of automated sports video analysis, which\nhas traditionally been limited by computationally intensive models requiring\nserver-side processing and lacking fine-grained understanding of athletic\nmovements. Current approaches struggle to capture the nuanced biomechanical\ntransitions essential for meaningful sports analysis, often missing critical\nphases like preparation, execution, and follow-through that occur within\nseconds. To address these limitations, we introduce SV3.3B, a lightweight 3.3B\nparameter video understanding model that combines novel temporal motion\ndifference sampling with self-supervised learning for efficient on-device\ndeployment. Our approach employs a DWT-VGG16-LDA based keyframe extraction\nmechanism that intelligently identifies the 16 most representative frames from\nsports sequences, followed by a V-DWT-JEPA2 encoder pretrained through\nmask-denoising objectives and an LLM decoder fine-tuned for sports action\ndescription generation. Evaluated on a subset of the NSVA basketball dataset,\nSV3.3B achieves superior performance across both traditional text generation\nmetrics and sports-specific evaluation criteria, outperforming larger\nclosed-source models including GPT-4o variants while maintaining significantly\nlower computational requirements. Our model demonstrates exceptional capability\nin generating technically detailed and analytically rich sports descriptions,\nachieving 29.2% improvement over GPT-4o in ground truth validation metrics,\nwith substantial improvements in information density, action complexity, and\nmeasurement precision metrics essential for comprehensive athletic analysis.\nModel Available at https://huggingface.co/sportsvision/SV3.3B.",
+      "published": "2025-07-23T18:11:39Z",
+      "updated": "2025-07-23T18:11:39Z",
+      "id": "2507.17844v1",
+      "authors": [
+        "Sai Varun Kodathala",
+        "Yashwanth Reddy Vutukoori",
+        "Rakesh Vunnam"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.17844v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.17844v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.17844v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper focuses on a video understanding model for action recognition in sports, which involves multimodal processing (video and text) and employs an LLM decoder for generating sports action descriptions. However, the primary focus is on video understanding and action recognition rather than core LLM or multimodal LLM research.",
+      "llm_cls_result": [
+        "Other"
+      ]
+    },
+    {
+      "title": "From Scan to Action: Leveraging Realistic Scans for Embodied Scene\n  Understanding",
+      "summary": "Real-world 3D scene-level scans offer realism and can enable better\nreal-world generalizability for downstream applications. However, challenges\nsuch as data volume, diverse annotation formats, and tool compatibility limit\ntheir use. This paper demonstrates a methodology to effectively leverage these\nscans and their annotations. We propose a unified annotation integration using\nUSD, with application-specific USD flavors. We identify challenges in utilizing\nholistic real-world scan datasets and present mitigation strategies. The\nefficacy of our approach is demonstrated through two downstream applications:\nLLM-based scene editing, enabling effective LLM understanding and adaptation of\nthe data (80% success), and robotic simulation, achieving an 87% success rate\nin policy learning.",
+      "published": "2025-07-23T15:20:31Z",
+      "updated": "2025-07-23T15:20:31Z",
+      "id": "2507.17585v1",
+      "authors": [
+        "Anna-Maria Halacheva",
+        "Jan-Nico Zaech",
+        "Sombit Dey",
+        "Luc Van Gool",
+        "Danda Pani Paudel"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.17585v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.17585v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.17585v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper discusses leveraging 3D scene-level scans for downstream applications, including LLM-based scene editing and robotic simulation, which involves LLM understanding and adaptation as well as robotic policy learning.",
+      "llm_cls_result": [
+        "LLM",
+        "VLA"
+      ]
+    },
+    {
+      "title": "Synthetic Voice Data for Automatic Speech Recognition in African\n  Languages",
+      "summary": "Speech technology remains out of reach for most of the over 2300 languages in\nAfrica. We present the first systematic assessment of large-scale synthetic\nvoice corpora for African ASR. We apply a three-step process: LLM-driven text\ncreation, TTS voice synthesis, and ASR fine-tuning. Eight out of ten languages\nfor which we create synthetic text achieved readability scores above 5 out of\n7. We evaluated ASR improvement for three (Hausa, Dholuo, Chichewa) and created\nmore than 2,500 hours of synthetic voice data at below 1% of the cost of real\ndata. Fine-tuned Wav2Vec-BERT-2.0 models trained on 250h real and 250h\nsynthetic Hausa matched a 500h real-data-only baseline, while 579h real and\n450h to 993h synthetic data created the best performance. We also present\ngender-disaggregated ASR performance evaluation. For very low-resource\nlanguages, gains varied: Chichewa WER improved about 6.5% relative with a 1:2\nreal-to-synthetic ratio; a 1:1 ratio for Dholuo showed similar improvements on\nsome evaluation data, but not on others. Investigating intercoder reliability,\nASR errors and evaluation datasets revealed the need for more robust reviewer\nprotocols and more accurate evaluation data. All data and models are publicly\nreleased to invite further work to improve synthetic data for African\nlanguages.",
+      "published": "2025-07-23T15:13:32Z",
+      "updated": "2025-07-23T15:13:32Z",
+      "id": "2507.17578v1",
+      "authors": [
+        "Brian DeRenzi",
+        "Anna Dixon",
+        "Mohamed Aymane Farhi",
+        "Christian Resch"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.17578v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.17578v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.17578v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper focuses on the creation and evaluation of synthetic voice data for automatic speech recognition in African languages, utilizing LLM-driven text creation and TTS voice synthesis. However, the core focus is not on the LLM itself but on the application of synthetic data for ASR, which does not directly align with the provided topic list.",
+      "llm_cls_result": [
+        "Other"
+      ]
+    },
+    {
+      "title": "Can One Domain Help Others? A Data-Centric Study on Multi-Domain\n  Reasoning via Reinforcement Learning",
+      "summary": "Reinforcement Learning with Verifiable Rewards (RLVR) has emerged as a\npowerful paradigm for enhancing the reasoning capabilities of LLMs. Existing\nresearch has predominantly concentrated on isolated reasoning domains such as\nmathematical problem-solving, coding tasks, or logical reasoning. However, real\nworld reasoning scenarios inherently demand an integrated application of\nmultiple cognitive skills. Despite this, the interplay among these reasoning\nskills under reinforcement learning remains poorly understood. To bridge this\ngap, we present a systematic investigation of multi-domain reasoning within the\nRLVR framework, explicitly focusing on three primary domains: mathematical\nreasoning, code generation, and logical puzzle solving. We conduct a\ncomprehensive study comprising four key components: (1) Leveraging the GRPO\nalgorithm and the Qwen-2.5-7B model family, our study thoroughly evaluates the\nmodels' in-domain improvements and cross-domain generalization capabilities\nwhen trained on single-domain datasets. (2) Additionally, we examine the\nintricate interactions including mutual enhancements and conflicts that emerge\nduring combined cross-domain training. (3) To further understand the influence\nof SFT on RL, we also analyze and compare performance differences between base\nand instruct models under identical RL configurations. (4) Furthermore, we\ndelve into critical RL training details, systematically exploring the impacts\nof curriculum learning strategies, variations in reward design, and\nlanguage-specific factors. Through extensive experiments, our results offer\nsignificant insights into the dynamics governing domain interactions, revealing\nkey factors influencing both specialized and generalizable reasoning\nperformance. These findings provide valuable guidance for optimizing RL\nmethodologies to foster comprehensive, multi-domain reasoning capabilities in\nLLMs.",
+      "published": "2025-07-23T13:51:04Z",
+      "updated": "2025-07-23T13:51:04Z",
+      "id": "2507.17512v1",
+      "authors": [
+        "Yu Li",
+        "Zhuoshi Pan",
+        "Honglin Lin",
+        "Mengyuan Sun",
+        "Conghui He",
+        "Lijun Wu"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.17512v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.17512v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.17512v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper focuses on enhancing reasoning capabilities of LLMs through reinforcement learning, specifically addressing multi-domain reasoning and the interplay between different reasoning skills. It involves RLHF (Reinforcement Learning with Human Feedback) and explores reasoning abilities in LLMs across various domains.",
+      "llm_cls_result": [
+        "RL",
+        "Reasoning",
+        "LLM"
+      ]
+    },
+    {
+      "title": "Adaptive Repetition for Mitigating Position Bias in LLM-Based Ranking",
+      "summary": "When using LLMs to rank items based on given criteria, or evaluate answers,\nthe order of candidate items can influence the model's final decision. This\nsensitivity to item positioning in a LLM's prompt is known as position bias.\nPrior research shows that this bias exists even in large models, though its\nseverity varies across models and tasks. In addition to position bias, LLMs\nalso exhibit varying degrees of low repetition consistency, where repeating the\nLLM call with the same candidate ordering can lead to different rankings. To\naddress both inconsistencies, a common approach is to prompt the model multiple\ntimes with different candidate orderings and aggregate the results via majority\nvoting. However, this repetition strategy, significantly increases\ncomputational costs. Extending prior findings, we observe that both the\ndirection -- favoring either the earlier or later candidate in the prompt --\nand magnitude of position bias across instances vary substantially, even within\na single dataset. This observation highlights the need for a per-instance\nmitigation strategy. To this end, we introduce a dynamic early-stopping method\nthat adaptively determines the number of repetitions required for each\ninstance. Evaluating our approach across three LLMs of varying sizes and on two\ntasks, namely re-ranking and alignment, we demonstrate that transitioning to a\ndynamic repetition strategy reduces the number of LLM calls by an average of\n81%, while preserving the accuracy. Furthermore, we propose a confidence-based\nadaptation to our early-stopping method, reducing LLM calls by an average of\n87% compared to static repetition, with only a slight accuracy trade-off\nrelative to our original early-stopping method.",
+      "published": "2025-07-23T09:54:44Z",
+      "updated": "2025-07-23T09:54:44Z",
+      "id": "2507.17788v1",
+      "authors": [
+        "Ali Vardasbi",
+        "Gustavo Penha",
+        "Claudia Hauff",
+        "Hugues Bouchard"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.17788v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.17788v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.17788v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper discusses position bias and repetition consistency in LLMs, which are core issues related to the performance and evaluation of Large Language Models. It introduces methods to mitigate these issues, which are directly relevant to LLM research and their practical applications.",
+      "llm_cls_result": [
+        "LLM",
+        "Benchmark"
+      ]
+    },
+    {
+      "title": "HOComp: Interaction-Aware Human-Object Composition",
+      "summary": "While existing image-guided composition methods may help insert a foreground\nobject onto a user-specified region of a background image, achieving natural\nblending inside the region with the rest of the image unchanged, we observe\nthat these existing methods often struggle in synthesizing seamless\ninteraction-aware compositions when the task involves human-object\ninteractions. In this paper, we first propose HOComp, a novel approach for\ncompositing a foreground object onto a human-centric background image, while\nensuring harmonious interactions between the foreground object and the\nbackground person and their consistent appearances. Our approach includes two\nkey designs: (1) MLLMs-driven Region-based Pose Guidance (MRPG), which utilizes\nMLLMs to identify the interaction region as well as the interaction type (e.g.,\nholding and lefting) to provide coarse-to-fine constraints to the generated\npose for the interaction while incorporating human pose landmarks to track\naction variations and enforcing fine-grained pose constraints; and (2)\nDetail-Consistent Appearance Preservation (DCAP), which unifies a shape-aware\nattention modulation mechanism, a multi-view appearance loss, and a background\nconsistency loss to ensure consistent shapes/textures of the foreground and\nfaithful reproduction of the background human. We then propose the first\ndataset, named Interaction-aware Human-Object Composition (IHOC), for the task.\nExperimental results on our dataset show that HOComp effectively generates\nharmonious human-object interactions with consistent appearances, and\noutperforms relevant methods qualitatively and quantitatively.",
+      "published": "2025-07-22T17:59:21Z",
+      "updated": "2025-07-22T17:59:21Z",
+      "id": "2507.16813v1",
+      "authors": [
+        "Dong Liang",
+        "Jinyuan Jia",
+        "Yuhao Liu",
+        "Rynson W. H. Lau"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.16813v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.16813v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.16813v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper focuses on human-object interaction in image composition, utilizing MLLMs for interaction region identification and type, and introduces a new dataset for this task. The core topics are MLLM for multimodal tasks and Dataset for benchmarking.",
+      "llm_cls_result": [
+        "MLLM",
+        "Dataset"
+      ]
+    },
+    {
+      "title": "BDIViz: An Interactive Visualization System for Biomedical Schema\n  Matching with LLM-Powered Validation",
+      "summary": "Biomedical data harmonization is essential for enabling exploratory analyses\nand meta-studies, but the process of schema matching - identifying semantic\ncorrespondences between elements of disparate datasets (schemas) - remains a\nlabor-intensive and error-prone task. Even state-of-the-art automated methods\noften yield low accuracy when applied to biomedical schemas due to the large\nnumber of attributes and nuanced semantic differences between them. We present\nBDIViz, a novel visual analytics system designed to streamline the schema\nmatching process for biomedical data. Through formative studies with domain\nexperts, we identified key requirements for an effective solution and developed\ninteractive visualization techniques that address both scalability challenges\nand semantic ambiguity. BDIViz employs an ensemble approach that combines\nmultiple matching methods with LLM-based validation, summarizes matches through\ninteractive heatmaps, and provides coordinated views that enable users to\nquickly compare attributes and their values. Our method-agnostic design allows\nthe system to integrate various schema matching algorithms and adapt to\napplication-specific needs. Through two biomedical case studies and a\nwithin-subject user study with domain experts, we demonstrate that BDIViz\nsignificantly improves matching accuracy while reducing cognitive load and\ncuration time compared to baseline approaches.",
+      "published": "2025-07-22T00:10:55Z",
+      "updated": "2025-07-22T00:10:55Z",
+      "id": "2507.16117v1",
+      "authors": [
+        "Eden Wu",
+        "Dishita G Turakhia",
+        "Guande Wu",
+        "Christos Koutras",
+        "Sarah Keegan",
+        "Wenke Liu",
+        "Beata Szeitz",
+        "David Fenyo",
+        "Cláudio T. Silva",
+        "Juliana Freire"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.16117v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.16117v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.16117v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper focuses on the application of LLMs in biomedical schema matching, which involves using LLM-powered validation to improve the accuracy of schema matching in biomedical data. This aligns with the 'LLM' topic as it involves research on the application of Large Language Models in a specific domain.",
+      "llm_cls_result": [
+        "LLM"
+      ]
+    },
+    {
+      "title": "Help Me Write a Story: Evaluating LLMs' Ability to Generate Writing\n  Feedback",
+      "summary": "Can LLMs provide support to creative writers by giving meaningful writing\nfeedback? In this paper, we explore the challenges and limitations of\nmodel-generated writing feedback by defining a new task, dataset, and\nevaluation frameworks. To study model performance in a controlled manner, we\npresent a novel test set of 1,300 stories that we corrupted to intentionally\nintroduce writing issues. We study the performance of commonly used LLMs in\nthis task with both automatic and human evaluation metrics. Our analysis shows\nthat current models have strong out-of-the-box behavior in many respects --\nproviding specific and mostly accurate writing feedback. However, models often\nfail to identify the biggest writing issue in the story and to correctly decide\nwhen to offer critical vs. positive feedback.",
+      "published": "2025-07-21T18:56:50Z",
+      "updated": "2025-07-21T18:56:50Z",
+      "id": "2507.16007v1",
+      "authors": [
+        "Hannah Rashkin",
+        "Elizabeth Clark",
+        "Fantine Huot",
+        "Mirella Lapata"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.16007v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.16007v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.16007v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper focuses on evaluating the ability of Large Language Models (LLMs) to generate writing feedback, which directly relates to the 'LLM' topic. Additionally, it involves benchmarking and evaluation frameworks, which aligns with the 'Benchmark' topic.",
+      "llm_cls_result": [
+        "LLM",
+        "Benchmark"
+      ]
+    },
+    {
+      "title": "Just Put a Human in the Loop? Investigating LLM-Assisted Annotation for\n  Subjective Tasks",
+      "summary": "LLM use in annotation is becoming widespread, and given LLMs' overall\npromising performance and speed, simply \"reviewing\" LLM annotations in\ninterpretive tasks can be tempting. In subjective annotation tasks with\nmultiple plausible answers, reviewing LLM outputs can change the label\ndistribution, impacting both the evaluation of LLM performance, and analysis\nusing these labels in a social science task downstream. We conducted a\npre-registered experiment with 410 unique annotators and over 7,000 annotations\ntesting three AI assistance conditions against controls, using two models, and\ntwo datasets. We find that presenting crowdworkers with LLM-generated\nannotation suggestions did not make them faster, but did improve their\nself-reported confidence in the task. More importantly, annotators strongly\ntook the LLM suggestions, significantly changing the label distribution\ncompared to the baseline. When these labels created with LLM assistance are\nused to evaluate LLM performance, reported model performance significantly\nincreases. We believe our work underlines the importance of understanding the\nimpact of LLM-assisted annotation on subjective, qualitative tasks, on the\ncreation of gold data for training and testing, and on the evaluation of NLP\nsystems on subjective tasks.",
+      "published": "2025-07-21T17:29:21Z",
+      "updated": "2025-07-21T17:29:21Z",
+      "id": "2507.15821v1",
+      "authors": [
+        "Hope Schroeder",
+        "Deb Roy",
+        "Jad Kabbara"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.15821v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.15821v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.15821v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper discusses the use of LLMs in annotation tasks, focusing on the impact of LLM-assisted annotation on subjective tasks and the evaluation of LLM performance. This aligns with topics related to LLM applications and their evaluation.",
+      "llm_cls_result": [
+        "LLM",
+        "Benchmark"
+      ]
+    },
+    {
+      "title": "GREAT: Guiding Query Generation with a Trie for Recommending Related\n  Search about Video at Kuaishou",
+      "summary": "Currently, short video platforms have become the primary place for\nindividuals to share experiences and obtain information. To better meet users'\nneeds for acquiring information while browsing short videos, some apps have\nintroduced a search entry at the bottom of videos, accompanied with recommended\nrelevant queries. This scenario is known as query recommendation in\nvideo-related search, where core task is item-to-query (I2Q) recommendation. As\nthis scenario has only emerged in recent years, there is a notable scarcity of\nacademic research and publicly available datasets in this domain. To address\nthis gap, we systematically examine the challenges associated with this\nscenario for the first time. Subsequently, we release a large-scale dataset\nderived from real-world data pertaining to the query recommendation in\nvideo-\\textit{\\textbf{r}}elated \\textit{\\textbf{s}}earch on the\n\\textit{\\textbf{Kuai}}shou app (\\textbf{KuaiRS}). Presently, existing methods\nrely on embeddings to calculate similarity for matching short videos with\nqueries, lacking deep interaction between the semantic content and the query.\nIn this paper, we introduce a novel LLM-based framework named \\textbf{GREAT},\nwhich \\textit{\\textbf{g}}uides que\\textit{\\textbf{r}}y\ng\\textit{\\textbf{e}}ner\\textit{\\textbf{a}}tion with a \\textit{\\textbf{t}}rie to\naddress I2Q recommendation in related search. Specifically, we initially gather\nhigh-quality queries with high exposure and click-through rate to construct a\nquery-based trie. During training, we enhance the LLM's capability to generate\nhigh-quality queries using the query-based trie. In the inference phase, the\nquery-based trie serves as a guide for the token generation. Finally, we\nfurther refine the relevance and literal quality between items and queries via\na post-processing module. Extensive offline and online experiments demonstrate\nthe effectiveness of our proposed method.",
+      "published": "2025-07-21T06:10:30Z",
+      "updated": "2025-07-21T06:10:30Z",
+      "id": "2507.15267v1",
+      "authors": [
+        "Ninglu Shao",
+        "Jinshan Wang",
+        "Chenxu Wang",
+        "Qingbiao Li",
+        "Xiaoxue Zang",
+        "Han Li"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.15267v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.15267v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.15267v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper discusses the use of a Large Language Model (LLM) to generate queries for a recommendation system in a video-related search scenario. It focuses on enhancing the LLM's capability to generate high-quality queries and uses a query-based trie for guidance during training and inference. The core topics are related to LLM applications in recommendation systems and query generation.",
+      "llm_cls_result": [
+        "LLM",
+        "Dataset"
+      ]
+    },
+    {
+      "title": "FaultLine: Automated Proof-of-Vulnerability Generation Using LLM Agents",
+      "summary": "Despite the critical threat posed by software security vulnerabilities,\nreports are often incomplete, lacking the proof-of-vulnerability (PoV) tests\nneeded to validate fixes and prevent regressions. These tests are crucial not\nonly for ensuring patches work, but also for helping developers understand how\nvulnerabilities can be exploited. Generating PoV tests is a challenging\nproblem, requiring reasoning about the flow of control and data through deeply\nnested levels of a program.\n  We present FaultLine, an LLM agent workflow that uses a set of carefully\ndesigned reasoning steps, inspired by aspects of traditional static and dynamic\nprogram analysis, to automatically generate PoV test cases. Given a software\nproject with an accompanying vulnerability report, FaultLine 1) traces the flow\nof an input from an externally accessible API (\"source\") to the \"sink\"\ncorresponding to the vulnerability, 2) reasons about the conditions that an\ninput must satisfy in order to traverse the branch conditions encountered along\nthe flow, and 3) uses this reasoning to generate a PoV test case in a\nfeedback-driven loop. FaultLine does not use language-specific static or\ndynamic analysis components, which enables it to be used across programming\nlanguages.\n  To evaluate FaultLine, we collate a challenging multi-lingual dataset of 100\nknown vulnerabilities in Java, C and C++ projects. On this dataset, FaultLine\nis able to generate PoV tests for 16 projects, compared to just 9 for CodeAct\n2.1, a popular state-of-the-art open-source agentic framework. Thus, FaultLine\nrepresents a 77% relative improvement over the state of the art. Our findings\nsuggest that hierarchical reasoning can enhance the performance of LLM agents\non PoV test generation, but the problem in general remains challenging. We make\nour code and dataset publicly available in the hope that it will spur further\nresearch in this area.",
+      "published": "2025-07-21T04:55:34Z",
+      "updated": "2025-07-21T04:55:34Z",
+      "id": "2507.15241v1",
+      "authors": [
+        "Vikram Nitin",
+        "Baishakhi Ray",
+        "Roshanak Zilouchian Moghaddam"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.15241v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.15241v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.15241v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper discusses the use of LLM agents for generating proof-of-vulnerability tests, which involves reasoning about program flows and conditions. This aligns with the topics of LLM (Large Language Models) and Reasoning (complex problem solving and logical reasoning). The mention of LLM agents also touches on the RL (Reinforcement Learning) topic, as agent workflows can involve reinforcement learning techniques.",
+      "llm_cls_result": [
+        "LLM",
+        "Reasoning",
+        "RL"
+      ]
+    },
+    {
+      "title": "EchoVoices: Preserving Generational Voices and Memories for Seniors and\n  Children",
+      "summary": "Recent breakthroughs in intelligent speech and digital human technologies\nhave primarily targeted mainstream adult users, often overlooking the distinct\nvocal patterns and interaction styles of seniors and children. These\ndemographics possess distinct vocal characteristics, linguistic styles, and\ninteraction patterns that challenge conventional ASR, TTS, and LLM systems. To\naddress this, we introduce EchoVoices, an end-to-end digital human pipeline\ndedicated to creating persistent digital personas for seniors and children,\nensuring their voices and memories are preserved for future generations. Our\nsystem integrates three core innovations: a k-NN-enhanced Whisper model for\nrobust speech recognition of atypical speech; an age-adaptive VITS model for\nhigh-fidelity, speaker-aware speech synthesis; and an LLM-driven agent that\nautomatically generates persona cards and leverages a RAG-based memory system\nfor conversational consistency. Our experiments, conducted on the SeniorTalk\nand ChildMandarin datasets, demonstrate significant improvements in recognition\naccuracy, synthesis quality, and speaker similarity. EchoVoices provides a\ncomprehensive framework for preserving generational voices, offering a new\nmeans of intergenerational connection and the creation of lasting digital\nlegacies.",
+      "published": "2025-07-21T03:47:45Z",
+      "updated": "2025-07-21T03:47:45Z",
+      "id": "2507.15221v1",
+      "authors": [
+        "Haiying Xu",
+        "Haoze Liu",
+        "Mingshi Li",
+        "Siyu Cai",
+        "Guangxuan Zheng",
+        "Yuhuang Jia",
+        "Jinghua Zhao",
+        "Yong Qin"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.15221v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.15221v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.15221v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper focuses on the development of a digital human pipeline that integrates speech recognition, speech synthesis, and an LLM-driven agent for preserving generational voices. It mentions the use of LLM and RAG-based memory systems, which are relevant to the topics of LLM and Memory.",
+      "llm_cls_result": [
+        "LLM",
+        "Memory"
+      ]
+    },
+    {
+      "title": "SYNTHIA: Synthetic Yet Naturally Tailored Human-Inspired PersonAs",
+      "summary": "Persona-driven LLMs have emerged as powerful tools in computational social\nscience, yet existing approaches fall at opposite extremes, either relying on\ncostly human-curated data or producing synthetic personas that lack consistency\nand realism. We introduce SYNTHIA, a dataset of 30,000 backstories derived from\n10,000 real social media users from BlueSky open platform across three time\nwindows, bridging this spectrum by grounding synthetic generation in authentic\nuser activity. Our evaluation demonstrates that SYNTHIA achieves competitive\nperformance with state-of-the-art methods in demographic diversity and social\nsurvey alignment while significantly outperforming them in narrative\nconsistency. Uniquely, SYNTHIA incorporates temporal dimensionality and\nprovides rich social interaction metadata from the underlying network, enabling\nnew research directions in computational social science and persona-driven\nlanguage modeling.",
+      "published": "2025-07-20T11:37:07Z",
+      "updated": "2025-07-20T11:37:07Z",
+      "id": "2507.14922v1",
+      "authors": [
+        "Vahid Rahimzadeh",
+        "Erfan Moosavi Monazzah",
+        "Mohammad Taher Pilehvar",
+        "Yadollah Yaghoobzadeh"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.14922v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.14922v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.14922v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper discusses the creation of a dataset (SYNTHIA) for persona-driven LLMs, focusing on synthetic yet realistic personas derived from real social media users. This aligns with the 'Dataset' category as it involves the creation and evaluation of a dataset for LLMs. Additionally, the mention of persona-driven LLMs suggests relevance to 'LLM' as it involves research on large language models.",
+      "llm_cls_result": [
+        "Dataset",
+        "LLM"
+      ]
+    },
+    {
+      "title": "Explainable Collaborative Problem Solving Diagnosis with BERT using SHAP\n  and its Implications for Teacher Adoption",
+      "summary": "The use of Bidirectional Encoder Representations from Transformers (BERT)\nmodel and its variants for classifying collaborative problem solving (CPS) has\nbeen extensively explored within the AI in Education community. However,\nlimited attention has been given to understanding how individual tokenised\nwords in the dataset contribute to the model's classification decisions.\nEnhancing the explainability of BERT-based CPS diagnostics is essential to\nbetter inform end users such as teachers, thereby fostering greater trust and\nfacilitating wider adoption in education. This study undertook a preliminary\nstep towards model transparency and explainability by using SHapley Additive\nexPlanations (SHAP) to examine how different tokenised words in transcription\ndata contributed to a BERT model's classification of CPS processes. The\nfindings suggested that well-performing classifications did not necessarily\nequate to a reasonable explanation for the classification decisions. Particular\ntokenised words were used frequently to affect classifications. The analysis\nalso identified a spurious word, which contributed positively to the\nclassification but was not semantically meaningful to the class. While such\nmodel transparency is unlikely to be useful to an end user to improve their\npractice, it can help them not to overrely on LLM diagnostics and ignore their\nhuman expertise. We conclude the workshop paper by noting that the extent to\nwhich the model appropriately uses the tokens for its classification is\nassociated with the number of classes involved. It calls for an investigation\ninto the exploration of ensemble model architectures and the involvement of\nhuman-AI complementarity for CPS diagnosis, since considerable human reasoning\nis still required for fine-grained discrimination of CPS subskills.",
+      "published": "2025-07-19T11:57:24Z",
+      "updated": "2025-07-19T11:57:24Z",
+      "id": "2507.14584v1",
+      "authors": [
+        "Kester Wong",
+        "Sahan Bulathwela",
+        "Mutlu Cukurova"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.14584v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.14584v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.14584v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper discusses the use of BERT for classifying collaborative problem solving (CPS) and enhancing its explainability using SHAP. While it mentions LLM diagnostics, the focus is more on model transparency and explainability rather than core LLM research or other specified topics.",
+      "llm_cls_result": [
+        "Other"
+      ]
+    },
+    {
+      "title": "Routine: A Structural Planning Framework for LLM Agent System in\n  Enterprise",
+      "summary": "The deployment of agent systems in an enterprise environment is often\nhindered by several challenges: common models lack domain-specific process\nknowledge, leading to disorganized plans, missing key tools, and poor execution\nstability. To address this, this paper introduces Routine, a multi-step agent\nplanning framework designed with a clear structure, explicit instructions, and\nseamless parameter passing to guide the agent's execution module in performing\nmulti-step tool-calling tasks with high stability. In evaluations conducted\nwithin a real-world enterprise scenario, Routine significantly increases the\nexecution accuracy in model tool calls, increasing the performance of GPT-4o\nfrom 41.1% to 96.3%, and Qwen3-14B from 32.6% to 83.3%. We further constructed\na Routine-following training dataset and fine-tuned Qwen3-14B, resulting in an\naccuracy increase to 88.2% on scenario-specific evaluations, indicating\nimproved adherence to execution plans. In addition, we employed Routine-based\ndistillation to create a scenario-specific, multi-step tool-calling dataset.\nFine-tuning on this distilled dataset raised the model's accuracy to 95.5%,\napproaching GPT-4o's performance. These results highlight Routine's\neffectiveness in distilling domain-specific tool-usage patterns and enhancing\nmodel adaptability to new scenarios. Our experimental results demonstrate that\nRoutine provides a practical and accessible approach to building stable agent\nworkflows, accelerating the deployment and adoption of agent systems in\nenterprise environments, and advancing the technical vision of AI for Process.",
+      "published": "2025-07-19T02:46:19Z",
+      "updated": "2025-07-22T10:01:32Z",
+      "id": "2507.14447v2",
+      "authors": [
+        "Guancheng Zeng",
+        "Xueyi Chen",
+        "Jiawang Hu",
+        "Shaohua Qi",
+        "Yaxuan Mao",
+        "Zhantao Wang",
+        "Yifan Nie",
+        "Shuang Li",
+        "Qiuyang Feng",
+        "Pengxu Qiu",
+        "Yujia Wang",
+        "Wenqiang Han",
+        "Linyan Huang",
+        "Gang Li",
+        "Jingjing Mo",
+        "Haowen Hu"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.14447v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.14447v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.14447v2",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper discusses a framework for LLM agent systems in enterprise environments, focusing on planning, execution stability, and tool-calling tasks. It involves fine-tuning models like GPT-4o and Qwen3-14B, which are large language models, and addresses challenges in deploying these models in specific domains.",
+      "llm_cls_result": [
+        "LLM",
+        "RL",
+        "AGI"
+      ]
+    },
+    {
+      "title": "What Makes You CLIC: Detection of Croatian Clickbait Headlines",
+      "summary": "Online news outlets operate predominantly on an advertising-based revenue\nmodel, compelling journalists to create headlines that are often scandalous,\nintriguing, and provocative -- commonly referred to as clickbait. Automatic\ndetection of clickbait headlines is essential for preserving information\nquality and reader trust in digital media and requires both contextual\nunderstanding and world knowledge. For this task, particularly in\nless-resourced languages, it remains unclear whether fine-tuned methods or\nin-context learning (ICL) yield better results. In this paper, we compile CLIC,\na novel dataset for clickbait detection of Croatian news headlines spanning a\n20-year period and encompassing mainstream and fringe outlets. We fine-tune the\nBERTi\\'c model on this task and compare its performance to LLM-based ICL\nmethods with prompts both in Croatian and English. Finally, we analyze the\nlinguistic properties of clickbait. We find that nearly half of the analyzed\nheadlines contain clickbait, and that finetuned models deliver better results\nthan general LLMs.",
+      "published": "2025-07-18T18:39:07Z",
+      "updated": "2025-07-24T17:10:17Z",
+      "id": "2507.14314v2",
+      "authors": [
+        "Marija Anđelić",
+        "Dominik Šipek",
+        "Laura Majer",
+        "Jan Šnajder"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.14314v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.14314v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.14314v2",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper focuses on clickbait detection in Croatian news headlines using fine-tuned models and LLM-based in-context learning, which involves language models but does not directly align with the provided topics.",
+      "llm_cls_result": [
+        "Other"
+      ]
+    },
+    {
+      "title": "AGENTS-LLM: Augmentative GENeration of Challenging Traffic Scenarios\n  with an Agentic LLM Framework",
+      "summary": "Rare, yet critical, scenarios pose a significant challenge in testing and\nevaluating autonomous driving planners. Relying solely on real-world driving\nscenes requires collecting massive datasets to capture these scenarios. While\nautomatic generation of traffic scenarios appears promising, data-driven models\nrequire extensive training data and often lack fine-grained control over the\noutput. Moreover, generating novel scenarios from scratch can introduce a\ndistributional shift from the original training scenes which undermines the\nvalidity of evaluations especially for learning-based planners. To sidestep\nthis, recent work proposes to generate challenging scenarios by augmenting\noriginal scenarios from the test set. However, this involves the manual\naugmentation of scenarios by domain experts. An approach that is unable to meet\nthe demands for scale in the evaluation of self-driving systems. Therefore,\nthis paper introduces a novel LLM-agent based framework for augmenting\nreal-world traffic scenarios using natural language descriptions, addressing\nthe limitations of existing methods. A key innovation is the use of an agentic\ndesign, enabling fine-grained control over the output and maintaining high\nperformance even with smaller, cost-effective LLMs. Extensive human expert\nevaluation demonstrates our framework's ability to accurately adhere to user\nintent, generating high quality augmented scenarios comparable to those created\nmanually.",
+      "published": "2025-07-18T08:20:16Z",
+      "updated": "2025-07-18T08:20:16Z",
+      "id": "2507.13729v1",
+      "authors": [
+        "Yu Yao",
+        "Salil Bhatnagar",
+        "Markus Mazzola",
+        "Vasileios Belagiannis",
+        "Igor Gilitschenski",
+        "Luigi Palmieri",
+        "Simon Razniewski",
+        "Marcel Hallgarten"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2507.13729v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2507.13729v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2507.13729v1",
+      "keywords": [
+        "Dataset"
+      ],
+      "cls_reason": "The paper discusses the use of an LLM-agent based framework for augmenting real-world traffic scenarios, which involves the application of Large Language Models (LLM) and Reinforcement Learning (RL) in an agentic design to generate and control scenarios.",
+      "llm_cls_result": [
+        "LLM",
+        "RL",
+        "AGI"
       ]
     }
   ]
