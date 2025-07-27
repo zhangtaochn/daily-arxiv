@@ -24,7 +24,7 @@ MAX_WORKERS = 20  # 并发数
 def search_arxiv_papers(search_query, max_results=1000):
     """Search arXiv papers using the API"""
     # Calculate date 6 months ago
-    date_from = (datetime.now() - timedelta(days=100)).strftime('%Y%m%d%H%M%S0000')
+    date_from = (datetime.now() - timedelta(days=10)).strftime('%Y%m%d%H%M%S0000')
     date_to = datetime.now().strftime('%Y%m%d%H%M%S0000')
     
     params = {
