@@ -72,6 +72,7 @@ header p {
 
 #search-input {
   width: 200px;
+  background-color: #e9ecef;
 }
 
 .paper-actions {
@@ -241,35 +242,42 @@ footer {
 
 .pagination-bar {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2.5em 0 1.5em 0;
+  gap: 1em;
+}
+
+.page-info {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.page-buttons {
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5em;
-  margin: 2.5em 0 1.5em 0;
 }
+
 .page-btn {
-  background: #fff;
-  color: #4b7bec;
-  border: 1.2px solid #d3d8e2;
-  border-radius: 7px;
-  padding: 0.32em 1.1em;
-  font-size: 1em;
-  font-family: inherit;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 0.5em 1em;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border 0.15s;
-  box-shadow: 0 1px 4px #e0e6ef22;
-  outline: none;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
 }
-.page-btn:hover {
-  background: #4b7bec;
-  color: #fff;
-  border-color: #4b7bec;
-}
+
 .page-btn.active {
-  background: #4b7bec;
-  color: #fff;
+  background-color: #4b7bec;
+  color: white;
   border-color: #4b7bec;
-  font-weight: 600;
   cursor: default;
+}
+
+.page-btn:hover:not(.active) {
+  background-color: #f0f0f0;
 }
 
 .last-updated-bar {
@@ -307,6 +315,13 @@ footer {
   }
   .keyword-bar {
     padding-left: 0;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  #date-select, #category-select, #search-input {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 0.5em;
   }
   .paper-card {
     padding: 1em 0.5em 1em 0.5em;

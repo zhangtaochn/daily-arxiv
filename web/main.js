@@ -95,21 +95,36 @@ function renderPagination(total, page) {
     return;
   }
   let html = '';
+
+  // Page info
+  html += `<span class="page-info">Page ${page} of ${pageCount}</span>`;
+
+  // Buttons
+  html += '<div class="page-buttons">';
   if (page > 1) {
+    html += `<button class="page-btn" data-page="1">First</button>`;
     html += `<button class="page-btn" data-page="${page - 1}">Prev</button>`;
   }
-  let start = Math.max(1, page - 3);
-  let end = Math.min(pageCount, page + 3);
-  if (end - start < 6) {
-    if (start === 1) end = Math.min(pageCount, start + 6);
-    if (end === pageCount) start = Math.max(1, end - 6);
+
+  let start = Math.max(1, page - 2);
+  let end = Math.min(pageCount, page + 2);
+
+  if (page < 4) {
+    end = Math.min(pageCount, 5);
   }
+  if (page > pageCount - 3) {
+    start = Math.max(1, pageCount - 4);
+  }
+
   for (let i = start; i <= end; i++) {
     html += `<button class="page-btn${i === page ? ' active' : ''}" data-page="${i}">${i}</button>`;
   }
+
   if (page < pageCount) {
     html += `<button class="page-btn" data-page="${page + 1}">Next</button>`;
+    html += `<button class="page-btn" data-page="${pageCount}">Last</button>`;
   }
+  html += '</div>';
   bar.innerHTML = html;
   Array.from(bar.querySelectorAll('.page-btn')).forEach(btn => {
     btn.onclick = function() {
