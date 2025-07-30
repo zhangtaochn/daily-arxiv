@@ -20,11 +20,12 @@
   <header>
     <h1>Daily Arxiv</h1>
     <p>Daily arXiv papers, filtered and categorized by LLM — automatically.</p>
-    <div class="last-updated-bar"><span id="last-updated"></span></div>
+    <div class="last-updated-bar" id="last-updated"></div>
   </header>
   <main>
     <div class="content-area">
       <div class="keyword-bar">
+        <input type="date" id="date-select">
         <select id="category-select">
           <option value="ALL">All Categories</option>
         </select>
@@ -38,4 +39,4 @@
   </footer>
   <script src="web/main.js"></script>
 </body>
-</html> 
+</html>

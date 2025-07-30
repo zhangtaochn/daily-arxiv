@@ -30,7 +30,9 @@ header p {
 .keyword-bar {
   margin: 0 0 2em 0;
   padding-left: 0;
-  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
 }
 .keyword-bar label {
   color: #2d3a4e;
@@ -50,6 +52,24 @@ header p {
   transition: border 0.2s;
 }
 #keyword-select:focus {
+  border-color: #4b7bec;
+}
+
+#date-select, #category-select {
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #d3d8e2;
+  border-radius: 6px;
+  padding: 0 8px;
+  height: 28px;
+  font-size: 0.95em;
+  outline: none;
+  box-shadow: 0 2px 8px #e0e6ef22;
+  transition: border 0.2s;
+  box-sizing: border-box;
+}
+
+#date-select:focus, #category-select:focus {
   border-color: #4b7bec;
 }
 
@@ -262,4 +282,4 @@ footer {
     align-items: flex-start;
     gap: 0.5em;
   }
-} 
+}

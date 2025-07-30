@@ -5,7 +5,7 @@ let filteredPapers = [];
 let currentPage = 1;
 const pageSize = 20;
 let categoryStats = {};
-let countTodayPapers = {};
+let countNewPapers = {};
 let countAllPapers = {};
 let updateTimeGlobal = '';
 
@@ -111,44 +111,78 @@ function renderPagination(total, page) {
   });
 }
 
-function fillCategorySelect(papers) {
+function updateCategoryCounts(papers) {
   const select = document.getElementById('category-select');
-  // 获取所有类别，排除 Other
-  let categories = Array.from(new Set(papers.flatMap(p => Array.isArray(p.category) ? p.category : []).filter(Boolean)));
-  const hasOther = categories.includes('Other');
-  categories = categories.filter(cat => cat !== 'Other');
+  const previousCategory = select.value;
+
+  const categoryCounts = {};
+  papers.forEach(p => {
+    (p.category || []).forEach(cat => {
+      if (cat) {
+        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+      }
+    });
+  });
+
+  const hasOther = 'Other' in categoryCounts;
+  
+  let categories = Object.keys(categoryCounts).filter(cat => cat !== 'Other').sort();
+  
   select.innerHTML = '';
   const optAll = document.createElement('option');
   optAll.value = 'ALL';
   optAll.textContent = 'All Categories';
   select.appendChild(optAll);
+
   categories.forEach(cat => {
     const opt = document.createElement('option');
     opt.value = cat;
-    opt.textContent = cat;
+    opt.textContent = `${cat} (${categoryCounts[cat]})`;
     select.appendChild(opt);
   });
-  // "Other" 作为最后一个选项
+
   if (hasOther) {
     const optOther = document.createElement('option');
     optOther.value = 'Other';
-    optOther.textContent = 'Other';
+    optOther.textContent = `Other (${categoryCounts['Other']})`;
     select.appendChild(optOther);
+  }
+
+  // Restore previous selection if it exists, otherwise default to ALL
+  if (Array.from(select.options).some(opt => opt.value === previousCategory)) {
+    select.value = previousCategory;
+  } else {
+    select.value = 'ALL';
   }
 }
 
 function applyFilters() {
-  const cat = document.getElementById('category-select').value;
-  if (cat === 'ALL') {
-    // 只包含非 Other 的 paper，并按时间排序
-    filteredPapers = allPapers.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'))
-      .sort((a, b) => new Date(b.published) - new Date(a.published));
-  } else {
-    filteredPapers = allPapers.filter(paper => Array.isArray(paper.category) && paper.category.includes(cat));
+  const selectedDate = document.getElementById('date-select').value;
+
+  let papersForDate = allPapers;
+  if (selectedDate) {
+    papersForDate = allPapers.filter(paper => {
+      const paperDate = new Date(paper.published).toISOString().split('T')[0];
+      return paperDate === selectedDate;
+    });
   }
+
+  updateCategoryCounts(papersForDate);
+
+  const selectedCategory = document.getElementById('category-select').value;
+
+  if (selectedCategory === 'ALL') {
+    filteredPapers = papersForDate.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'));
+  } else {
+    filteredPapers = papersForDate.filter(paper => Array.isArray(paper.category) && paper.category.includes(selectedCategory));
+  }
+
+  // 总是按时间排序
+  filteredPapers.sort((a, b) => new Date(b.published) - new Date(a.published));
+
   currentPage = 1;
   renderPapers(filteredPapers, currentPage);
-  updateLastUpdated(cat);
+  updateLastUpdated();
 }
 
 async function loadAllPapers() {
@@ -158,44 +192,36 @@ async function loadAllPapers() {
     const response = await fetch('web/all_papers.json');
     if (!response.ok) throw new Error('Failed to load papers data');
     const raw = await response.json();
-    
+
     // 适配新的数据结构
     const papersList = raw.all_papers_list || raw;
     allPapers = adaptRawData(papersList);
-    
-    // 初始化时只显示非 Other 的论文，并按时间排序
-    filteredPapers = allPapers.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'))
-      .sort((a, b) => new Date(b.published) - new Date(a.published));
-    
-    fillCategorySelect(allPapers);
-    currentPage = 1;
-    renderPapers(filteredPapers, currentPage);
-    
-    // 保存全局和分类统计信息
-    countTodayPapers = raw.count_today_papers || {};
-    countAllPapers = raw.count_all_papers || {};
-    updateTimeGlobal = raw.current_update_time || '';
 
-    // 显示全局统计
-    updateLastUpdated('ALL');
+    // 保存全局统计信息
+    updateTimeGlobal = raw.current_update_time || '';
+    countNewPapers = raw.count_new_papers || {};
+    countAllPapers = raw.count_all_papers || {};
+
   } catch (err) {
-    container.innerHTML = `<p style=\"color:red;\">${err.message}</p>`;
+    container.innerHTML = `<p style="color:red;">${err.message}</p>`;
     document.getElementById('pagination').innerHTML = '';
   }
 }
 
-function updateLastUpdated(category) {
-  // category 可能是 'ALL'，也可能是具体分类
-  let key = category === 'ALL' ? 'All' : category;
-  let todayCount = countTodayPapers[key] || 0;
-  let totalCount = countAllPapers[key] || 0;
-  document.getElementById('last-updated').textContent =
-    `Updated Time: ${updateTimeGlobal} | Updated: ${todayCount} | Total: ${totalCount} `;
+function updateLastUpdated() {
+  const lastUpdatedSpan = document.getElementById('last-updated');
+  const totalNew = countNewPapers['All'] || 0;
+  const totalPapers = countAllPapers['All'] || 0;
+  lastUpdatedSpan.innerHTML = `Updated: ${updateTimeGlobal} | New: ${totalNew} | Total: ${totalPapers}`;
 }
 
 async function init() {
   await loadAllPapers();
+  updateLastUpdated();
   document.getElementById('category-select').addEventListener('change', applyFilters);
+  document.getElementById('date-select').addEventListener('change', applyFilters);
+  document.getElementById('date-select').value = '';
+  applyFilters();
 }
 
-document.addEventListener('DOMContentLoaded', init); 
+document.addEventListener('DOMContentLoaded', init);

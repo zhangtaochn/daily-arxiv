@@ -2,6 +2,7 @@ import os
 import json
 import yaml
 import requests
+import time 
 import traceback 
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -9,6 +10,7 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 from openai import OpenAI
 import fire 
+
 
 API_KEY = os.environ.get("API_KEY")
 BASE_URL = os.environ.get("BASE_URL")
@@ -84,16 +86,17 @@ def fetch_papers_by_keywords(keywords):
 
 def filter_papers(papers_by_category):
     all_papers_id = set()
-    all_llm_cls_failed_id = set()
-    for filename in os.listdir(DATA_DIR):
-        filepath = os.path.join(DATA_DIR, filename)
-        papers = json.load(open(filepath, 'r', encoding='utf-8'))
-        for paper_id in papers:
-            if "llm_cls_result" in papers[paper_id] and papers[paper_id]["llm_cls_result"] != "Classification Failed":
-                all_papers_id.add(paper_id)
+    # Load all paper IDs from the web/all_papers.json
+    if os.path.exists('web/all_papers.json'):
+        with open('web/all_papers.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            if isinstance(data, dict) and 'all_papers_list' in data:
+                for paper in data['all_papers_list']:
+                    all_papers_id.add(paper['id'])
+
     all_papers = dict()
-    for category in papers_by_category:
-        for paper in papers_by_category[category]["papers"]:
+    for category, data in papers_by_category.items():
+        for paper in data.get("papers", []):
             if paper["id"] not in all_papers_id:
                 if paper["id"] not in all_papers:
                     paper["keywords"] = [category]
@@ -157,36 +160,53 @@ def paper_cls(papers, keywords):
     return papers
 
 
-def merge_papers():
-    paper_ids = set() 
-    all_papers = dict()
-    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    count_today_papers = defaultdict(int)
+def merge_papers(new_papers_file):
+    paper_ids = set()
+    all_papers_list = []
+    # Load existing papers to avoid duplicates
+    if os.path.exists('web/all_papers.json'):
+        with open('web/all_papers.json', 'r', encoding='utf-8') as f:
+            existing_data = json.load(f)
+            all_papers_list = existing_data.get('all_papers_list', [])
+            paper_ids = {p['id'] for p in all_papers_list}
+
+    new_papers = []
+    with open(new_papers_file, 'r', encoding='utf-8') as f:
+        papers = json.load(f)
+        for paper_id, paper in papers.items():
+            if paper_id not in paper_ids:
+                paper["published_date"] = paper["published"][0:10]
+                all_papers_list.append(paper)
+                new_papers.append(paper)
+                paper_ids.add(paper_id)
+
+    count_new_papers = defaultdict(int)
+    count_new_papers["All"] = len(new_papers)
+    for paper in new_papers:
+        for category in paper.get("llm_cls_result", []):
+            count_new_papers[category] += 1
+
     total_count_papers = defaultdict(int)
-    all_merge_papers = list() 
-    for filename in sorted(os.listdir(DATA_DIR)):
-        if filename.endswith('.json'):
-            papers = json.load(open(os.path.join(DATA_DIR, filename), 'r', encoding='utf-8'))
-            for paper_id, paper in papers.items():
-                if paper_id not in paper_ids:
-                    total_count_papers["All"] += 1
-                    for category in paper["llm_cls_result"]:
-                        total_count_papers[category] += 1
-                    paper_ids.add(paper_id)
-                    if paper["published"].startswith(current_time[0:10]):
-                        count_today_papers["All"] += 1
-                        for category in paper["llm_cls_result"]:
-                            count_today_papers[category] += 1
-                    all_merge_papers.append(paper)
+    for paper in all_papers_list:
+        total_count_papers["All"] += 1
+        for category in paper.get("llm_cls_result", []):
+            total_count_papers[category] += 1
 
-    print(f"Today papers: {count_today_papers}")
-    print(f"Total papers: {total_count_papers}")
-    all_papers["current_update_time"] = current_time
-    all_papers["count_today_papers"] = count_today_papers
-    all_papers["count_all_papers"] = total_count_papers
-    all_papers["all_papers_list"] = all_merge_papers
+    # Sort all papers by update date
+    all_papers_list.sort(key=lambda i: i["updated"], reverse=True)
 
-    json.dump(all_papers, open('web/all_papers.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
+    output = {
+        "current_update_time": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        "count_new_papers": count_new_papers,
+        "count_all_papers": total_count_papers,
+        "all_papers_list": all_papers_list
+    }
+
+    with open('web/all_papers.json', 'w', encoding='utf-8') as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)
+
+    print(f"Added {len(new_papers)} new papers.")
+    print(f"Total papers: {len(all_papers_list)}.")
 
 def run_pipeline():
     keywords = yaml.safe_load(KEYWORDS)
@@ -196,12 +216,25 @@ def run_pipeline():
     filename = datetime.now().strftime('%Y%m%d%H%M%S')
     output_path = os.path.join(DATA_DIR, f'{filename}.json')
 
-    if len(papers_classified) > 0:
-        json.dump(papers_classified, open(output_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-        merge_papers()
-        print(f"Saved {len(papers_classified)} papers to {output_path}")
-    else:
-        print("No papers to save")
+    json.dump(papers_classified, open(output_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    merge_papers(output_path)
+    print(f"Saved {len(papers_classified)} papers to {output_path}")
+
+def run_server(port=8000):
+    """Starts a simple HTTP server for the web interface."""
+    import http.server
+    import socketserver
+
+    os.chdir('web')
+    Handler = http.server.SimpleHTTPRequestHandler
+    with socketserver.TCPServer(("", port), Handler) as httpd:
+        print(f"Serving at port {port}")
+        httpd.serve_forever()
 
 if __name__ == "__main__":
-    fire.Fire()
+    if not os.path.exists(DATA_DIR):
+        os.makedirs(DATA_DIR)
+    fire.Fire({
+        'run_pipeline': run_pipeline,
+        'run_server': run_server,
+    })

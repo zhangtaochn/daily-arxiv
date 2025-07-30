@@ -1,4 +1,4 @@
 requests 
 fire
-openai
+openai>=1.0.0
 pyyaml
