@@ -8,6 +8,7 @@ let categoryStats = {};
 let countNewPapers = {};
 let countAllPapers = {};
 let updateTimeGlobal = '';
+let favoritePapers = new Set();
 
 function adaptRawData(raw) {
   // 兼容对象或数组
@@ -43,7 +44,7 @@ function adaptRawData(raw) {
 function renderPapers(papers, page = 1) {
   const container = document.getElementById('papers-container');
   if (!papers || papers.length === 0) {
-    container.innerHTML = '<p>No data</p>';
+    container.innerHTML = '<p>No results found.</p>';
     document.getElementById('pagination').innerHTML = '';
     return;
   }
@@ -54,22 +55,31 @@ function renderPapers(papers, page = 1) {
   pagePapers.forEach(paper => {
     const pdfUrl = paper.pdf || '#';
     const alphaxivUrl = paper.alphaxiv_url;
+    const isFavorited = favoritePapers.has(paper.id);
     const card = document.createElement('div');
     card.className = 'paper-card';
     card.innerHTML = `
       <div class="paper-title-row">
         <h2 class="paper-title"><a href="${paper.url}" target="_blank" rel="noopener">${paper.title}</a></h2>
-        ${alphaxivUrl ? `<a class="alphaxiv-btn" href="${alphaxivUrl}" target="_blank" rel="noopener" title="View on alphaxiv" style="display:inline-block;margin-right:0.3em;padding:0.18em 1.1em;background:#eaf1fb;color:#2d3a4e;font-size:0.92em;border-radius:7px;text-decoration:none;font-weight:600;box-shadow:0 1px 8px #e0e6ef33;transition:background 0.15s,color 0.15s,box-shadow 0.15s;border:1px solid #d3d8e2;letter-spacing:0.5px;vertical-align:middle;">alphaxiv</a>` : ''}
-        <a class="pdf-btn" href="${pdfUrl}" target="_blank" rel="noopener">PDF</a>
       </div>
       <div class="paper-meta">
         <span class="paper-date">${paper.published}</span>
         <span class="paper-category">${(paper.category || []).join(', ')}</span>
+        <div class="paper-actions">
+          ${alphaxivUrl ? `<a class="action-link" href="${alphaxivUrl}" target="_blank" rel="noopener" title="View on alphaxiv">alphaxiv</a>` : ''}
+          <a class="action-link" href="${pdfUrl}" target="_blank" rel="noopener">PDF</a>
+          <button class="favorite-btn ${isFavorited ? 'favorited' : ''}" data-id="${paper.id}">${isFavorited ? '★' : '☆'}</button>
+        </div>
       </div>
       <div class="paper-authors">${(paper.authors || []).join(', ')}</div>
       <div class="paper-summary">${paper.summary}</div>
     `;
     container.appendChild(card);
+  });
+
+  // Add event listeners for favorite buttons
+  container.querySelectorAll('.favorite-btn').forEach(btn => {
+    btn.addEventListener('click', toggleFavorite);
   });
   if (window.MathJax && window.MathJax.typesetPromise) {
     window.MathJax.typesetPromise([container]);
@@ -148,6 +158,11 @@ function updateCategoryCounts(papers) {
     select.appendChild(optOther);
   }
 
+  const optFav = document.createElement('option');
+  optFav.value = 'FAVORITES';
+  optFav.textContent = `Favorites (${favoritePapers.size})`;
+  select.insertBefore(optFav, select.children[1]);
+
   // Restore previous selection if it exists, otherwise default to ALL
   if (Array.from(select.options).some(opt => opt.value === previousCategory)) {
     select.value = previousCategory;
@@ -158,26 +173,41 @@ function updateCategoryCounts(papers) {
 
 function applyFilters() {
   const selectedDate = document.getElementById('date-select').value;
+  const searchQuery = document.getElementById('search-input').value.toLowerCase();
+  const selectedCategory = document.getElementById('category-select').value;
 
-  let papersForDate = allPapers;
+  let papersToFilter = allPapers;
+
+  // Filter by date
   if (selectedDate) {
-    papersForDate = allPapers.filter(paper => {
+    papersToFilter = papersToFilter.filter(paper => {
       const paperDate = new Date(paper.published).toISOString().split('T')[0];
       return paperDate === selectedDate;
     });
   }
 
-  updateCategoryCounts(papersForDate);
+  // Update category counts based on date-filtered papers
+  updateCategoryCounts(papersToFilter);
 
-  const selectedCategory = document.getElementById('category-select').value;
-
+  // Filter by category
   if (selectedCategory === 'ALL') {
-    filteredPapers = papersForDate.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'));
+    filteredPapers = papersToFilter.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'));
+  } else if (selectedCategory === 'FAVORITES') {
+    filteredPapers = papersToFilter.filter(paper => favoritePapers.has(paper.id));
   } else {
-    filteredPapers = papersForDate.filter(paper => Array.isArray(paper.category) && paper.category.includes(selectedCategory));
+    filteredPapers = papersToFilter.filter(paper => Array.isArray(paper.category) && paper.category.includes(selectedCategory));
   }
 
-  // 总是按时间排序
+  // Filter by search query
+  if (searchQuery) {
+    filteredPapers = filteredPapers.filter(paper => 
+      paper.title.toLowerCase().includes(searchQuery) ||
+      paper.summary.toLowerCase().includes(searchQuery) ||
+      (paper.authors && paper.authors.join(', ').toLowerCase().includes(searchQuery))
+    );
+  }
+
+  // Sort by date
   filteredPapers.sort((a, b) => new Date(b.published) - new Date(a.published));
 
   currentPage = 1;
@@ -215,11 +245,35 @@ function updateLastUpdated() {
   lastUpdatedSpan.innerHTML = `Updated: ${updateTimeGlobal} | New: ${totalNew} | Total: ${totalPapers}`;
 }
 
+function loadFavorites() {
+  const savedFavorites = localStorage.getItem('favoritePapers');
+  if (savedFavorites) {
+    favoritePapers = new Set(JSON.parse(savedFavorites));
+  }
+}
+
+function saveFavorites() {
+  localStorage.setItem('favoritePapers', JSON.stringify(Array.from(favoritePapers)));
+}
+
+function toggleFavorite(event) {
+  const paperId = event.target.dataset.id;
+  if (favoritePapers.has(paperId)) {
+    favoritePapers.delete(paperId);
+  } else {
+    favoritePapers.add(paperId);
+  }
+  saveFavorites();
+  applyFilters(); // Re-render to update favorite buttons and counts
+}
+
 async function init() {
+  loadFavorites();
   await loadAllPapers();
   updateLastUpdated();
   document.getElementById('category-select').addEventListener('change', applyFilters);
   document.getElementById('date-select').addEventListener('change', applyFilters);
+  document.getElementById('search-input').addEventListener('input', applyFilters);
   document.getElementById('date-select').value = '';
   applyFilters();
 }

@@ -55,7 +55,7 @@ header p {
   border-color: #4b7bec;
 }
 
-#date-select, #category-select {
+#date-select, #category-select, #search-input {
   background: #fff;
   color: #222;
   border: 1.5px solid #d3d8e2;
@@ -67,6 +67,41 @@ header p {
   box-shadow: 0 2px 8px #e0e6ef22;
   transition: border 0.2s;
   box-sizing: border-box;
+  margin-right: 10px;
+}
+
+#search-input {
+  width: 200px;
+}
+
+.paper-actions {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin-left: auto;
+}
+
+a.action-link {
+  color: #4b7bec;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+a.action-link:hover {
+  text-decoration: underline;
+}
+
+.paper-card .favorite-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.2em;
+  color: #ccc;
+}
+
+.paper-card .favorite-btn.favorited {
+  color: #ffc107;
 }
 
 #date-select:focus, #category-select:focus {
@@ -145,11 +180,13 @@ header p {
 }
 
 .paper-meta {
-  font-size: 0.98rem;
-  color: #6b7a90;
-  margin-bottom: 0.7rem;
+  margin: 0.5em 0;
+  font-size: 0.9em;
+  color: #666;
   display: flex;
-  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8em;
 }
 .paper-authors {
   font-size: 1.01rem;
