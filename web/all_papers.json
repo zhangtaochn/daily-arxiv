@@ -1,36 +1,23 @@
 {
-  "current_update_time": "2025-08-15 20:20:04",
+  "current_update_time": "2025-08-16 20:17:35",
   "count_new_papers": {
-    "All": 146,
-    "LLM": 80,
-    "RL": 28,
-    "MLLM": 30,
-    "Reasoning": 54,
-    "Benchmark": 32,
-    "VLA": 20,
-    "Other": 14,
-    "Memory": 11,
-    "Scaling": 7,
-    "AGI": 3,
-    "Dataset": 9,
-    "Pretrain": 10,
-    "MoE": 2
+    "All": 0
   },
   "count_all_papers": {
     "All": 5891,
-    "Scaling": 399,
+    "Dataset": 431,
+    "Pretrain": 264,
+    "MLLM": 1075,
     "LLM": 3448,
-    "MoE": 376,
+    "Scaling": 399,
     "Other": 486,
     "RL": 1102,
-    "Benchmark": 1140,
-    "MLLM": 1075,
-    "VLA": 611,
-    "Dataset": 431,
     "Reasoning": 2022,
+    "Benchmark": 1140,
+    "VLA": 611,
     "Memory": 560,
     "AGI": 403,
-    "Pretrain": 264
+    "MoE": 376
   },
   "all_papers_list": [
     {
