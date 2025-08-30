@@ -1,23 +1,18 @@
 {
-  "current_update_time": "2025-08-29 20:20:46",
+  "current_update_time": "2025-08-30 20:16:29",
   "count_new_papers": {
-    "All": 123,
-    "Classification Failed": 119,
-    "LLM": 4,
-    "Reasoning": 1,
-    "AGI": 1,
-    "Benchmark": 1
+    "All": 0
   },
   "count_all_papers": {
     "All": 7230,
     "Classification Failed": 1199,
     "LLM": 3528,
-    "RL": 1136,
     "Benchmark": 1173,
-    "Other": 507,
-    "AGI": 411,
-    "Dataset": 440,
     "Reasoning": 2071,
+    "AGI": 411,
+    "RL": 1136,
+    "Other": 507,
+    "Dataset": 440,
     "Pretrain": 269,
     "Memory": 571,
     "Scaling": 406,
