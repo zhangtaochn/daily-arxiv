@@ -1,16 +1,14 @@
 {
-  "current_update_time": "2025-09-01 20:19:44",
+  "current_update_time": "2025-09-02 20:17:24",
   "count_new_papers": {
-    "All": 93,
-    "Classification Failed": 92,
-    "MLLM": 1,
-    "Benchmark": 1
+    "All": 0
   },
   "count_all_papers": {
     "All": 7323,
     "Classification Failed": 1291,
-    "LLM": 3528,
+    "MLLM": 1098,
     "Benchmark": 1174,
+    "LLM": 3528,
     "Reasoning": 2071,
     "AGI": 411,
     "RL": 1136,
@@ -19,7 +17,6 @@
     "Pretrain": 269,
     "Memory": 571,
     "Scaling": 406,
-    "MLLM": 1098,
     "VLA": 617,
     "MoE": 378
   },
