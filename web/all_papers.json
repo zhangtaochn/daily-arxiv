@@ -1,17 +1,21 @@
 {
-  "current_update_time": "2025-09-02 20:17:24",
+  "current_update_time": "2025-09-03 20:17:56",
   "count_new_papers": {
-    "All": 0
+    "All": 16,
+    "Classification Failed": 15,
+    "Reasoning": 1,
+    "Benchmark": 1,
+    "RL": 1
   },
   "count_all_papers": {
-    "All": 7323,
-    "Classification Failed": 1291,
+    "All": 7339,
+    "Classification Failed": 1306,
     "MLLM": 1098,
-    "Benchmark": 1174,
+    "Benchmark": 1175,
     "LLM": 3528,
-    "Reasoning": 2071,
+    "Reasoning": 2072,
     "AGI": 411,
-    "RL": 1136,
+    "RL": 1137,
     "Other": 507,
     "Dataset": 440,
     "Pretrain": 269,
@@ -21,6 +25,442 @@
     "MoE": 378
   },
   "all_papers_list": [
+    {
+      "title": "ELV-Halluc: Benchmarking Semantic Aggregation Hallucinations in Long\n  Video Understanding",
+      "summary": "Video multimodal large language models (Video-MLLMs) have achieved remarkable\nprogress in video understanding. However, they remain vulnerable to\nhallucination-producing content inconsistent with or unrelated to video inputs.\nPrevious video hallucination benchmarks primarily focus on short-videos. They\nattribute hallucinations to factors such as strong language priors, missing\nframes, or vision-language biases introduced by the visual encoder. While these\ncauses indeed account for most hallucinations in short videos, they still\noversimplify the cause of hallucinations. Sometimes, models generate incorrect\noutputs but with correct frame-level semantics. We refer to this type of\nhallucination as Semantic Aggregation Hallucination (SAH), which arises during\nthe process of aggregating frame-level semantics into event-level semantic\ngroups. Given that SAH becomes particularly critical in long videos due to\nincreased semantic complexity across multiple events, it is essential to\nseparate and thoroughly investigate the causes of this type of hallucination.\nTo address the above issues, we introduce ELV-Halluc, the first benchmark\ndedicated to long-video hallucination, enabling a systematic investigation of\nSAH. Our experiments confirm the existence of SAH and show that it increases\nwith semantic complexity. Additionally, we find that models are more prone to\nSAH on rapidly changing semantics. Moreover, we discuss potential approaches to\nmitigate SAH. We demonstrate that positional encoding strategy contributes to\nalleviating SAH, and further adopt DPO strategy to enhance the model's ability\nto distinguish semantics within and across events. To support this, we curate a\ndataset of 8K adversarial data pairs and achieve improvements on both\nELV-Halluc and Video-MME, including a substantial 27.7% reduction in SAH ratio.",
+      "published": "2025-08-29T10:25:03Z",
+      "updated": "2025-09-02T17:14:38Z",
+      "id": "2508.21496v2",
+      "authors": [
+        "Hao Lu",
+        "Jiahao Wang",
+        "Yaolun Zhang",
+        "Ruohui Wang",
+        "Xuanyu Zheng",
+        "Yepeng Tang",
+        "Dahua Lin",
+        "Lewei Lu"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.21496v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.21496v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.21496v2",
+      "keywords": [
+        "LLM",
+        "Benchmark",
+        "Dataset"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-29"
+    },
+    {
+      "title": "Mirage or Method? How Model-Task Alignment Induces Divergent RL\n  Conclusions",
+      "summary": "Recent advances in applying reinforcement learning (RL) to large language\nmodels (LLMs) have led to substantial progress. In particular, a series of\nremarkable yet often counterintuitive phenomena have been reported in LLMs,\nexhibiting patterns not typically observed in traditional RL settings. For\nexample, notable claims include that a single training example can match the\nperformance achieved with an entire dataset, that the reward signal does not\nneed to be very accurate, and that training solely with negative samples can\nmatch or even surpass sophisticated reward-based methods. However, the precise\nconditions under which these observations hold - and, critically, when they\nfail - remain unclear. In this work, we identify a key factor that\ndifferentiates RL observations: whether the pretrained model already exhibits\nstrong Model-Task Alignment, as measured by pass@k accuracy on the evaluated\ntask. Through a systematic and comprehensive examination of a series of\ncounterintuitive claims, supported by rigorous experimental validation across\ndifferent model architectures and task domains, our findings show that while\nstandard RL training remains consistently robust across settings, many of these\ncounterintuitive results arise only when the model and task already exhibit\nstrong model-task alignment. In contrast, these techniques fail to drive\nsubstantial learning in more challenging regimes, where standard RL methods\nremain effective.",
+      "published": "2025-08-28T20:02:10Z",
+      "updated": "2025-09-02T16:27:24Z",
+      "id": "2508.21188v2",
+      "authors": [
+        "Haoze Wu",
+        "Cheng Wang",
+        "Wenshuo Zhao",
+        "Junxian He"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.21188v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.21188v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.21188v2",
+      "keywords": [
+        "LLM",
+        "Dataset"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-28"
+    },
+    {
+      "title": "Quantifying Label-Induced Bias in Large Language Model Self- and\n  Cross-Evaluations",
+      "summary": "Large language models (LLMs) are increasingly used to evaluate outputs, yet\ntheir judgments may be influenced. This study examines bias in self- and\ncross-model evaluations by ChatGPT, Gemini, and Claude under four conditions:\nno labels, true labels, and two false-label scenarios. Blog posts authored by\neach model were evaluated by all three using both overall preference voting and\nquality ratings for Coherence, Informativeness, and Conciseness, with all\nscores expressed as percentages for direct comparison. Results reveal striking\nasymmetries: the \"Claude\" label consistently boosts scores, while the \"Gemini\"\nlabel consistently depresses them, regardless of actual content. False labels\nfrequently reversed rankings, producing shifts of up to 50 percentage points in\npreference votes and up to 12 percentage points in converted quality ratings.\nGemini's self-scores collapsed under true labels, while Claude's\nself-preference intensified. These findings show that perceived model identity\ncan heavily distort high-level judgments and subtly influence detailed quality\nratings, underscoring the need for blind or multimodel evaluation protocols to\nensure fairness in LLM benchmarking.",
+      "published": "2025-08-28T18:59:23Z",
+      "updated": "2025-09-02T16:14:14Z",
+      "id": "2508.21164v2",
+      "authors": [
+        "Muskan Saraf",
+        "Sajjad Rezvani Boroujeni",
+        "Justin Beaudry",
+        "Hossein Abedi",
+        "Tom Bush"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.21164v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.21164v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.21164v2",
+      "keywords": [
+        "LLM",
+        "Benchmark"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-28"
+    },
+    {
+      "title": "R-4B: Incentivizing General-Purpose Auto-Thinking Capability in MLLMs\n  via Bi-Mode Annealing and Reinforce Learning",
+      "summary": "Multimodal Large Language Models (MLLMs) equipped with step-by-step thinking\ncapabilities have demonstrated remarkable performance on complex reasoning\nproblems. However, this thinking process is redundant for simple problems\nsolvable without complex reasoning. To address this inefficiency, we propose\nR-4B, an auto-thinking MLLM, which can adaptively decide when to think based on\nproblem complexity. The central idea of R-4B is to empower the model with both\nthinking and non-thinking capabilities using bi-mode annealing, and apply\nBi-mode Policy Optimization (BPO) to improve the model's accuracy in\ndetermining whether to activate the thinking process. Specifically, we first\ntrain the model on a carefully curated dataset spanning various topics, which\ncontains samples from both thinking and non-thinking modes. Then it undergoes a\nsecond phase of training under an improved GRPO framework, where the policy\nmodel is forced to generate responses from both modes for each input query.\nExperimental results show that R-4B achieves state-of-the-art performance\nacross 25 challenging benchmarks. It outperforms Qwen2.5-VL-7B in most tasks\nand achieves performance comparable to larger models such as\nKimi-VL-A3B-Thinking-2506 (16B) on reasoning-intensive benchmarks with lower\ncomputational cost.",
+      "published": "2025-08-28T17:48:19Z",
+      "updated": "2025-09-02T13:37:38Z",
+      "id": "2508.21113v2",
+      "authors": [
+        "Qi Yang",
+        "Bolin Ni",
+        "Shiming Xiang",
+        "Han Hu",
+        "Houwen Peng",
+        "Jie Jiang"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.21113v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.21113v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.21113v2",
+      "keywords": [
+        "LLM",
+        "Benchmark",
+        "Dataset"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-28"
+    },
+    {
+      "title": "Youtu-GraphRAG: Vertically Unified Agents for Graph Retrieval-Augmented\n  Complex Reasoning",
+      "summary": "Graph retrieval-augmented generation (GraphRAG) has effectively enhanced\nlarge language models in complex reasoning by organizing fragmented knowledge\ninto explicitly structured graphs. Prior efforts have been made to improve\neither graph construction or graph retrieval in isolation, yielding suboptimal\nperformance, especially when domain shifts occur. In this paper, we propose a\nvertically unified agentic paradigm, Youtu-GraphRAG, to jointly connect the\nentire framework as an intricate integration. Specifically, (i) a seed graph\nschema is introduced to bound the automatic extraction agent with targeted\nentity types, relations and attribute types, also continuously expanded for\nscalability over unseen domains; (ii) To obtain higher-level knowledge upon the\nschema, we develop novel dually-perceived community detection, fusing\nstructural topology with subgraph semantics for comprehensive knowledge\norganization. This naturally yields a hierarchical knowledge tree that supports\nboth top-down filtering and bottom-up reasoning with community summaries; (iii)\nAn agentic retriever is designed to interpret the same graph schema to\ntransform complex queries into tractable and parallel sub-queries. It\niteratively performs reflection for more advanced reasoning; (iv) To alleviate\nthe knowledge leaking problem in pre-trained LLM, we propose a tailored\nanonymous dataset and a novel 'Anonymity Reversion' task that deeply measures\nthe real performance of the GraphRAG frameworks. Extensive experiments across\nsix challenging benchmarks demonstrate the robustness of Youtu-GraphRAG,\nremarkably moving the Pareto frontier with up to 90.71% saving of token costs\nand 16.62% higher accuracy over state-of-the-art baselines. The results\nindicate our adaptability, allowing seamless domain transfer with minimal\nintervention on schema.",
+      "published": "2025-08-27T13:13:20Z",
+      "updated": "2025-09-02T08:17:51Z",
+      "id": "2508.19855v2",
+      "authors": [
+        "Junnan Dong",
+        "Siyu An",
+        "Yifei Yu",
+        "Qian-Wen Zhang",
+        "Linhao Luo",
+        "Xiao Huang",
+        "Yunsheng Wu",
+        "Di Yin",
+        "Xing Sun"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.19855v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.19855v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.19855v2",
+      "keywords": [
+        "LLM",
+        "Memory",
+        "Benchmark",
+        "Dataset"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-27"
+    },
+    {
+      "title": "ST-Raptor: LLM-Powered Semi-Structured Table Question Answering",
+      "summary": "Semi-structured tables, widely used in real-world applications (e.g.,\nfinancial reports, medical records, transactional orders), often involve\nflexible and complex layouts (e.g., hierarchical headers and merged cells).\nThese tables generally rely on human analysts to interpret table layouts and\nanswer relevant natural language questions, which is costly and inefficient. To\nautomate the procedure, existing methods face significant challenges. First,\nmethods like NL2SQL require converting semi-structured tables into structured\nones, which often causes substantial information loss. Second, methods like\nNL2Code and multi-modal LLM QA struggle to understand the complex layouts of\nsemi-structured tables and cannot accurately answer corresponding questions. To\nthis end, we propose ST-Raptor, a tree-based framework for semi-structured\ntable question answering using large language models. First, we introduce the\nHierarchical Orthogonal Tree (HO-Tree), a structural model that captures\ncomplex semi-structured table layouts, along with an effective algorithm for\nconstructing the tree. Second, we define a set of basic tree operations to\nguide LLMs in executing common QA tasks. Given a user question, ST-Raptor\ndecomposes it into simpler sub-questions, generates corresponding tree\noperation pipelines, and conducts operation-table alignment for accurate\npipeline execution. Third, we incorporate a two-stage verification mechanism:\nforward validation checks the correctness of execution steps, while backward\nvalidation evaluates answer reliability by reconstructing queries from\npredicted answers. To benchmark the performance, we present SSTQA, a dataset of\n764 questions over 102 real-world semi-structured tables. Experiments show that\nST-Raptor outperforms nine baselines by up to 20% in answer accuracy. The code\nis available at https://github.com/weAIDB/ST-Raptor.",
+      "published": "2025-08-25T16:48:51Z",
+      "updated": "2025-09-02T02:30:46Z",
+      "id": "2508.18190v3",
+      "authors": [
+        "Zirui Tang",
+        "Boyu Niu",
+        "Xuanhe Zhou",
+        "Boxiu Li",
+        "Wei Zhou",
+        "Jiannan Wang",
+        "Guoliang Li",
+        "Xinyi Zhang",
+        "Fan Wu"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.18190v3",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.18190v3.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.18190v3",
+      "keywords": [
+        "LLM",
+        "Benchmark",
+        "Dataset"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-25"
+    },
+    {
+      "title": "How Can Input Reformulation Improve Tool Usage Accuracy in a Complex\n  Dynamic Environment? A Study on $τ$-bench",
+      "summary": "Recent advances in reasoning and planning capabilities of large language\nmodels (LLMs) have enabled their potential as autonomous agents capable of tool\nuse in dynamic environments. However, in multi-turn conversational environments\nlike $\\tau$-bench, these agents often struggle with consistent reasoning,\nadherence to domain-specific policies, and extracting correct information over\na long horizon of tool-calls and conversation. To capture and mitigate these\nfailures, we conduct a comprehensive manual analysis of the common errors\noccurring in the conversation trajectories. We then experiment with\nreformulations of inputs to the tool-calling agent for improvement in agent\ndecision making. Finally, we propose the Input-Reformulation Multi-Agent (IRMA)\nframework, which automatically reformulates user queries augmented with\nrelevant domain rules and tool suggestions for the tool-calling agent to focus\non. The results show that IRMA significantly outperforms ReAct, Function\nCalling, and Self-Reflection by 16.1%, 12.7%, and 19.1%, respectively, in\noverall pass^5 scores. These findings highlight the superior reliability and\nconsistency of IRMA compared to other methods in dynamic environments.",
+      "published": "2025-08-28T15:57:33Z",
+      "updated": "2025-09-01T18:05:06Z",
+      "id": "2508.20931v2",
+      "authors": [
+        "Venkatesh Mishra",
+        "Amir Saeidi",
+        "Satyam Raj",
+        "Mutsumi Nakamura",
+        "Jayanth Srinivasa",
+        "Gaowen Liu",
+        "Ali Payani",
+        "Chitta Baral"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.20931v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.20931v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.20931v2",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "The paper focuses on improving tool usage accuracy of LLMs in dynamic environments through input reformulation techniques. It specifically addresses reasoning and planning capabilities of LLMs, which aligns with the Reasoning topic. The study involves benchmarking different approaches on τ-bench, making Benchmark relevant. The context of tool usage and autonomous agents also connects to RL/RLHF topics.",
+      "llm_cls_result": [
+        "Reasoning",
+        "Benchmark",
+        "RL"
+      ],
+      "published_date": "2025-08-28"
+    },
+    {
+      "title": "Data-driven Discovery of Digital Twins in Biomedical Research",
+      "summary": "Recent technological advances have expanded the availability of\nhigh-throughput biological datasets, enabling the reliable design of digital\ntwins of biomedical systems or patients. Such computational tools represent key\nreaction networks driving perturbation or drug response and can guide drug\ndiscovery and personalized therapeutics. Yet, their development still relies on\nlaborious data integration by the human modeler, so that automated approaches\nare critically needed. The success of data-driven system discovery in Physics,\nrooted in clean datasets and well-defined governing laws, has fueled interest\nin applying similar techniques in Biology, which presents unique challenges.\nHere, we reviewed methodologies for automatically inferring digital twins from\nbiological time series, which mostly involve symbolic or sparse regression. We\nevaluate algorithms according to eight biological and methodological\nchallenges, associated to noisy/incomplete data, multiple conditions, prior\nknowledge integration, latent variables, high dimensionality, unobserved\nvariable derivatives, candidate library design, and uncertainty quantification.\nUpon these criteria, sparse regression generally outperformed symbolic\nregression, particularly when using Bayesian frameworks. We further highlight\nthe emerging role of deep learning and large language models, which enable\ninnovative prior knowledge integration, though the reliability and consistency\nof such approaches must be improved. While no single method addresses all\nchallenges, we argue that progress in learning digital twins will come from\nhybrid and modular frameworks combining chemical reaction network-based\nmechanistic grounding, Bayesian uncertainty quantification, and the generative\nand knowledge integration capacities of deep learning. To support their\ndevelopment, we further propose a benchmarking framework to evaluate methods\nacross all challenges.",
+      "published": "2025-08-29T10:10:02Z",
+      "updated": "2025-09-01T17:06:38Z",
+      "id": "2508.21484v2",
+      "authors": [
+        "Clémence Métayer",
+        "Annabelle Ballesta",
+        "Julien Martinelli"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.21484v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.21484v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.21484v2",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-29"
+    },
+    {
+      "title": "Instructional Agents: LLM Agents on Automated Course Material Generation\n  for Teaching Faculties",
+      "summary": "Preparing high-quality instructional materials remains a labor-intensive\nprocess that often requires extensive coordination among teaching faculty,\ninstructional designers, and teaching assistants. In this work, we present\nInstructional Agents, a multi-agent large language model (LLM) framework\ndesigned to automate end-to-end course material generation, including syllabus\ncreation, lecture scripts, LaTeX-based slides, and assessments. Unlike existing\nAI-assisted educational tools that focus on isolated tasks, Instructional\nAgents simulates role-based collaboration among educational agents to produce\ncohesive and pedagogically aligned content. The system operates in four modes:\nAutonomous, Catalog-Guided, Feedback-Guided, and Full Co-Pilot mode, enabling\nflexible control over the degree of human involvement. We evaluate\nInstructional Agents across five university-level computer science courses and\nshow that it produces high-quality instructional materials while significantly\nreducing development time and human workload. By supporting institutions with\nlimited instructional design capacity, Instructional Agents provides a scalable\nand cost-effective framework to democratize access to high-quality education,\nparticularly in underserved or resource-constrained settings.",
+      "published": "2025-08-27T06:45:06Z",
+      "updated": "2025-09-01T01:38:20Z",
+      "id": "2508.19611v2",
+      "authors": [
+        "Huaiyuan Yao",
+        "Wanpeng Xu",
+        "Justin Turnau",
+        "Nadia Kellam",
+        "Hua Wei"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.19611v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.19611v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.19611v2",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-27"
+    },
+    {
+      "title": "ORCA: ORchestrating Causal Agent",
+      "summary": "Causal inference is essential for decision-making science while the\ncomplexity of the data analysis workflow, ranging from data wrangling to causal\nanalysis, increases substantially as the scale of data grows in complicated\nbusiness environments. Especially, the execution of the workflow in relational\ndatabases by non-experts can result in repetitive bottlenecks which impede\ntimely and responsible business insights. To address this challenge, we propose\nORCA (Orchestrating Causal Agent), an LLM agentic system that can automate\nroutine workflows in RDBMS while preserving expert oversight via human-AI\ninteractions. ORCA orchestrates the full data analysis pipeline: interpreting\nnatural language queries, navigating tables from DB servers, generating proper\nSQL codes, preprocessing data, and configuring modeling processes using causal\ninference libraries. Domain experts still can control the automation through\niterative interactions with ORCA, enabling robust data-driven decision making\nwith less technical expertise in statistical computing. Empirical evaluations\non benchmark and synthetic e-commerce datasets demonstrate competitive\nperformance of ORCA in table understanding, query generation, and cause-effect\nestimation -- achieving over $7\\times$ improvement in estimating average\ntreatment compared to GPT-4o mini.",
+      "published": "2025-08-29T01:59:34Z",
+      "updated": "2025-09-01T01:33:50Z",
+      "id": "2508.21304v2",
+      "authors": [
+        "Joanie Hayoun Chung",
+        "Chaemyung Lim",
+        "Sumin Lee",
+        "Songseong Kim",
+        "Sungbin Lim"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.21304v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.21304v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.21304v2",
+      "keywords": [
+        "Benchmark",
+        "Dataset"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-29"
+    },
+    {
+      "title": "EmbodiedOneVision: Interleaved Vision-Text-Action Pretraining for\n  General Robot Control",
+      "summary": "The human ability to seamlessly perform multimodal reasoning and physical\ninteraction in the open world is a core goal for general-purpose embodied\nintelligent systems. Recent vision-language-action (VLA) models, which are\nco-trained on large-scale robot and visual-text data, have demonstrated notable\nprogress in general robot control. However, they still fail to achieve\nhuman-level flexibility in interleaved reasoning and interaction. In this work,\nintroduce EO-Robotics, consists of EO-1 model and EO-Data1.5M dataset. EO-1 is\na unified embodied foundation model that achieves superior performance in\nmultimodal embodied reasoning and robot control through interleaved\nvision-text-action pre-training. The development of EO-1 is based on two key\npillars: (i) a unified architecture that processes multimodal inputs\nindiscriminately (image, text, video, and action), and (ii) a massive,\nhigh-quality multimodal embodied reasoning dataset, EO-Data1.5M, which contains\nover 1.5 million samples with emphasis on interleaved vision-text-action\ncomprehension. EO-1 is trained through synergies between auto-regressive\ndecoding and flow matching denoising on EO-Data1.5M, enabling seamless robot\naction generation and multimodal embodied reasoning. Extensive experiments\ndemonstrate the effectiveness of interleaved vision-text-action learning for\nopen-world understanding and generalization, validated through a variety of\nlong-horizon, dexterous manipulation tasks across multiple embodiments. This\npaper details the architecture of EO-1, the data construction strategy of\nEO-Data1.5M, and the training methodology, offering valuable insights for\ndeveloping advanced embodied foundation models.",
+      "published": "2025-08-28T17:26:15Z",
+      "updated": "2025-09-01T00:28:12Z",
+      "id": "2508.21112v2",
+      "authors": [
+        "Delin Qu",
+        "Haoming Song",
+        "Qizhi Chen",
+        "Zhaoqing Chen",
+        "Xianqiang Gao",
+        "Xinyi Ye",
+        "Qi Lv",
+        "Modi Shi",
+        "Guanghui Ren",
+        "Cheng Ruan",
+        "Maoqing Yao",
+        "Haoran Yang",
+        "Jiacheng Bao",
+        "Bin Zhao",
+        "Dong Wang"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.21112v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.21112v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.21112v2",
+      "keywords": [
+        "VLA"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-28"
+    },
+    {
+      "title": "VistaWise: Building Cost-Effective Agent with Cross-Modal Knowledge\n  Graph for Minecraft",
+      "summary": "Large language models (LLMs) have shown significant promise in embodied\ndecision-making tasks within virtual open-world environments. Nonetheless,\ntheir performance is hindered by the absence of domain-specific knowledge.\nMethods that finetune on large-scale domain-specific data entail prohibitive\ndevelopment costs. This paper introduces VistaWise, a cost-effective agent\nframework that integrates cross-modal domain knowledge and finetunes a\ndedicated object detection model for visual analysis. It reduces the\nrequirement for domain-specific training data from millions of samples to a few\nhundred. VistaWise integrates visual information and textual dependencies into\na cross-modal knowledge graph (KG), enabling a comprehensive and accurate\nunderstanding of multimodal environments. We also equip the agent with a\nretrieval-based pooling strategy to extract task-related information from the\nKG, and a desktop-level skill library to support direct operation of the\nMinecraft desktop client via mouse and keyboard inputs. Experimental results\ndemonstrate that VistaWise achieves state-of-the-art performance across various\nopen-world tasks, highlighting its effectiveness in reducing development costs\nwhile enhancing agent performance.",
+      "published": "2025-08-26T06:39:15Z",
+      "updated": "2025-08-30T11:01:08Z",
+      "id": "2508.18722v2",
+      "authors": [
+        "Honghao Fu",
+        "Junlong Ren",
+        "Qi Chai",
+        "Deheng Ye",
+        "Yujun Cai",
+        "Hao Wang"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.18722v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.18722v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.18722v2",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-26"
+    },
+    {
+      "title": "A Novel Deep Hybrid Framework with Ensemble-Based Feature Optimization\n  for Robust Real-Time Human Activity Recognition",
+      "summary": "Human Activity Recognition (HAR) plays a pivotal role in various\napplications, including smart surveillance, healthcare, assistive technologies,\nsports analytics, etc. However, HAR systems still face critical challenges,\nincluding high computational costs, redundant features, and limited scalability\nin real-time scenarios. An optimized hybrid deep learning framework is\nintroduced that integrates a customized InceptionV3, an LSTM architecture, and\na novel ensemble-based feature selection strategy. The proposed framework first\nextracts spatial descriptors using the customized InceptionV3 model, which\ncaptures multilevel contextual patterns, region homogeneity, and fine-grained\nlocalization cues. The temporal dependencies across frames are then modeled\nusing LSTMs to effectively encode motion dynamics. Finally, an ensemble-based\ngenetic algorithm with Adaptive Dynamic Fitness Sharing and Attention (ADFSA)\nis employed to select a compact and optimized feature set by dynamically\nbalancing objectives such as accuracy, redundancy, uniqueness, and complexity\nreduction. Consequently, the selected feature subsets, which are both diverse\nand discriminative, enable various lightweight machine learning classifiers to\nachieve accurate and robust HAR in heterogeneous environments. Experimental\nresults on the robust UCF-YouTube dataset, which presents challenges such as\nocclusion, cluttered backgrounds, motion dynamics, and poor illumination,\ndemonstrate good performance. The proposed approach achieves 99.65% recognition\naccuracy, reduces features to as few as 7, and enhances inference time. The\nlightweight and scalable nature of the HAR system supports real-time deployment\non edge devices such as Raspberry Pi, enabling practical applications in\nintelligent, resource-aware environments, including public safety, assistive\ntechnology, and autonomous monitoring systems.",
+      "published": "2025-08-26T05:42:55Z",
+      "updated": "2025-08-30T09:28:11Z",
+      "id": "2508.18695v2",
+      "authors": [
+        "Wasi Ullah",
+        "Yasir Noman Khalid",
+        "Saddam Hussain Khan"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.18695v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.18695v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.18695v2",
+      "keywords": [
+        "AGI"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-26"
+    },
+    {
+      "title": "Continuously Steering LLMs Sensitivity to Contextual Knowledge with\n  Proxy Models",
+      "summary": "In Large Language Models (LLMs) generation, there exist knowledge conflicts\nand scenarios where parametric knowledge contradicts knowledge provided in the\ncontext. Previous works studied tuning, decoding algorithms, or locating and\nediting context-aware neurons to adapt LLMs to be faithful to new contextual\nknowledge. However, they are usually inefficient or ineffective for large\nmodels, not workable for black-box models, or unable to continuously adjust\nLLMs' sensitivity to the knowledge provided in the context. To mitigate these\nproblems, we propose CSKS (Continuously Steering Knowledge Sensitivity), a\nsimple framework that can steer LLMs' sensitivity to contextual knowledge\ncontinuously at a lightweight cost. Specifically, we tune two small LMs (i.e.\nproxy models) and use the difference in their output distributions to shift the\noriginal distribution of an LLM without modifying the LLM weights. In the\nevaluation process, we not only design synthetic data and fine-grained metrics\nto measure models' sensitivity to contextual knowledge but also use a real\nconflict dataset to validate CSKS's practical efficacy. Extensive experiments\ndemonstrate that our framework achieves continuous and precise control over\nLLMs' sensitivity to contextual knowledge, enabling both increased sensitivity\nand reduced sensitivity, thereby allowing LLMs to prioritize either contextual\nor parametric knowledge as needed flexibly. Our data and code are available at\nhttps://github.com/OliveJuiceLin/CSKS.",
+      "published": "2025-08-27T09:30:24Z",
+      "updated": "2025-08-30T05:54:41Z",
+      "id": "2508.19720v3",
+      "authors": [
+        "Yilin Wang",
+        "Heng Wang",
+        "Yuyang Bai",
+        "Minnan Luo"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.19720v3",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.19720v3.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.19720v3",
+      "keywords": [
+        "LLM",
+        "Dataset"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-27"
+    },
+    {
+      "title": "Language Models and Logic Programs for Trustworthy Financial Reasoning",
+      "summary": "According to the United States Internal Revenue Service, ''the average\nAmerican spends $\\$270$ and 13 hours filing their taxes''. Even beyond the\nU.S., tax filing requires complex reasoning, combining application of\noverlapping rules with numerical calculations. Because errors can incur costly\npenalties, any automated system must deliver high accuracy and auditability,\nmaking modern large language models (LLMs) poorly suited for this task. We\npropose an approach that integrates LLMs with a symbolic solver to calculate\ntax obligations. We evaluate variants of this system on the challenging\nStAtutory Reasoning Assessment (SARA) dataset, and include a novel method for\nestimating the cost of deploying such a system based on real-world penalties\nfor tax errors. We further show how combining up-front translation of\nplain-text rules into formal logic programs, combined with intelligently\nretrieved exemplars for formal case representations, can dramatically improve\nperformance on this task and reduce costs to well below real-world averages.\nOur results demonstrate the promise and economic feasibility of neuro-symbolic\narchitectures for increasing equitable access to reliable tax assistance.",
+      "published": "2025-08-28T17:55:07Z",
+      "updated": "2025-08-29T21:48:15Z",
+      "id": "2508.21051v2",
+      "authors": [
+        "William Jurayj",
+        "Nils Holzenberger",
+        "Benjamin Van Durme"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.21051v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.21051v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.21051v2",
+      "keywords": [
+        "LLM",
+        "Dataset"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-28"
+    },
+    {
+      "title": "DrugReasoner: Interpretable Drug Approval Prediction with a\n  Reasoning-augmented Language Model",
+      "summary": "Drug discovery is a complex and resource-intensive process, making early\nprediction of approval outcomes critical for optimizing research investments.\nWhile classical machine learning and deep learning methods have shown promise\nin drug approval prediction, their limited interpretability constraints their\nimpact. Here, we present DrugReasoner, a reasoning-based large language model\n(LLM) built on the LLaMA architecture and fine-tuned with group relative policy\noptimization (GRPO) to predict the likelihood of small-molecule approval.\nDrugReasoner integrates molecular descriptors with comparative reasoning\nagainst structurally similar approved and unapproved compounds, generating\npredictions alongside step-by-step rationales and confidence scores.\nDrugReasoner achieved robust performance with an AUC of 0.732 and an F1 score\nof 0.729 on the validation set and 0.725 and 0.718 on the test set,\nrespectively. These results outperformed conventional baselines, including\nlogistic regression, support vector machine, and k-nearest neighbors and had\ncompetitive performance relative to XGBoost. On an external independent\ndataset, DrugReasoner outperformed both baseline and the recently developed\nChemAP model, achieving an AUC of 0.728 and an F1-score of 0.774, while\nmaintaining high precision and balanced sensitivity, demonstrating robustness\nin real-world scenarios. These findings demonstrate that DrugReasoner not only\ndelivers competitive predictive accuracy but also enhances transparency through\nits reasoning outputs, thereby addressing a key bottleneck in AI-assisted drug\ndiscovery. This study highlights the potential of reasoning-augmented LLMs as\ninterpretable and effective tools for pharmaceutical decision-making.",
+      "published": "2025-08-26T01:14:14Z",
+      "updated": "2025-08-29T19:01:19Z",
+      "id": "2508.18579v2",
+      "authors": [
+        "Mohammadreza Ghaffarzadeh-Esfahani",
+        "Ali Motahharynia",
+        "Nahid Yousefian",
+        "Navid Mazrouei",
+        "Jafar Ghaisari",
+        "Yousof Gheisari"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2508.18579v2",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2508.18579v2.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2508.18579v2",
+      "keywords": [
+        "LLM",
+        "Dataset"
+      ],
+      "cls_reason": "",
+      "llm_cls_result": [
+        "Classification Failed"
+      ],
+      "published_date": "2025-08-26"
+    },
     {
       "title": "DriveQA: Passing the Driving Knowledge Test",
       "summary": "If a Large Language Model (LLM) were to take a driving knowledge test today,\nwould it pass? Beyond standard spatial and visual question-answering (QA) tasks\non current autonomous driving benchmarks, driving knowledge tests require a\ncomplete understanding of all traffic rules, signage, and right-of-way\nprinciples. To pass this test, human drivers must discern various edge cases\nthat rarely appear in real-world datasets. In this work, we present DriveQA, an\nextensive open-source text and vision-based benchmark that exhaustively covers\ntraffic regulations and scenarios. Through our experiments using DriveQA, we\nshow that (1) state-of-the-art LLMs and Multimodal LLMs (MLLMs) perform well on\nbasic traffic rules but exhibit significant weaknesses in numerical reasoning\nand complex right-of-way scenarios, traffic sign variations, and spatial\nlayouts, (2) fine-tuning on DriveQA improves accuracy across multiple\ncategories, particularly in regulatory sign recognition and intersection\ndecision-making, (3) controlled variations in DriveQA-V provide insights into\nmodel sensitivity to environmental factors such as lighting, perspective,\ndistance, and weather conditions, and (4) pretraining on DriveQA enhances\ndownstream driving task performance, leading to improved results on real-world\ndatasets such as nuScenes and BDD, while also demonstrating that models can\ninternalize text and synthetic traffic knowledge to generalize effectively\nacross downstream QA tasks.",
