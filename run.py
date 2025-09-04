@@ -136,7 +136,12 @@ Please provide your answer as a json with two fields: reason (str), category_lis
                     {"role": "user", "content": prompt},
                 ]
             )
-            js = json.loads(response.choices[0].message.content[7:-3])
+            js = None 
+            try:
+                js = json.loads(response.choices[0].message.content)
+            except:
+                js = json.loads(response.choices[0].message.content[7:-3])
+            
             reason = js["reason"]
             category_list = js["category_list"]
             break 
