@@ -1,36 +1,26 @@
 {
-  "current_update_time": "2025-09-05 20:18:33",
+  "current_update_time": "2025-09-06 20:15:57",
   "count_new_papers": {
-    "All": 112,
-    "LLM": 55,
-    "RL": 30,
-    "Reasoning": 34,
-    "Pretrain": 11,
-    "MLLM": 15,
-    "Dataset": 19,
-    "Memory": 15,
-    "Benchmark": 29,
-    "AGI": 11,
-    "Other": 12,
+    "All": 1,
     "MoE": 1,
-    "Scaling": 6,
-    "VLA": 4
+    "MLLM": 1,
+    "Pretrain": 1
   },
   "count_all_papers": {
-    "All": 7829,
+    "All": 7830,
     "LLM": 3801,
+    "Memory": 636,
     "Reasoning": 2249,
     "AGI": 442,
-    "MLLM": 1156,
-    "Dataset": 504,
-    "MoE": 394,
-    "Pretrain": 312,
     "RL": 1239,
-    "Other": 555,
+    "Pretrain": 313,
+    "Dataset": 504,
+    "MLLM": 1157,
     "Benchmark": 1316,
     "VLA": 643,
+    "Other": 555,
+    "MoE": 395,
     "Scaling": 443,
-    "Memory": 636,
     "Classification Failed": 1306
   },
   "all_papers_list": [
@@ -2868,6 +2858,37 @@
       "llm_cls_result": [
         "LLM",
         "Reasoning"
+      ],
+      "published_date": "2025-09-03"
+    },
+    {
+      "title": "Hierarchical Federated Foundation Models over Wireless Networks for\n  Multi-Modal Multi-Task Intelligence: Integration of Edge Learning with\n  D2D/P2P-Enabled Fog Learning Architectures",
+      "summary": "The rise of foundation models (FMs) has reshaped the landscape of machine\nlearning. As these models continued to grow, leveraging geo-distributed data\nfrom wireless devices has become increasingly critical, giving rise to\nfederated foundation models (FFMs). More recently, FMs have evolved into\nmulti-modal multi-task (M3T) FMs (e.g., GPT-4) capable of processing diverse\nmodalities across multiple tasks, which motivates a new underexplored paradigm:\nM3T FFMs. In this paper, we unveil an unexplored variation of M3T FFMs by\nproposing hierarchical federated foundation models (HF-FMs), which in turn\nexpose two overlooked heterogeneity dimensions to fog/edge networks that have a\ndirect impact on these emerging models: (i) heterogeneity in collected\nmodalities and (ii) heterogeneity in executed tasks across fog/edge nodes.\nHF-FMs strategically align the modular structure of M3T FMs, comprising\nmodality encoders, prompts, mixture-of-experts (MoEs), adapters, and task\nheads, with the hierarchical nature of fog/edge infrastructures. Moreover,\nHF-FMs enable the optional usage of device-to-device (D2D) communications,\nenabling horizontal module relaying and localized cooperative training among\nnodes when feasible. Through delving into the architectural design of HF-FMs,\nwe highlight their unique capabilities along with a series of tailored future\nresearch directions. Finally, to demonstrate their potential, we prototype\nHF-FMs in a wireless network setting and release the open-source code for the\ndevelopment of HF-FMs with the goal of fostering exploration in this untapped\nfield (GitHub: https://github.com/payamsiabd/M3T-FFM).",
+      "published": "2025-09-03T20:23:19Z",
+      "updated": "2025-09-03T20:23:19Z",
+      "id": "2509.03695v1",
+      "authors": [
+        "Payam Abdisarabshali",
+        "Fardis Nadimi",
+        "Kasra Borazjani",
+        "Naji Khosravan",
+        "Minghui Liwang",
+        "Wei Ni",
+        "Dusit Niyato",
+        "Michael Langberg",
+        "Seyyedali Hosseinalipour"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.03695v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.03695v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.03695v1",
+      "keywords": [
+        "MoE"
+      ],
+      "cls_reason": "The paper focuses on hierarchical federated foundation models (HF-FMs) that integrate multi-modal multi-task (M3T) capabilities, specifically mentioning the use of mixture-of-experts (MoE) architectures and wireless network integration for edge learning. The core topics align with MoE (due to explicit mention), MLLM (as it deals with multi-modal foundation models like GPT-4), and Pretrain (since it involves architectural design and training strategies for these models).",
+      "llm_cls_result": [
+        "MoE",
+        "MLLM",
+        "Pretrain"
       ],
       "published_date": "2025-09-03"
     },
