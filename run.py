@@ -108,15 +108,29 @@ def fetch_papers_by_keywords(keywords):
     return all_papers
 
 
+def _safe_json_load_file(path: str):
+    """Load JSON from a file safely. If decoding fails, return {} and warn.
+    This prevents pipeline crash when an old web/all_papers.json is corrupted (e.g., bad merge).
+    """
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Warning: failed to parse JSON from {path}: {e}. Will rebuild it.")
+        return {}
+
+
 def filter_papers(papers_by_category):
     all_papers_id = set()
     # Load all paper IDs from the web/all_papers.json
     if os.path.exists('web/all_papers.json'):
-        with open('web/all_papers.json', 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            if isinstance(data, dict) and 'all_papers_list' in data:
-                for paper in data['all_papers_list']:
+        data = _safe_json_load_file('web/all_papers.json')
+        if isinstance(data, dict) and 'all_papers_list' in data:
+            for paper in data.get('all_papers_list', []) or []:
+                try:
                     all_papers_id.add(paper['id'])
+                except Exception:
+                    continue
 
     all_papers = dict()
     for category, data in papers_by_category.items():
@@ -262,10 +276,15 @@ def merge_papers(new_papers_file):
     all_papers_list = []
     # Load existing papers to avoid duplicates
     if os.path.exists('web/all_papers.json'):
-        with open('web/all_papers.json', 'r', encoding='utf-8') as f:
-            existing_data = json.load(f)
-            all_papers_list = existing_data.get('all_papers_list', [])
-            paper_ids = {p['id'] for p in all_papers_list}
+        existing_data = _safe_json_load_file('web/all_papers.json')
+        if isinstance(existing_data, dict):
+            lst = existing_data.get('all_papers_list', [])
+            if isinstance(lst, list):
+                all_papers_list = lst
+                try:
+                    paper_ids = {p['id'] for p in all_papers_list if isinstance(p, dict) and 'id' in p}
+                except Exception:
+                    paper_ids = set()
 
     new_papers = []
     with open(new_papers_file, 'r', encoding='utf-8') as f:
