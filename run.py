@@ -4,7 +4,7 @@ import yaml
 import requests
 import time 
 import traceback 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import xml.etree.ElementTree as ET
 from collections import defaultdict
@@ -22,6 +22,10 @@ TOP_N = int(os.environ.get("TOP_N", -1))
 KEYWORDS = os.environ.get("KEYWORDS", "all")
 # Lazy init client to avoid requiring API_KEY when only serving static files
 _client = None
+
+# Recent window for web/recent.json (days)
+RECENT_DAYS = int(os.environ.get("RECENT_DAYS", 10))
+
 
 def get_openai_client():
     global _client
@@ -318,11 +322,71 @@ def merge_papers(new_papers_file):
         "all_papers_list": all_papers_list
     }
 
+    # Ensure web directory exists
+    os.makedirs('web', exist_ok=True)
+
     with open('web/all_papers.json', 'w', encoding='utf-8') as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
     print(f"Added {len(new_papers)} new papers.")
     print(f"Total papers: {len(all_papers_list)}.")
+
+    return output
+
+
+def _date_from_str(s: str) -> date:
+    try:
+        return datetime.strptime(s, '%Y-%m-%d').date()
+    except Exception:
+        return None
+
+
+def build_split_outputs(all_papers_list, count_new_papers, count_all_papers, current_update_time, recent_days: int = RECENT_DAYS):
+    """Build lightweight outputs for faster frontend loading:
+    - web/by_date/YYYY-MM-DD.json (array of papers for that date)
+    - web/recent.json (array of last N days)
+    - web/manifest.json (global stats, dates list, recent_days)
+    """
+    os.makedirs('web/by_date', exist_ok=True)
+
+    by_date_map = defaultdict(list)
+    for p in all_papers_list:
+        d = p.get('published_date') or (p.get('published') or '')[:10]
+        p['published_date'] = d
+        if d:
+            by_date_map[d].append(p)
+
+    # Write per-date files (minified)
+    for d, lst in by_date_map.items():
+        lst.sort(key=lambda i: i.get('updated', ''), reverse=True)
+        with open(os.path.join('web', 'by_date', f'{d}.json'), 'w', encoding='utf-8') as f:
+            json.dump(lst, f, ensure_ascii=False, separators=(',', ':'))
+
+    # Build recent window
+    today = datetime.now().date()
+    start_date = today - timedelta(days=max(1, recent_days) - 1)
+    recent_list = []
+    for p in all_papers_list:
+        d = _date_from_str(p.get('published_date') or (p.get('published') or '')[:10])
+        if d and d >= start_date:
+            recent_list.append(p)
+    # Keep same order as all_papers_list (already sorted desc by updated)
+
+    with open(os.path.join('web', 'recent.json'), 'w', encoding='utf-8') as f:
+        json.dump(recent_list, f, ensure_ascii=False, separators=(',', ':'))
+
+    # Manifest
+    dates = sorted(by_date_map.keys(), reverse=True)
+    manifest = {
+        'current_update_time': current_update_time,
+        'count_new_papers': count_new_papers,
+        'count_all_papers': count_all_papers,
+        'recent_days': recent_days,
+        'dates': dates,
+        'by_date_base': 'web/by_date/'
+    }
+    with open(os.path.join('web', 'manifest.json'), 'w', encoding='utf-8') as f:
+        json.dump(manifest, f, ensure_ascii=False, indent=2)
 
 
 def run_pipeline():
@@ -334,7 +398,17 @@ def run_pipeline():
     output_path = os.path.join(DATA_DIR, f'{filename}.json')
 
     json.dump(papers_classified, open(output_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-    merge_papers(output_path)
+    merged = merge_papers(output_path)
+
+    # Build manifest/recent/by_date for frontend fast loading
+    build_split_outputs(
+        all_papers_list=merged['all_papers_list'],
+        count_new_papers=merged['count_new_papers'],
+        count_all_papers=merged['count_all_papers'],
+        current_update_time=merged['current_update_time'],
+        recent_days=RECENT_DAYS,
+    )
+
     print(f"Saved {len(papers_classified)} papers to {output_path}")
 
 

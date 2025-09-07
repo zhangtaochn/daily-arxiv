@@ -11,6 +11,11 @@ let updateTimeGlobal = '';
 let favoritePapers = new Set();
 let sortMode = 'date_desc'; // 'date_desc' | 'score_desc' | 'score_asc'
 
+// New: manifest + caches for on-demand loading
+let manifest = null; // { current_update_time, count_new_papers, count_all_papers, recent_days, dates, by_date_base }
+const loadedDates = new Set(); // track which dates are loaded
+const loadedIds = new Set(); // dedupe by paper id
+
 function adaptRawData(raw) {
   // 兼容对象或数组
   if (Array.isArray(raw)) {
@@ -132,10 +137,36 @@ function applySort(papers) {
   return papers.slice().sort((a, b) => new Date(b.published) - new Date(a.published));
 }
 
-function applyFilters() {
+async function ensureDateLoaded(dateStr) {
+  if (!dateStr || loadedDates.has(dateStr)) return;
+  if (!manifest || !manifest.by_date_base) return; // nothing we can do
+  const url = `${manifest.by_date_base}${dateStr}.json?ts=${Date.now()}`;
+  try {
+    const resp = await fetch(url, { cache: 'force-cache' });
+    if (!resp.ok) return;
+    const arr = await resp.json(); // array
+    const papers = adaptRawData(arr);
+    for (const p of papers) {
+      if (!loadedIds.has(p.id)) {
+        loadedIds.add(p.id);
+        allPapers.push(p);
+      }
+    }
+    loadedDates.add(dateStr);
+  } catch (e) {
+    console.warn('Failed to load date file', dateStr, e);
+  }
+}
+
+async function applyFilters() {
   const selectedDate = document.getElementById('date-select').value;
   const searchQuery = document.getElementById('search-input').value.toLowerCase();
   const selectedCategory = document.getElementById('category-select').value;
+
+  // On-demand load for specific date if needed
+  if (selectedDate) {
+    await ensureDateLoaded(selectedDate);
+  }
 
   let papersToFilter = allPapers;
 
@@ -172,22 +203,103 @@ function applyFilters() {
   updateLastUpdated();
 }
 
-async function init() {
-  loadFavorites();
-  await loadAllPapers();
-  updateLastUpdated();
-  document.getElementById('category-select').addEventListener('change', applyFilters);
-  document.getElementById('date-select').addEventListener('change', applyFilters);
-  document.getElementById('search-input').addEventListener('input', applyFilters);
-  const sortSel = document.getElementById('sort-select');
-  if (sortSel) {
-    sortSel.addEventListener('change', (e) => {
-      sortMode = e.target.value;
-      applyFilters();
-    });
+async function loadAllPapers() {
+  const container = document.getElementById('papers-container');
+  container.innerHTML = '<p>Loading papers...</p>';
+  try {
+    const ts = Date.now();
+    // Load manifest
+    const manifestResp = await fetch(`web/manifest.json?ts=${ts}`, { cache: 'no-store' });
+    if (!manifestResp.ok) throw new Error('Failed to load manifest');
+    manifest = await manifestResp.json();
+
+    // Load recent list only
+    const recentResp = await fetch(`web/recent.json?ts=${ts}`, { cache: 'no-store' });
+    if (!recentResp.ok) throw new Error('Failed to load recent papers');
+    const recentRaw = await recentResp.json();
+
+    const papersList = recentRaw; // array
+    const adapted = adaptRawData(papersList);
+    allPapers = [];
+    loadedIds.clear();
+    for (const p of adapted) {
+      if (!loadedIds.has(p.id)) {
+        loadedIds.add(p.id);
+        allPapers.push(p);
+      }
+    }
+
+    // 保存全局统计信息
+    updateTimeGlobal = manifest.current_update_time || '';
+    countNewPapers = manifest.count_new_papers || {};
+    countAllPapers = manifest.count_all_papers || {};
+
+  } catch (err) {
+    console.warn('Fast-path data missing, falling back to all_papers.json', err);
+    // Fallback to legacy all_papers.json for compatibility/local preview
+    try {
+      const ts = Date.now();
+      const response = await fetch(`web/all_papers.json?ts=${ts}`, { cache: 'no-store' });
+      if (!response.ok) throw new Error('Failed to load papers data');
+      const raw = await response.json();
+      // 适配新的数据结构
+      const papersList = raw.all_papers_list || raw;
+      const adapted = adaptRawData(papersList);
+      allPapers = [];
+      loadedIds.clear();
+      for (const p of adapted) {
+        if (!loadedIds.has(p.id)) {
+          loadedIds.add(p.id);
+          allPapers.push(p);
+        }
+      }
+      updateTimeGlobal = raw.current_update_time || '';
+      countNewPapers = raw.count_new_papers || {};
+      countAllPapers = raw.count_all_papers || {};
+      // Construct a minimal manifest to keep UI consistent
+      manifest = {
+        current_update_time: updateTimeGlobal,
+        count_new_papers: countNewPapers,
+        count_all_papers: countAllPapers,
+        recent_days: 10,
+        dates: [],
+        by_date_base: 'web/by_date/'
+      };
+    } catch (e2) {
+      container.innerHTML = `<p style="color:red;">${e2.message}</p>`;
+      document.getElementById('pagination').innerHTML = '';
+    }
   }
-  document.getElementById('date-select').value = '';
-  applyFilters();
+}
+
+function updateLastUpdated() {
+  const lastUpdatedSpan = document.getElementById('last-updated');
+  const totalNew = countNewPapers['All'] || 0;
+  const totalPapers = countAllPapers['All'] || 0;
+  const recentDays = manifest && manifest.recent_days ? manifest.recent_days : 10;
+  lastUpdatedSpan.innerHTML = `Updated: ${updateTimeGlobal} | New: ${totalNew} | Total: ${totalPapers} | Showing last ${recentDays} days by default`;
+}
+
+function loadFavorites() {
+  const savedFavorites = localStorage.getItem('favoritePapers');
+  if (savedFavorites) {
+    favoritePapers = new Set(JSON.parse(savedFavorites));
+  }
+}
+
+function saveFavorites() {
+  localStorage.setItem('favoritePapers', JSON.stringify(Array.from(favoritePapers)));
+}
+
+function toggleFavorite(event) {
+  const paperId = event.target.dataset.id;
+  if (favoritePapers.has(paperId)) {
+    favoritePapers.delete(paperId);
+  } else {
+    favoritePapers.add(paperId);
+  }
+  saveFavorites();
+  applyFilters(); // Re-render to update favorite buttons and counts
 }
 
 function renderPagination(total, page) {
@@ -252,94 +364,50 @@ function updateCategoryCounts(papers) {
     });
   });
 
-  const hasOther = 'Other' in categoryCounts;
-  
-  let categories = Object.keys(categoryCounts).filter(cat => cat !== 'Other').sort();
-  
-  select.innerHTML = '';
-  const optAll = document.createElement('option');
-  optAll.value = 'ALL';
-  optAll.textContent = 'All Categories';
-  select.appendChild(optAll);
-
-  categories.forEach(cat => {
-    const opt = document.createElement('option');
-    opt.value = cat;
-    opt.textContent = `${cat} (${categoryCounts[cat]})`;
-    select.appendChild(opt);
-  });
-
-  if (hasOther) {
-    const optOther = document.createElement('option');
-    optOther.value = 'Other';
-    optOther.textContent = `Other (${categoryCounts['Other']})`;
-    select.appendChild(optOther);
+  const categories = Object.keys(categoryCounts).sort((a,b)=>categoryCounts[b]-categoryCounts[a]);
+  const favCount = papers.filter(p => favoritePapers.has(p.id)).length;
+  let html = '';
+  html += `<option value="ALL">All Categories</option>`;
+  html += `<option value="FAVORITES">⭐ Favorites${favCount ? ` (${favCount})` : ''}</option>`;
+  for (const cat of categories) {
+    html += `<option value="${cat}">${cat} (${categoryCounts[cat]})</option>`;
   }
+  select.innerHTML = html;
 
-  const optFav = document.createElement('option');
-  optFav.value = 'FAVORITES';
-  optFav.textContent = `Favorites (${favoritePapers.size})`;
-  select.insertBefore(optFav, select.children[1]);
-
-  // Restore previous selection if it exists, otherwise default to ALL
-  if (Array.from(select.options).some(opt => opt.value === previousCategory)) {
+  if (previousCategory && (previousCategory === 'ALL' || previousCategory === 'FAVORITES' || categories.includes(previousCategory))) {
     select.value = previousCategory;
   } else {
     select.value = 'ALL';
   }
 }
 
-async function loadAllPapers() {
-  const container = document.getElementById('papers-container');
-  container.innerHTML = '<p>Loading all papers...</p>';
-  try {
-    const ts = Date.now();
-    const response = await fetch(`web/all_papers.json?ts=${ts}`, { cache: 'no-store' });
-    if (!response.ok) throw new Error('Failed to load papers data');
-    const raw = await response.json();
+async function init() {
+  loadFavorites();
+  await loadAllPapers();
+  updateLastUpdated();
 
-    // 适配新的数据结构
-    const papersList = raw.all_papers_list || raw;
-    allPapers = adaptRawData(papersList);
+  document.getElementById('category-select').addEventListener('change', () => { applyFilters(); });
 
-    // 保存全局统计信息
-    updateTimeGlobal = raw.current_update_time || '';
-    countNewPapers = raw.count_new_papers || {};
-    countAllPapers = raw.count_all_papers || {};
+  // On date change, ensure that date data is loaded then filter
+  document.getElementById('date-select').addEventListener('change', async (e) => {
+    const d = e.target.value;
+    await ensureDateLoaded(d);
+    applyFilters();
+  });
 
-  } catch (err) {
-    container.innerHTML = `<p style="color:red;">${err.message}</p>`;
-    document.getElementById('pagination').innerHTML = '';
+  document.getElementById('search-input').addEventListener('input', () => { applyFilters(); });
+  const sortSel = document.getElementById('sort-select');
+  if (sortSel) {
+    sortSel.addEventListener('change', (e) => {
+      sortMode = e.target.value;
+      applyFilters();
+    });
   }
+
+  document.getElementById('date-select').value = '';
+  applyFilters();
 }
 
-function updateLastUpdated() {
-  const lastUpdatedSpan = document.getElementById('last-updated');
-  const totalNew = countNewPapers['All'] || 0;
-  const totalPapers = countAllPapers['All'] || 0;
-  lastUpdatedSpan.innerHTML = `Updated: ${updateTimeGlobal} | New: ${totalNew} | Total: ${totalPapers}`;
-}
-
-function loadFavorites() {
-  const savedFavorites = localStorage.getItem('favoritePapers');
-  if (savedFavorites) {
-    favoritePapers = new Set(JSON.parse(savedFavorites));
-  }
-}
-
-function saveFavorites() {
-  localStorage.setItem('favoritePapers', JSON.stringify(Array.from(favoritePapers)));
-}
-
-function toggleFavorite(event) {
-  const paperId = event.target.dataset.id;
-  if (favoritePapers.has(paperId)) {
-    favoritePapers.delete(paperId);
-  } else {
-    favoritePapers.add(paperId);
-  }
-  saveFavorites();
-  applyFilters(); // Re-render to update favorite buttons and counts
-}
+// Kick off
 
 document.addEventListener('DOMContentLoaded', init);
