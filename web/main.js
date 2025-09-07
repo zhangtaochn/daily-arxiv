@@ -9,6 +9,7 @@ let countNewPapers = {};
 let countAllPapers = {};
 let updateTimeGlobal = '';
 let favoritePapers = new Set();
+let sortMode = 'date_desc'; // 'date_desc' | 'score_desc' | 'score_asc'
 
 function adaptRawData(raw) {
   // 兼容对象或数组
@@ -24,6 +25,9 @@ function adaptRawData(raw) {
       categories: paper.keywords || [],
       category: paper.llm_cls_result || [],
       id: paper.id,
+      cls_reason: paper.cls_reason || '',
+      rec_score: typeof paper.rec_score === 'number' ? paper.rec_score : null,
+      rec_reason: paper.rec_reason || ''
     }));
   } else {
     return Object.values(raw).map(paper => ({
@@ -37,7 +41,32 @@ function adaptRawData(raw) {
       categories: paper.keywords || [],
       category: paper.llm_cls_result || [],
       id: paper.id,
+      cls_reason: paper.cls_reason || '',
+      rec_score: typeof paper.rec_score === 'number' ? paper.rec_score : null,
+      rec_reason: paper.rec_reason || ''
     }));
+  }
+}
+
+function renderScore(score) {
+  if (score == null) return '<span class="score-na">N/A</span>';
+  const full = Math.floor(score);
+  const half = score - full >= 0.5 ? 1 : 0;
+  const empty = 5 - full - half;
+  return `<span class="score">${'★'.repeat(full)}${half? '☆' : ''}${'☆'.repeat(empty)} <span class="score-num">${score.toFixed(1)}/5</span></span>`;
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"]+/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+
+function highlight(text, keyword) {
+  if (!keyword) return escapeHtml(text);
+  try {
+    const re = new RegExp(`(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'ig');
+    return escapeHtml(text).replace(re, '<mark>$1</mark>');
+  } catch (_) {
+    return escapeHtml(text);
   }
 }
 
@@ -52,6 +81,9 @@ function renderPapers(papers, page = 1) {
   const startIdx = (page - 1) * pageSize;
   const endIdx = startIdx + pageSize;
   const pagePapers = papers.slice(startIdx, endIdx);
+
+  const searchQuery = document.getElementById('search-input').value.trim();
+
   pagePapers.forEach(paper => {
     const pdfUrl = paper.pdf || '#';
     const alphaxivUrl = paper.alphaxiv_url;
@@ -60,7 +92,7 @@ function renderPapers(papers, page = 1) {
     card.className = 'paper-card';
     card.innerHTML = `
       <div class="paper-title-row">
-        <h2 class="paper-title"><a href="${paper.url}" target="_blank" rel="noopener">${paper.title}</a></h2>
+        <h2 class="paper-title"><a href="${paper.url}" target="_blank" rel="noopener">${highlight(paper.title, searchQuery)}</a></h2>
       </div>
       <div class="paper-meta">
         <span class="paper-date">${paper.published}</span>
@@ -71,13 +103,16 @@ function renderPapers(papers, page = 1) {
           <button class="favorite-btn ${isFavorited ? 'favorited' : ''}" data-id="${paper.id}">${isFavorited ? '★' : '☆'}</button>
         </div>
       </div>
-      <div class="paper-authors">${(paper.authors || []).join(', ')}</div>
-      <div class="paper-summary">${paper.summary}</div>
+      <div class="paper-authors">${highlight((paper.authors || []).join(', '), searchQuery)}</div>
+      <div class="paper-summary">${highlight(paper.summary, searchQuery)}</div>
+      <div class="paper-recommend">
+        <div class="paper-score">${renderScore(paper.rec_score)}</div>
+        ${paper.rec_reason ? `<div class="paper-rec-reason">${escapeHtml(paper.rec_reason)}</div>` : ''}
+      </div>
     `;
     container.appendChild(card);
   });
 
-  // Add event listeners for favorite buttons
   container.querySelectorAll('.favorite-btn').forEach(btn => {
     btn.addEventListener('click', toggleFavorite);
   });
@@ -85,6 +120,74 @@ function renderPapers(papers, page = 1) {
     window.MathJax.typesetPromise([container]);
   }
   renderPagination(papers.length, page);
+}
+
+function applySort(papers) {
+  if (sortMode === 'score_desc') {
+    return papers.slice().sort((a, b) => (b.rec_score ?? -1) - (a.rec_score ?? -1) || new Date(b.published) - new Date(a.published));
+  } else if (sortMode === 'score_asc') {
+    return papers.slice().sort((a, b) => (a.rec_score ?? 999) - (b.rec_score ?? 999) || new Date(b.published) - new Date(a.published));
+  }
+  // default: date_desc
+  return papers.slice().sort((a, b) => new Date(b.published) - new Date(a.published));
+}
+
+function applyFilters() {
+  const selectedDate = document.getElementById('date-select').value;
+  const searchQuery = document.getElementById('search-input').value.toLowerCase();
+  const selectedCategory = document.getElementById('category-select').value;
+
+  let papersToFilter = allPapers;
+
+  if (selectedDate) {
+    papersToFilter = papersToFilter.filter(paper => {
+      const paperDate = new Date(paper.published).toISOString().split('T')[0];
+      return paperDate === selectedDate;
+    });
+  }
+
+  updateCategoryCounts(papersToFilter);
+
+  if (selectedCategory === 'ALL') {
+    filteredPapers = papersToFilter.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'));
+  } else if (selectedCategory === 'FAVORITES') {
+    filteredPapers = papersToFilter.filter(paper => favoritePapers.has(paper.id));
+  } else {
+    filteredPapers = papersToFilter.filter(paper => Array.isArray(paper.category) && paper.category.includes(selectedCategory));
+  }
+
+  if (searchQuery) {
+    filteredPapers = filteredPapers.filter(paper => 
+      paper.title.toLowerCase().includes(searchQuery) ||
+      paper.summary.toLowerCase().includes(searchQuery) ||
+      (paper.authors && paper.authors.join(', ').toLowerCase().includes(searchQuery))
+    );
+  }
+
+  // sort by selected mode
+  filteredPapers = applySort(filteredPapers);
+
+  currentPage = 1;
+  renderPapers(filteredPapers, currentPage);
+  updateLastUpdated();
+}
+
+async function init() {
+  loadFavorites();
+  await loadAllPapers();
+  updateLastUpdated();
+  document.getElementById('category-select').addEventListener('change', applyFilters);
+  document.getElementById('date-select').addEventListener('change', applyFilters);
+  document.getElementById('search-input').addEventListener('input', applyFilters);
+  const sortSel = document.getElementById('sort-select');
+  if (sortSel) {
+    sortSel.addEventListener('change', (e) => {
+      sortMode = e.target.value;
+      applyFilters();
+    });
+  }
+  document.getElementById('date-select').value = '';
+  applyFilters();
 }
 
 function renderPagination(total, page) {
@@ -186,55 +289,12 @@ function updateCategoryCounts(papers) {
   }
 }
 
-function applyFilters() {
-  const selectedDate = document.getElementById('date-select').value;
-  const searchQuery = document.getElementById('search-input').value.toLowerCase();
-  const selectedCategory = document.getElementById('category-select').value;
-
-  let papersToFilter = allPapers;
-
-  // Filter by date
-  if (selectedDate) {
-    papersToFilter = papersToFilter.filter(paper => {
-      const paperDate = new Date(paper.published).toISOString().split('T')[0];
-      return paperDate === selectedDate;
-    });
-  }
-
-  // Update category counts based on date-filtered papers
-  updateCategoryCounts(papersToFilter);
-
-  // Filter by category
-  if (selectedCategory === 'ALL') {
-    filteredPapers = papersToFilter.filter(paper => Array.isArray(paper.category) && !paper.category.includes('Other'));
-  } else if (selectedCategory === 'FAVORITES') {
-    filteredPapers = papersToFilter.filter(paper => favoritePapers.has(paper.id));
-  } else {
-    filteredPapers = papersToFilter.filter(paper => Array.isArray(paper.category) && paper.category.includes(selectedCategory));
-  }
-
-  // Filter by search query
-  if (searchQuery) {
-    filteredPapers = filteredPapers.filter(paper => 
-      paper.title.toLowerCase().includes(searchQuery) ||
-      paper.summary.toLowerCase().includes(searchQuery) ||
-      (paper.authors && paper.authors.join(', ').toLowerCase().includes(searchQuery))
-    );
-  }
-
-  // Sort by date
-  filteredPapers.sort((a, b) => new Date(b.published) - new Date(a.published));
-
-  currentPage = 1;
-  renderPapers(filteredPapers, currentPage);
-  updateLastUpdated();
-}
-
 async function loadAllPapers() {
   const container = document.getElementById('papers-container');
   container.innerHTML = '<p>Loading all papers...</p>';
   try {
-    const response = await fetch('web/all_papers.json');
+    const ts = Date.now();
+    const response = await fetch(`web/all_papers.json?ts=${ts}`, { cache: 'no-store' });
     if (!response.ok) throw new Error('Failed to load papers data');
     const raw = await response.json();
 
@@ -280,17 +340,6 @@ function toggleFavorite(event) {
   }
   saveFavorites();
   applyFilters(); // Re-render to update favorite buttons and counts
-}
-
-async function init() {
-  loadFavorites();
-  await loadAllPapers();
-  updateLastUpdated();
-  document.getElementById('category-select').addEventListener('change', applyFilters);
-  document.getElementById('date-select').addEventListener('change', applyFilters);
-  document.getElementById('search-input').addEventListener('input', applyFilters);
-  document.getElementById('date-select').value = '';
-  applyFilters();
 }
 
 document.addEventListener('DOMContentLoaded', init);

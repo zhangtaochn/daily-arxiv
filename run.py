@@ -10,6 +10,9 @@ import xml.etree.ElementTree as ET
 from collections import defaultdict
 from openai import OpenAI
 import fire 
+from urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter
+import random
 
 
 API_KEY = os.environ.get("API_KEY")
@@ -17,15 +20,35 @@ BASE_URL = os.environ.get("BASE_URL")
 MODEL = os.environ.get("MODEL")
 TOP_N = int(os.environ.get("TOP_N", -1))
 KEYWORDS = os.environ.get("KEYWORDS", "all")
-client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
+# Lazy init client to avoid requiring API_KEY when only serving static files
+_client = None
+
+def get_openai_client():
+    global _client
+    if _client is None:
+        if not API_KEY:
+            raise RuntimeError("API_KEY is not set; cannot initialize OpenAI client.")
+        _client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
+    return _client
+
 DATA_DIR = 'data'
 
 ARXIV_API_URL = 'http://export.arxiv.org/api/query'
-MAX_WORKERS = 20  # 并发数
+MAX_WORKERS = int(os.environ.get("MAX_WORKERS", 12))  # 并发数（可通过环境变量覆盖）
+
+# requests 会话 + 重试与 UA
+session = requests.Session()
+retries = Retry(total=5, backoff_factor=0.5, status_forcelist=[429, 500, 502, 503, 504])
+adapter = HTTPAdapter(max_retries=retries, pool_connections=50, pool_maxsize=50)
+session.mount('http://', adapter)
+session.mount('https://', adapter)
+session.headers.update({
+    'User-Agent': 'daily-arxiv-bot/1.0 (+https://github.com/zhangtaochn/daily-arxiv)'
+})
 
 def search_arxiv_papers(search_query, max_results=1000):
-    """Search arXiv papers using the API"""
-    # Calculate date 6 months ago
+    """Search arXiv papers using the API (最近10天增量)"""
+    # 最近 10 天窗口
     date_from = (datetime.now() - timedelta(days=10)).strftime('%Y%m%d%H%M%S0000')
     date_to = datetime.now().strftime('%Y%m%d%H%M%S0000')
     
@@ -37,7 +60,7 @@ def search_arxiv_papers(search_query, max_results=1000):
         'sortOrder': 'descending'
     }
     
-    response = requests.get(ARXIV_API_URL, params=params)
+    response = session.get(ARXIV_API_URL, params=params, timeout=20)
     response.raise_for_status()
     root = ET.fromstring(response.content)
     
@@ -62,6 +85,7 @@ def search_arxiv_papers(search_query, max_results=1000):
         papers.append(paper)
     
     return papers
+
 
 def fetch_papers_by_keywords(keywords):
     """Fetch papers for each keyword category"""
@@ -106,18 +130,50 @@ def filter_papers(papers_by_category):
     return all_papers
 
 
-def classify_paper(paper, categories, retry=3):
-    title = paper["title"]
-    summary = paper["summary"]
+def _safe_json_extract(text: str):
+    """Try to extract a JSON object from arbitrary text."""
+    if not text:
+        return None
+    start = text.find('{')
+    end = text.rfind('}')
+    if start != -1 and end != -1 and end > start:
+        snippet = text[start:end+1]
+        try:
+            return json.loads(snippet)
+        except Exception:
+            pass
+    # fallback: try parse the whole
+    try:
+        return json.loads(text)
+    except Exception:
+        return None
+
+
+def classify_paper(paper, topics_list, retry=3):
+    title = paper.get("title", "")[:4000]
+    summary = paper.get("summary", "")[:8000]
+
+    topics_str = "\n- ".join(topics_list)
 
     system_prompt = f"""
 # Rule
-You are a paper classification assistant. Based on the title and abstract below, select the core relevant topics that this paper belongs to from the given topic list (no more than 3). 
-If none of the topics are relevant, please set category_list to ["Other"].
+You are a paper classification and recommendation assistant. Based on the title and abstract below, do two things:
+
+1) Select the core relevant topics from the topic list (no more than 3). If none applies, set category_list to ["Other"].
+
+2) Provide a composite recommendation score in [0,5] (allow 0.5 increments). Compute it as a weighted combination of:
+- Relevance to the provided topics / user intent: 40%
+- Novelty and originality (new ideas, non-incremental/SOTA contributions): 30%
+- Evidence and rigor (empirical results, ablations, theory, reproducibility): 20%
+- Clarity and practicality (applicability for applied ML/AI engineers): 10%
+
+Also provide a short recommendation_reason (1–2 sentences) that succinctly justifies the score.
+
 # Topic list:
-- {categories}
-# Answer format
-Please provide your answer as a json with two fields: reason (str), category_list (list).
+- {topics_str}
+
+# Answer format (strict JSON, output ONLY the JSON object):
+{{"reason": "string", "category_list": ["string"], "recommend_score": 0.0, "recommend_reason": "string"}}
 """
 
     prompt = f"""
@@ -127,8 +183,15 @@ Please provide your answer as a json with two fields: reason (str), category_lis
 - {summary}
 """
 
-    for _ in range(retry):
+    backoff_base = 1.0
+    last_reason = ""
+    last_categories = ["Classification Failed"]
+    last_rec_score = None
+    last_rec_reason = ""
+
+    for attempt in range(retry):
         try:
+            client = get_openai_client()
             response = client.chat.completions.create(
                 model=MODEL,
                 messages=[
@@ -136,30 +199,59 @@ Please provide your answer as a json with two fields: reason (str), category_lis
                     {"role": "user", "content": prompt},
                 ]
             )
-            js = None 
-            try:
-                js = json.loads(response.choices[0].message.content)
-            except:
-                js = json.loads(response.choices[0].message.content[7:-3])
-            
-            reason = js["reason"]
-            category_list = js["category_list"]
-            break 
-        except:
-            print(f"Retry {_} failed")
+            content = response.choices[0].message.content
+            js = _safe_json_extract(content)
+            if js and isinstance(js, dict):
+                reason = str(js.get("reason", ""))
+                category_list = js.get("category_list", None)
+                if not isinstance(category_list, list):
+                    category_list = ["Other"]
+                category_list = [str(c) for c in category_list][:3]
+
+                rec_reason = str(js.get("recommend_reason", "")).strip()
+                rec_score_raw = js.get("recommend_score", None)
+                rec_score = None
+                if rec_score_raw is not None:
+                    try:
+                        rec_score = float(rec_score_raw)
+                        # clamp to [0,5] and round to nearest 0.5
+                        rec_score = max(0.0, min(5.0, rec_score))
+                        rec_score = round(rec_score * 2) / 2.0
+                    except Exception:
+                        rec_score = None
+
+                last_reason, last_categories = reason, category_list
+                last_rec_reason = rec_reason or last_rec_reason
+                last_rec_score = rec_score if rec_score is not None else last_rec_score
+                break
+            else:
+                raise ValueError("LLM returned non-JSON or invalid format")
+        except Exception:
+            print(f"Classification attempt {attempt+1}/{retry} failed for {paper.get('id')}")
             traceback.print_exc()
-            reason = "" 
-            category_list = ["Classification Failed"]
-            time.sleep(1)
+            delay = backoff_base * (2 ** attempt) + random.uniform(0, 0.5)
+            time.sleep(delay)
+    else:
+        reason = last_reason
+        category_list = last_categories
+        rec_reason = last_rec_reason
+        rec_score = last_rec_score
 
     paper["cls_reason"] = reason
     paper["llm_cls_result"] = category_list
+    if rec_score is not None:
+        paper["rec_score"] = rec_score
+    if rec_reason:
+        paper["rec_reason"] = rec_reason
     return paper
 
+
 def paper_cls(papers, keywords):
+    # derive topics list from keywords config
+    topics_list = list(keywords.get('keywords', {}).keys())
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        future_to_idx = {executor.submit(classify_paper, paper, keywords) for paper in papers.values()}
-        for future in as_completed(future_to_idx):
+        futures = {executor.submit(classify_paper, paper, topics_list): pid for pid, paper in papers.items()}
+        for future in as_completed(futures):
             paper = future.result()
             papers[paper["id"]] = paper 
     return papers
@@ -180,7 +272,7 @@ def merge_papers(new_papers_file):
         papers = json.load(f)
         for paper_id, paper in papers.items():
             if paper_id not in paper_ids:
-                paper["published_date"] = paper["published"][0:10]
+                paper["published_date"] = paper.get("published", "")[:10]
                 all_papers_list.append(paper)
                 new_papers.append(paper)
                 paper_ids.add(paper_id)
@@ -198,7 +290,7 @@ def merge_papers(new_papers_file):
             total_count_papers[category] += 1
 
     # Sort all papers by update date
-    all_papers_list.sort(key=lambda i: i["updated"], reverse=True)
+    all_papers_list.sort(key=lambda i: i.get("updated", ""), reverse=True)
 
     output = {
         "current_update_time": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
@@ -213,6 +305,7 @@ def merge_papers(new_papers_file):
     print(f"Added {len(new_papers)} new papers.")
     print(f"Total papers: {len(all_papers_list)}.")
 
+
 def run_pipeline():
     keywords = yaml.safe_load(KEYWORDS)
     papers_by_category = fetch_papers_by_keywords(keywords)
@@ -225,15 +318,15 @@ def run_pipeline():
     merge_papers(output_path)
     print(f"Saved {len(papers_classified)} papers to {output_path}")
 
+
 def run_server(port=8000):
-    """Starts a simple HTTP server for the web interface."""
+    """Starts a simple HTTP server for the web interface (serve from project root)."""
     import http.server
     import socketserver
 
-    os.chdir('web')
     Handler = http.server.SimpleHTTPRequestHandler
     with socketserver.TCPServer(("", port), Handler) as httpd:
-        print(f"Serving at port {port}")
+        print(f"Serving at port {port}. Open http://localhost:{port}/")
         httpd.serve_forever()
 
 if __name__ == "__main__":

@@ -248,6 +248,27 @@ footer {
   gap: 1em;
 }
 
+/* reasoning details */
+details.reasoning {
+  margin-top: 0.6rem;
+}
+details.reasoning > summary {
+  cursor: pointer;
+  color: #4b7bec;
+  font-size: 0.95rem;
+}
+.reasoning-content {
+  padding: 0.4rem 0.3rem;
+  color: #444;
+  white-space: pre-wrap;
+}
+
+/* highlight */
+mark {
+  background: #fff4a3;
+  padding: 0 2px;
+}
+
 .page-info {
   font-size: 0.9em;
   color: #666;
@@ -334,4 +355,36 @@ footer {
     align-items: flex-start;
     gap: 0.5em;
   }
+}
+.keyword-bar #sort-select {
+  margin-left: 0.5em;
+  padding: 0.45em 0.6em;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+}
+.paper-recommend {
+  margin-top: 0.6rem;
+}
+.paper-score {
+  color: #f39c12;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.paper-score .score-num {
+  color: #555;
+  font-weight: 500;
+  margin-left: 0.3rem;
+}
+.paper-rec-reason {
+  color: #3d3d3d;
+  font-size: 0.96rem;
+  background: #fafafa;
+  padding: 0.55rem 0.7rem;
+  border-left: 3px solid #f1c40f;
+  border-radius: 4px;
+}
+/* keep details.reasoning styles for backward compatibility; not used in current UI */
+.score-na {
+  color: #999;
 }

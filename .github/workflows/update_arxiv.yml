@@ -7,6 +7,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: daily-arxiv-update
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -16,7 +20,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.12'
+          cache: 'pip'
       
       - name: Install dependencies
         run: |
@@ -29,6 +34,7 @@ jobs:
           MODEL: ${{ vars.MODEL }}
           TOP_N: ${{ vars.TOP_N }}
           KEYWORDS: ${{ vars.KEYWORDS }}
+          MAX_WORKERS: ${{ vars.MAX_WORKERS }}
         run: |
           python run.py run_pipeline
 
@@ -37,15 +43,22 @@ jobs:
           git config user.name "zhangtaochn"
           git config user.email "zhangtao-1994@qq.com"
           git add web/all_papers.json data/*
-          git commit -m "Arxiv Papers Update" || echo "Nothing to commit"
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+          else
+            git commit -m "Arxiv Papers Update"
+          fi
 
       - name: Push changes
+        if: ${{ !cancelled() }}
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: |
           git config user.name "zhangtaochn"
           git config user.email "zhangtao-1994@qq.com"
           git remote set-url origin https://zhangtaochn:${ACCESS_TOKEN}@github.com/zhangtaochn/daily-arxiv.git
-          git add web/all_papers.json data/*
-          git commit -m "Arxiv Papers Update" || echo "Nothing to commit"
-          git push origin HEAD:main
+          if git diff --quiet HEAD -- web/all_papers.json data; then
+            echo "No changes to push"
+          else
+            git push origin HEAD:main
+          fi

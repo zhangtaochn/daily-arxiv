@@ -30,6 +30,11 @@
           <option value="ALL">All Categories</option>
         </select>
         <input type="search" id="search-input" placeholder="Search papers...">
+        <select id="sort-select" title="Sort">
+          <option value="date_desc">Date (newest)</option>
+          <option value="score_desc">Score (high→low)</option>
+          <option value="score_asc">Score (low→high)</option>
+        </select>
       </div>
       <div id="papers-container" class="cards-grid"></div>
       <div id="pagination" class="pagination-bar"></div>

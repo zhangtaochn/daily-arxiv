@@ -1,10 +1,11 @@
 {
-  "current_update_time": "2025-09-06 20:15:57",
+  "current_update_time": "2025-09-07 17:00:16",
   "count_new_papers": {
     "All": 1,
     "MoE": 1,
     "MLLM": 1,
     "Pretrain": 1
+    "All": 0
   },
   "count_all_papers": {
     "All": 7830,
@@ -22,6 +23,21 @@
     "MoE": 395,
     "Scaling": 443,
     "Classification Failed": 1306
+    "All": 7353,
+    "LLM": 3541,
+    "RL": 1143,
+    "Classification Failed": 1306,
+    "Reasoning": 2072,
+    "Benchmark": 1175,
+    "MLLM": 1098,
+    "AGI": 411,
+    "Other": 507,
+    "Dataset": 440,
+    "Pretrain": 269,
+    "Memory": 571,
+    "Scaling": 406,
+    "VLA": 617,
+    "MoE": 378
   },
   "all_papers_list": [
     {
@@ -5942,6 +5958,343 @@
       "published_date": "2025-09-02"
     },
     {
+      "title": "Delta Activations: A Representation for Finetuned Large Language Models",
+      "summary": "The success of powerful open source Large Language Models (LLMs) has enabled\nthe community to create a vast collection of post-trained models adapted to\nspecific tasks and domains. However, navigating and understanding these models\nremains challenging due to inconsistent metadata and unstructured repositories.\nWe introduce Delta Activations, a method to represent finetuned models as\nvector embeddings by measuring shifts in their internal activations relative to\na base model. This representation allows for effective clustering by domain and\ntask, revealing structure in the model landscape. Delta Activations also\ndemonstrate desirable properties: it is robust across finetuning settings and\nexhibits an additive property when finetuning datasets are mixed. In addition,\nwe show that Delta Activations can embed tasks via few-shot finetuning, and\nfurther explore its use for model selection and merging. We hope Delta\nActivations can facilitate the practice of reusing publicly available models.\nCode is available at https://github.com/OscarXZQ/delta_activations.",
+      "published": "2025-09-04T17:59:06Z",
+      "updated": "2025-09-04T17:59:06Z",
+      "id": "2509.04442v1",
+      "authors": [
+        "Zhiqiu Xu",
+        "Amish Sethi",
+        "Mayur Naik",
+        "Ser-Nam Lim"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.04442v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.04442v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.04442v1",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "This paper introduces a method for representing finetuned LLMs using internal activation shifts, which is highly relevant to LLM research and applications.",
+      "llm_cls_result": [
+        "LLM"
+      ],
+      "rec_score": 4.0,
+      "rec_reason": "It provides a practical tool for organizing and selecting finetuned models, which is valuable for engineers working with multiple LLM variants, though it may be more niche than foundational research.",
+      "published_date": "2025-09-04"
+    },
+    {
+      "title": "Towards a Unified View of Large Language Model Post-Training",
+      "summary": "Two major sources of training data exist for post-training modern language\nmodels: online (model-generated rollouts) data, and offline (human or\nother-model demonstrations) data. These two types of data are typically used by\napproaches like Reinforcement Learning (RL) and Supervised Fine-Tuning (SFT),\nrespectively. In this paper, we show that these approaches are not in\ncontradiction, but are instances of a single optimization process. We derive a\nUnified Policy Gradient Estimator, and present the calculations of a wide\nspectrum of post-training approaches as the gradient of a common objective\nunder different data distribution assumptions and various bias-variance\ntradeoffs. The gradient estimator is constructed with four interchangeable\nparts: stabilization mask, reference policy denominator, advantage estimate,\nand likelihood gradient. Motivated by our theoretical findings, we propose\nHybrid Post-Training (HPT), an algorithm that dynamically selects different\ntraining signals. HPT is designed to yield both effective exploitation of\ndemonstration and stable exploration without sacrificing learned reasoning\npatterns. We provide extensive experiments and ablation studies to verify the\neffectiveness of our unified theoretical framework and HPT. Across six\nmathematical reasoning benchmarks and two out-of-distribution suites, HPT\nconsistently surpasses strong baselines across models of varying scales and\nfamilies.",
+      "published": "2025-09-04T17:40:33Z",
+      "updated": "2025-09-04T17:40:33Z",
+      "id": "2509.04419v1",
+      "authors": [
+        "Xingtai Lv",
+        "Yuxin Zuo",
+        "Youbang Sun",
+        "Hongyi Liu",
+        "Yuntian Wei",
+        "Zhekai Chen",
+        "Lixuan He",
+        "Xuekai Zhu",
+        "Kaiyan Zhang",
+        "Bingning Wang",
+        "Ning Ding",
+        "Bowen Zhou"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.04419v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.04419v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.04419v1",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "The paper focuses on unifying post-training methods for large language models, including RL and SFT approaches, which directly relates to LLM and RL topics.",
+      "llm_cls_result": [
+        "LLM",
+        "RL"
+      ],
+      "rec_score": 4.5,
+      "rec_reason": "It provides a novel theoretical framework and practical algorithm for improving LLM post-training, highly relevant for applied ML engineers working on model optimization and fine-tuning.",
+      "published_date": "2025-09-04"
+    },
+    {
+      "title": "Self-adaptive Dataset Construction for Real-World Multimodal Safety\n  Scenarios",
+      "summary": "Multimodal large language models (MLLMs) are rapidly evolving, presenting\nincreasingly complex safety challenges. However, current dataset construction\nmethods, which are risk-oriented, fail to cover the growing complexity of\nreal-world multimodal safety scenarios (RMS). And due to the lack of a unified\nevaluation metric, their overall effectiveness remains unproven. This paper\nintroduces a novel image-oriented self-adaptive dataset construction method for\nRMS, which starts with images and end constructing paired text and guidance\nresponses. Using the image-oriented method, we automatically generate an RMS\ndataset comprising 35k image-text pairs with guidance responses. Additionally,\nwe introduce a standardized safety dataset evaluation metric: fine-tuning a\nsafety judge model and evaluating its capabilities on other safety\ndatasets.Extensive experiments on various tasks demonstrate the effectiveness\nof the proposed image-oriented pipeline. The results confirm the scalability\nand effectiveness of the image-oriented approach, offering a new perspective\nfor the construction of real-world multimodal safety datasets.",
+      "published": "2025-09-04T17:13:59Z",
+      "updated": "2025-09-04T17:13:59Z",
+      "id": "2509.04403v1",
+      "authors": [
+        "Jingen Qu",
+        "Lijun Li",
+        "Bo Zhang",
+        "Yichen Yan",
+        "Jing Shao"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.04403v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.04403v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.04403v1",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "The paper focuses on multimodal large language models (MLLMs) and dataset construction methods, which are directly related to LLMs and their applications in safety scenarios.",
+      "llm_cls_result": [
+        "LLM"
+      ],
+      "rec_score": 3.5,
+      "rec_reason": "It addresses practical safety challenges in MLLMs with a novel dataset method, but its niche focus on safety scenarios may limit broad applicability for general ML/AI practitioners.",
+      "published_date": "2025-09-04"
+    },
+    {
+      "title": "Denoising GER: A Noise-Robust Generative Error Correction with LLM for\n  Speech Recognition",
+      "summary": "In recent years, large language models (LLM) have made significant progress\nin the task of generation error correction (GER) for automatic speech\nrecognition (ASR) post-processing. However, in complex noisy environments, they\nstill face challenges such as poor adaptability and low information\nutilization, resulting in limited effectiveness of GER. To address these\nissues, this paper proposes a noise-robust multi-modal GER framework (Denoising\nGER). The framework enhances the model's adaptability to different noisy\nscenarios through a noise-adaptive acoustic encoder and optimizes the\nintegration of multi-modal information via a heterogeneous feature compensation\ndynamic fusion (HFCDF) mechanism, improving the LLM's utilization of\nmulti-modal information. Additionally, reinforcement learning (RL) training\nstrategies are introduced to enhance the model's predictive capabilities.\nExperimental results demonstrate that Denoising GER significantly improves\naccuracy and robustness in noisy environments and exhibits good generalization\nabilities in unseen noise scenarios.",
+      "published": "2025-09-04T17:03:58Z",
+      "updated": "2025-09-04T17:03:58Z",
+      "id": "2509.04392v1",
+      "authors": [
+        "Yanyan Liu",
+        "Minqiang Xu",
+        "Yihao Chen",
+        "Liang He",
+        "Lei Fang",
+        "Sian Fang",
+        "Lin Liu"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.04392v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.04392v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.04392v1",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "The paper focuses on using LLMs for generative error correction in speech recognition, incorporates reinforcement learning strategies for training, and addresses noise robustness in multi-modal settings.",
+      "llm_cls_result": [
+        "LLM",
+        "RL"
+      ],
+      "rec_score": 4.0,
+      "rec_reason": "It combines LLMs with RL for practical noise-robust ASR correction, offering valuable insights for applied AI engineers working on speech or multi-modal systems.",
+      "published_date": "2025-09-04"
+    },
+    {
+      "title": "Aesthetic Image Captioning with Saliency Enhanced MLLMs",
+      "summary": "Aesthetic Image Captioning (AIC) aims to generate textual descriptions of\nimage aesthetics, becoming a key research direction in the field of\ncomputational aesthetics. In recent years, pretrained Multimodal Large Language\nModels (MLLMs) have advanced rapidly, leading to a significant increase in\nimage aesthetics research that integrates both visual and textual modalities.\nHowever, most existing studies on image aesthetics primarily focus on\npredicting aesthetic ratings and have shown limited application in AIC.\nExisting AIC works leveraging MLLMs predominantly rely on fine-tuning methods\nwithout specifically adapting MLLMs to focus on target aesthetic content. To\naddress this limitation, we propose the Aesthetic Saliency Enhanced Multimodal\nLarge Language Model (ASE-MLLM), an end-to-end framework that explicitly\nincorporates aesthetic saliency into MLLMs. Within this framework, we introduce\nthe Image Aesthetic Saliency Module (IASM), which efficiently and effectively\nextracts aesthetic saliency features from images. Additionally, we design\nIAS-ViT as the image encoder for MLLMs, this module fuses aesthetic saliency\nfeatures with original image features via a cross-attention mechanism. To the\nbest of our knowledge, ASE-MLLM is the first framework to integrate image\naesthetic saliency into MLLMs specifically for AIC tasks. Extensive experiments\ndemonstrated that our approach significantly outperformed traditional methods\nand generic MLLMs on current mainstream AIC benchmarks, achieving\nstate-of-the-art (SOTA) performance.",
+      "published": "2025-09-04T16:40:15Z",
+      "updated": "2025-09-04T16:40:15Z",
+      "id": "2509.04378v1",
+      "authors": [
+        "Yilin Tao",
+        "Jiashui Huang",
+        "Huaze Xu",
+        "Ling Shao"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.04378v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.04378v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.04378v1",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "The paper focuses on enhancing Multimodal Large Language Models (MLLMs) for aesthetic image captioning, which directly involves LLM (Large Language Model) technology and its multimodal applications.",
+      "llm_cls_result": [
+        "LLM"
+      ],
+      "rec_score": 3.5,
+      "rec_reason": "It presents a novel integration of aesthetic saliency into MLLMs with SOTA results, but its niche focus on aesthetic captioning may have limited general applicability for most ML/AI practitioners.",
+      "published_date": "2025-09-04"
+    },
+    {
+      "title": "PagedEviction: Structured Block-wise KV Cache Pruning for Efficient\n  Large Language Model Inference",
+      "summary": "KV caching significantly improves the efficiency of Large Language Model\n(LLM) inference by storing attention states from previously processed tokens,\nenabling faster generation of subsequent tokens. However, as sequence length\nincreases, the KV cache quickly becomes a major memory bottleneck. To address\nthis, we propose PagedEviction, a novel fine-grained, structured KV cache\npruning strategy that enhances the memory efficiency of vLLM's PagedAttention.\nUnlike existing approaches that rely on attention-based token importance or\nevict tokens across different vLLM pages, PagedEviction introduces an efficient\nblock-wise eviction algorithm tailored for paged memory layouts. Our method\nintegrates seamlessly with PagedAttention without requiring any modifications\nto its CUDA attention kernels. We evaluate PagedEviction across\nLlama-3.1-8B-Instruct, Llama-3.2-1B-Instruct, and Llama-3.2-3B-Instruct models\non the LongBench benchmark suite, demonstrating improved memory usage with\nbetter accuracy than baselines on long context tasks.",
+      "published": "2025-09-04T16:40:01Z",
+      "updated": "2025-09-04T16:40:01Z",
+      "id": "2509.04377v1",
+      "authors": [
+        "Krishna Teja Chitty-Venkata",
+        "Jie Ye",
+        "Xian-He Sun",
+        "Anthony Kougkas",
+        "Murali Emani",
+        "Venkatram Vishwanath",
+        "Bogdan Nicolae"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.04377v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.04377v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.04377v1",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "The paper focuses on improving KV cache efficiency for LLM inference, which is a core topic in LLM optimization. It does not relate to RL.",
+      "llm_cls_result": [
+        "LLM"
+      ],
+      "rec_score": 4.5,
+      "rec_reason": "It addresses a critical memory bottleneck in LLM inference with a practical and efficient solution that integrates well with existing systems like vLLM, making it highly relevant for applied ML engineers working on LLM deployment.",
+      "published_date": "2025-09-04"
+    },
+    {
+      "title": "SRWToolkit: An Open Source Wizard of Oz Toolkit to Create Social Robotic\n  Avatars",
+      "summary": "We present SRWToolkit, an open-source Wizard of Oz toolkit designed to\nfacilitate the rapid prototyping of social robotic avatars powered by local\nlarge language models (LLMs). Our web-based toolkit enables multimodal\ninteraction through text input, button-activated speech, and wake-word command.\nThe toolkit offers real-time configuration of avatar appearance, behavior,\nlanguage, and voice via an intuitive control panel. In contrast to prior works\nthat rely on cloud-based LLM services, SRWToolkit emphasizes modularity and\nensures on-device functionality through local LLM inference. In our small-scale\nuser study ($n=11$), participants created and interacted with diverse robotic\nroles (hospital receptionist, mathematics teacher, and driving assistant),\nwhich demonstrated positive outcomes in the toolkit's usability, trust, and\nuser experience. The toolkit enables rapid and efficient development of robot\ncharacters customized to researchers' needs, supporting scalable research in\nhuman-robot interaction.",
+      "published": "2025-09-04T16:18:04Z",
+      "updated": "2025-09-04T16:18:04Z",
+      "id": "2509.04356v1",
+      "authors": [
+        "Atikkhan Faridkhan Nilgar",
+        "Kristof Van Laerhoven",
+        "Ayub Kinoti"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.04356v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.04356v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.04356v1",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "The paper presents an open-source toolkit for creating social robotic avatars using local LLMs, focusing on multimodal interaction and on-device functionality rather than cloud services.",
+      "llm_cls_result": [
+        "LLM"
+      ],
+      "rec_score": 3.5,
+      "rec_reason": "It's relevant for applied ML engineers working on local LLM deployment and human-robot interaction, but the small-scale user study and niche focus on robotic avatars limit broader immediate impact.",
+      "published_date": "2025-09-04"
+    },
+    {
+      "title": "Psychologically Enhanced AI Agents",
+      "summary": "We introduce MBTI-in-Thoughts, a framework for enhancing the effectiveness of\nLarge Language Model (LLM) agents through psychologically grounded personality\nconditioning. Drawing on the Myers-Briggs Type Indicator (MBTI), our method\nprimes agents with distinct personality archetypes via prompt engineering,\nenabling control over behavior along two foundational axes of human psychology,\ncognition and affect. We show that such personality priming yields consistent,\ninterpretable behavioral biases across diverse tasks: emotionally expressive\nagents excel in narrative generation, while analytically primed agents adopt\nmore stable strategies in game-theoretic settings. Our framework supports\nexperimenting with structured multi-agent communication protocols and reveals\nthat self-reflection prior to interaction improves cooperation and reasoning\nquality. To ensure trait persistence, we integrate the official 16Personalities\ntest for automated verification. While our focus is on MBTI, we show that our\napproach generalizes seamlessly to other psychological frameworks such as Big\nFive, HEXACO, or Enneagram. By bridging psychological theory and LLM behavior\ndesign, we establish a foundation for psychologically enhanced AI agents\nwithout any fine-tuning.",
+      "published": "2025-09-04T16:03:03Z",
+      "updated": "2025-09-04T16:03:03Z",
+      "id": "2509.04343v1",
+      "authors": [
+        "Maciej Besta",
+        "Shriram Chandran",
+        "Robert Gerstenberger",
+        "Mathis Lindner",
+        "Marcin Chrapek",
+        "Sebastian Hermann Martschat",
+        "Taraneh Ghandi",
+        "Patrick Iff",
+        "Hubert Niewiadomski",
+        "Piotr Nyczyk",
+        "Jürgen Müller",
+        "Torsten Hoefler"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.04343v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.04343v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.04343v1",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "The paper focuses on enhancing LLM agents using psychological frameworks, making LLM the core relevant topic.",
+      "llm_cls_result": [
+        "LLM"
+      ],
+      "rec_score": 4.0,
+      "rec_reason": "It offers practical insights for improving LLM agent behavior through prompt engineering, applicable to AI development without fine-tuning.",
+      "published_date": "2025-09-04"
+    },
+    {
+      "title": "Write on Paper, Wrong in Practice: Why LLMs Still Struggle with Writing\n  Clinical Notes",
+      "summary": "Large Language Models (LLMs) are often proposed as tools to streamline\nclinical documentation, a task viewed as both high-volume and low-risk.\nHowever, even seemingly straightforward applications of LLMs raise complex\nsociotechnical considerations to translate into practice. This case study,\nconducted at KidsAbility, a pediatric rehabilitation facility in Ontario,\nCanada examined the use of LLMs to support occupational therapists in reducing\ndocumentation burden.We conducted a qualitative study involving 20 clinicians\nwho participated in pilot programs using two AI technologies: a general-purpose\nproprietary LLM and a bespoke model fine-tuned on proprietary historical\ndocumentation.\n  Our findings reveal that documentation challenges are sociotechnical in\nnature, shaped by clinical workflows, organizational policies, and system\nconstraints. Four key themes emerged: (1) the heterogeneity of workflows, (2)\nthe documentation burden is systemic and not directly linked to the creation of\nany single type of documentation, (3) the need for flexible tools and clinician\nautonomy, and (4) effective implementation requires mutual learning between\nclinicians and AI systems.\n  While LLMs show promise in easing documentation tasks, their success will\ndepend on flexible, adaptive integration that supports clinician autonomy.\nBeyond technical performance, sustained adoption will require training programs\nand implementation strategies that reflect the complexity of clinical\nenvironments.",
+      "published": "2025-09-04T15:59:45Z",
+      "updated": "2025-09-04T15:59:45Z",
+      "id": "2509.04340v1",
+      "authors": [
+        "Kristina L. Kupferschmidt",
+        "Kieran O'Doherty",
+        "Joshua A. Skorburg"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.04340v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.04340v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.04340v1",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "The paper focuses on the practical challenges and sociotechnical aspects of using LLMs in clinical documentation, specifically in a healthcare setting, making it highly relevant to LLM applications.",
+      "llm_cls_result": [
+        "LLM"
+      ],
+      "rec_score": 4.0,
+      "rec_reason": "It provides valuable real-world insights into LLM integration challenges, which is crucial for applied ML engineers working on deployment in sensitive domains like healthcare.",
+      "published_date": "2025-09-04"
+    },
+    {
+      "title": "Efficient Odd-One-Out Anomaly Detection",
+      "summary": "The recently introduced odd-one-out anomaly detection task involves\nidentifying the odd-looking instances within a multi-object scene. This problem\npresents several challenges for modern deep learning models, demanding spatial\nreasoning across multiple views and relational reasoning to understand context\nand generalize across varying object categories and layouts. We argue that\nthese challenges must be addressed with efficiency in mind. To this end, we\npropose a DINO-based model that reduces the number of parameters by one third\nand shortens training time by a factor of three compared to the current\nstate-of-the-art, while maintaining competitive performance. Our experimental\nevaluation also introduces a Multimodal Large Language Model baseline,\nproviding insights into its current limitations in structured visual reasoning\ntasks. The project page can be found at\nhttps://silviochito.github.io/EfficientOddOneOut/",
+      "published": "2025-09-04T15:44:37Z",
+      "updated": "2025-09-04T15:44:37Z",
+      "id": "2509.04326v1",
+      "authors": [
+        "Silvio Chito",
+        "Paolo Rabino",
+        "Tatiana Tommasi"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.04326v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.04326v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.04326v1",
+      "keywords": [
+        "LLM"
+      ],
+      "cls_reason": "The paper focuses on anomaly detection in multi-object scenes using a DINO-based model for efficiency, with a mention of Multimodal Large Language Model baselines for comparison, making LLM the only relevant topic.",
+      "llm_cls_result": [
+        "LLM"
+      ],
+      "rec_score": 3.0,
+      "rec_reason": "It offers insights into efficient anomaly detection and LLM limitations in visual reasoning, but its niche focus may limit broad applicability for ML/AI practitioners.",
+      "published_date": "2025-09-04"
+    },
+    {
+      "title": "The Personality Illusion: Revealing Dissociation Between Self-Reports &\n  Behavior in LLMs",
+      "summary": "Personality traits have long been studied as predictors of human\nbehavior.Recent advances in Large Language Models (LLMs) suggest similar\npatterns may emerge in artificial systems, with advanced LLMs displaying\nconsistent behavioral tendencies resembling human traits like agreeableness and\nself-regulation. Understanding these patterns is crucial, yet prior work\nprimarily relied on simplified self-reports and heuristic prompting, with\nlittle behavioral validation. In this study, we systematically characterize LLM\npersonality across three dimensions: (1) the dynamic emergence and evolution of\ntrait profiles throughout training stages; (2) the predictive validity of\nself-reported traits in behavioral tasks; and (3) the impact of targeted\ninterventions, such as persona injection, on both self-reports and behavior.\nOur findings reveal that instructional alignment (e.g., RLHF, instruction\ntuning) significantly stabilizes trait expression and strengthens trait\ncorrelations in ways that mirror human data. However, these self-reported\ntraits do not reliably predict behavior, and observed associations often\ndiverge from human patterns. While persona injection successfully steers\nself-reports in the intended direction, it exerts little or inconsistent effect\non actual behavior. By distinguishing surface-level trait expression from\nbehavioral consistency, our findings challenge assumptions about LLM\npersonality and underscore the need for deeper evaluation in alignment and\ninterpretability.",
+      "published": "2025-09-03T21:27:10Z",
+      "updated": "2025-09-03T21:27:10Z",
+      "id": "2509.03730v1",
+      "authors": [
+        "Pengrui Han",
+        "Rafal Kocielnik",
+        "Peiyang Song",
+        "Ramit Debnath",
+        "Dean Mobbs",
+        "Anima Anandkumar",
+        "R. Michael Alvarez"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.03730v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.03730v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.03730v1",
+      "keywords": [
+        "RL"
+      ],
+      "cls_reason": "The paper focuses on evaluating personality traits in Large Language Models (LLMs), including their emergence during training and the effects of interventions like RLHF, which directly involves LLM and RL topics.",
+      "llm_cls_result": [
+        "LLM",
+        "RL"
+      ],
+      "rec_score": 4.0,
+      "rec_reason": "It provides critical insights into LLM behavior and alignment techniques, highly relevant for understanding model interpretability and reliability in applied AI systems.",
+      "published_date": "2025-09-03"
+    },
+    {
+      "title": "SharedRep-RLHF: A Shared Representation Approach to RLHF with Diverse\n  Preferences",
+      "summary": "Uniform-reward reinforcement learning from human feedback (RLHF), which\ntrains a single reward model to represent the preferences of all annotators,\nfails to capture the diversity of opinions across sub-populations,\ninadvertently favoring dominant groups. The state-of-the-art, MaxMin-RLHF,\naddresses this by learning group-specific reward models, and by optimizing for\nthe group receiving the minimum reward, thereby promoting fairness. However, we\nidentify that a key limitation of MaxMin-RLHF is its poor performance when the\nminimum-reward group is a minority. To mitigate this drawback, we introduce a\nnovel framework, termed {\\em SharedRep-RLHF}. At its core, SharedRep-RLHF\nlearns and leverages {\\em shared traits} in annotations among various groups,\nin contrast to learning separate reward models across groups. We first show\nthat MaxMin-RLHF is provably suboptimal in learning shared traits, and then\nquantify the sample complexity of SharedRep-RLHF. Experiments across diverse\nnatural language tasks showcase the effectiveness of SharedRep-RLHF compared to\nMaxMin-RLHF with a gain of up to 20% in win rate.",
+      "published": "2025-09-03T19:42:50Z",
+      "updated": "2025-09-03T19:42:50Z",
+      "id": "2509.03672v1",
+      "authors": [
+        "Arpan Mukherjee",
+        "Marcello Bullo",
+        "Deniz Gündüz"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.03672v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.03672v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.03672v1",
+      "keywords": [
+        "RL"
+      ],
+      "cls_reason": "The paper focuses on improving RLHF (Reinforcement Learning from Human Feedback) by addressing fairness and diversity in reward modeling, which is a core RL topic. It introduces a novel method that leverages shared traits across groups, making it highly relevant to RL research and applications.",
+      "llm_cls_result": [
+        "RL"
+      ],
+      "rec_score": 4.0,
+      "rec_reason": "It offers a significant improvement in RLHF fairness and performance, with practical gains demonstrated in experiments, making it valuable for those working on RL and human-aligned AI systems.",
+      "published_date": "2025-09-03"
+    },
+    {
       "title": "ELV-Halluc: Benchmarking Semantic Aggregation Hallucinations in Long\n  Video Understanding",
       "summary": "Video multimodal large language models (Video-MLLMs) have achieved remarkable\nprogress in video understanding. However, they remain vulnerable to\nhallucination-producing content inconsistent with or unrelated to video inputs.\nPrevious video hallucination benchmarks primarily focus on short-videos. They\nattribute hallucinations to factors such as strong language priors, missing\nframes, or vision-language biases introduced by the visual encoder. While these\ncauses indeed account for most hallucinations in short videos, they still\noversimplify the cause of hallucinations. Sometimes, models generate incorrect\noutputs but with correct frame-level semantics. We refer to this type of\nhallucination as Semantic Aggregation Hallucination (SAH), which arises during\nthe process of aggregating frame-level semantics into event-level semantic\ngroups. Given that SAH becomes particularly critical in long videos due to\nincreased semantic complexity across multiple events, it is essential to\nseparate and thoroughly investigate the causes of this type of hallucination.\nTo address the above issues, we introduce ELV-Halluc, the first benchmark\ndedicated to long-video hallucination, enabling a systematic investigation of\nSAH. Our experiments confirm the existence of SAH and show that it increases\nwith semantic complexity. Additionally, we find that models are more prone to\nSAH on rapidly changing semantics. Moreover, we discuss potential approaches to\nmitigate SAH. We demonstrate that positional encoding strategy contributes to\nalleviating SAH, and further adopt DPO strategy to enhance the model's ability\nto distinguish semantics within and across events. To support this, we curate a\ndataset of 8K adversarial data pairs and achieve improvements on both\nELV-Halluc and Video-MME, including a substantial 27.7% reduction in SAH ratio.",
       "published": "2025-08-29T10:25:03Z",
@@ -10587,6 +10940,34 @@
       "published_date": "2025-09-01"
     },
     {
+      "title": "Enhancing Uncertainty Estimation in LLMs with Expectation of Aggregated\n  Internal Belief",
+      "summary": "Large Language Models (LLMs) have achieved remarkable success across a wide\nrange of natural language tasks, but often exhibit overconfidence and generate\nplausible yet incorrect answers. This overconfidence, especially in models\nundergone Reinforcement Learning from Human Feedback (RLHF), poses significant\nchallenges for reliable uncertainty estimation and safe deployment. In this\npaper, we propose EAGLE (Expectation of AGgregated internaL bEief), a novel\nself-evaluation-based calibration method that leverages the internal hidden\nstates of LLMs to derive more accurate confidence scores. Instead of relying on\nthe model's final output, our approach extracts internal beliefs from multiple\nintermediate layers during self-evaluation. By aggregating these layer-wise\nbeliefs and calculating the expectation over the resulting confidence score\ndistribution, EAGLE produces a refined confidence score that more faithfully\nreflects the model's internal certainty. Extensive experiments on diverse\ndatasets and LLMs demonstrate that EAGLE significantly improves calibration\nperformance over existing baselines. We also provide an in-depth analysis of\nEAGLE, including a layer-wise examination of uncertainty patterns, a study of\nthe impact of self-evaluation prompts, and an analysis of the effect of\nself-evaluation score range.",
+      "published": "2025-09-01T15:50:10Z",
+      "updated": "2025-09-01T15:50:10Z",
+      "id": "2509.01564v1",
+      "authors": [
+        "Zeguan Xiao",
+        "Diyang Dou",
+        "Boya Xiong",
+        "Yun Chen",
+        "Guanhua Chen"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.01564v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.01564v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.01564v1",
+      "keywords": [
+        "RL"
+      ],
+      "cls_reason": "The paper focuses on improving uncertainty estimation in LLMs, which is a core LLM topic, and specifically addresses models that have undergone RLHF, which involves RL.",
+      "llm_cls_result": [
+        "LLM",
+        "RL"
+      ],
+      "rec_score": 4.5,
+      "rec_reason": "It addresses a critical issue of overconfidence in LLMs with a novel method that shows significant improvements, making it highly relevant for safe deployment and reliability in applied AI systems.",
+      "published_date": "2025-09-01"
+    },
+    {
       "title": "Instructional Agents: LLM Agents on Automated Course Material Generation\n  for Teaching Faculties",
       "summary": "Preparing high-quality instructional materials remains a labor-intensive\nprocess that often requires extensive coordination among teaching faculty,\ninstructional designers, and teaching assistants. In this work, we present\nInstructional Agents, a multi-agent large language model (LLM) framework\ndesigned to automate end-to-end course material generation, including syllabus\ncreation, lecture scripts, LaTeX-based slides, and assessments. Unlike existing\nAI-assisted educational tools that focus on isolated tasks, Instructional\nAgents simulates role-based collaboration among educational agents to produce\ncohesive and pedagogically aligned content. The system operates in four modes:\nAutonomous, Catalog-Guided, Feedback-Guided, and Full Co-Pilot mode, enabling\nflexible control over the degree of human involvement. We evaluate\nInstructional Agents across five university-level computer science courses and\nshow that it produces high-quality instructional materials while significantly\nreducing development time and human workload. By supporting institutions with\nlimited instructional design capacity, Instructional Agents provides a scalable\nand cost-effective framework to democratize access to high-quality education,\nparticularly in underserved or resource-constrained settings.",
       "published": "2025-08-27T06:45:06Z",
@@ -13395,6 +13776,44 @@
         "LLM"
       ],
       "published_date": "2025-08-29"
+    },
+    {
+      "title": "Balanced Actor Initialization: Stable RLHF Training of\n  Distillation-Based Reasoning Models",
+      "summary": "The development of alignment and reasoning capabilities in large language\nmodels has seen remarkable progress through two paradigms: instruction tuning\nand reinforcement learning from human feedback (RLHF) alignment paradigm, and\ndistillation-based reasoning fine-tuning paradigm. While both approaches prove\neffective independently, the third paradigm of applying RLHF to\ndistillation-trained models presents significant challenges. Our investigation\nreveals two critical phenomena that emerge in this paradigm: Sequence Length\nCollapse, where language generation dramatically reduces during early RLHF\ntraining, and the Reward Hockey Stick Curve, featuring severe reward score\ndrops followed by gradual recovery. These instabilities fundamentally\ncompromise the model's alignment and reasoning capabilities. To address these\nchallenges, we propose Balanced Actor Initialization (BAI), a two-stage\nweighted model merging approach. BAI first merges instruction-following and\ndistillation-based reasoning fine-tuned models, then further combines this\nintermediate model with the pretrained model to preserve foundational\nknowledge. Through comprehensive experiments across diverse benchmarks and\ndetailed analysis of training experiments, we demonstrate that BAI resolves\nSequence Length Collapse, mitigates the Reward Hockey Stick Curve, and enables\ncontinuous sequence length improvement during training. Additionally, our\nanalysis reveals that balanced merging ratios achieve optimal trade-offs\nbetween training stability and reasoning capability preservation. Our work\nprovides the effective solution for stable training in this third paradigm,\nenabling more capable reasoning models that combine distillation efficiency\nwith RLHF alignment.",
+      "published": "2025-08-30T01:53:25Z",
+      "updated": "2025-08-30T01:53:25Z",
+      "id": "2509.00309v1",
+      "authors": [
+        "Chen Zheng",
+        "Yiyuan Ma",
+        "Yuan Yang",
+        "Deyi Liu",
+        "Jing Liu",
+        "Zuquan Song",
+        "Yuxin Song",
+        "Cheng Ren",
+        "Hang Zhu",
+        "Xin Liu",
+        "Yiyuan Ma",
+        "Siyuan Qiao",
+        "Xun Zhou",
+        "Liang Xiang",
+        "Yonghui Wu"
+      ],
+      "arxiv_abstract_url": "http://arxiv.org/abs/2509.00309v1",
+      "arxiv_pdf_url": "http://arxiv.org/pdf/2509.00309v1.pdf",
+      "alphaxiv_url": "http://alphaxiv.org/abs/2509.00309v1",
+      "keywords": [
+        "RL"
+      ],
+      "cls_reason": "The paper focuses on improving RLHF training stability for distillation-based reasoning models, which directly involves reinforcement learning (RL) techniques applied to language models (LLM).",
+      "llm_cls_result": [
+        "LLM",
+        "RL"
+      ],
+      "rec_score": 4.0,
+      "rec_reason": "It addresses critical stability issues in RLHF training for reasoning models, offering practical solutions that are highly relevant for applied ML engineers working on alignment and fine-tuning of large language models.",
+      "published_date": "2025-08-30"
     },
     {
       "title": "Language Models and Logic Programs for Trustworthy Financial Reasoning",
