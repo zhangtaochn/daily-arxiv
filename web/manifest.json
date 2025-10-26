@@ -1,11 +1,7 @@
 {
-  "current_update_time": "2025-10-25 20:17:47",
+  "current_update_time": "2025-10-26 20:18:02",
   "count_new_papers": {
-    "All": 2,
-    "Reasoning": 2,
-    "LLM": 2,
-    "RL": 1,
-    "Benchmark": 1
+    "All": 0
   },
   "count_all_papers": {
     "All": 14502,
