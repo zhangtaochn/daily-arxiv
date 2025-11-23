@@ -12,8 +12,6 @@ from openai import OpenAI
 import fire 
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
-import urllib.parse
-import urllib.request
 import random
 
 
@@ -101,17 +99,19 @@ def fetch_papers_by_keywords(keywords):
         print(f"Searching for papers in category: {category}")
         print(f"Search terms: {config['search_query']}")
         
-        try:
-            papers = search_arxiv_papers(config['search_query'], max_results=1000)
-            all_papers[category] = {
-                'papers': papers
-            }
-            print(f"Found {len(papers)} papers for {category}")
-        except Exception as e:
-            print(f"Error fetching papers for {category}: {e}")
-            all_papers[category] = {
-                'papers': []
-            }
+        for _ in range(10):
+            try:
+                papers = search_arxiv_papers(config['search_query'], max_results=1000)
+                all_papers[category] = {
+                    'papers': papers
+                }
+                print(f"Found {len(papers)} papers for {category}")
+                break 
+            except Exception as e:
+                print(f"Error fetching papers for {category}: {e}")
+                all_papers[category] = {
+                    'papers': []
+                } 
     return all_papers
 
 
