@@ -12,6 +12,8 @@ from openai import OpenAI
 import fire 
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
+import urllib.parse
+import urllib.request
 import random
 
 
@@ -53,8 +55,8 @@ session.headers.update({
 def search_arxiv_papers(search_query, max_results=1000):
     """Search arXiv papers using the API (最近10天增量)"""
     # 最近 10 天窗口
-    date_from = (datetime.now() - timedelta(days=10)).strftime('%Y%m%d%H%M%S0000')
-    date_to = datetime.now().strftime('%Y%m%d%H%M%S0000')
+    date_from = (datetime.now() - timedelta(days=10)).strftime('%Y%m%d')
+    date_to = datetime.now().strftime('%Y%m%d')
     
     params = {
         'search_query': f'{search_query} AND submittedDate:[{date_from} TO {date_to}]',
@@ -64,9 +66,10 @@ def search_arxiv_papers(search_query, max_results=1000):
         'sortOrder': 'descending'
     }
     
-    response = session.get(ARXIV_API_URL, params=params, timeout=20)
+    response = session.get(ARXIV_API_URL, params=params, timeout=120)
     response.raise_for_status()
     root = ET.fromstring(response.content)
+
     
     papers = []
     for entry in root.findall('.//{http://www.w3.org/2005/Atom}entry'):
