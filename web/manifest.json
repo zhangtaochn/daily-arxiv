@@ -1,19 +1,22 @@
 {
-  "current_update_time": "2025-12-26 22:34:09",
+  "current_update_time": "2025-12-27 22:35:50",
   "count_new_papers": {
-    "All": 0
+    "All": 1,
+    "LLM": 1,
+    "Reasoning": 1,
+    "MLLM": 1
   },
   "count_all_papers": {
-    "All": 33645,
-    "LLM": 15700,
-    "MLLM": 3374,
+    "All": 33646,
+    "LLM": 15701,
+    "MLLM": 3375,
     "Dataset": 6249,
     "Pretrain": 2405,
     "Benchmark": 9054,
     "Other": 8367,
     "Scaling": 3099,
     "Memory": 1641,
-    "Reasoning": 9320,
+    "Reasoning": 9321,
     "RL": 4882,
     "VLA": 2991,
     "MoE": 1493,
