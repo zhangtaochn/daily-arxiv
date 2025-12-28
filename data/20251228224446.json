@@ -1,0 +1,31 @@
+{
+  "2511.20972v2": {
+    "title": "SingingSDS: A Singing-Capable Spoken Dialogue System for Conversational Roleplay Applications",
+    "summary": "With recent advances in automatic speech recognition (ASR), large language models (LLMs), and text-to-speech (TTS) technologies, spoken dialogue systems (SDS) have become widely accessible. However, most existing SDS are limited to conventional spoken responses. We present SingingSDS, a cascaded SDS that responds through singing rather than speaking, fostering more affective, memorable, and pleasurable interactions in character-based roleplay and interactive entertainment scenarios. SingingSDS employs a modular ASR-LLM-SVS pipeline and supports a wide range of configurations across character personas, ASR and LLM backends, SVS models, melody sources, and voice profiles, tailored to different needs in terms of latency, quality, and musical style. SingingSDS is available as a plug-and-play web demo, featuring modular, open-source code that supports customization and extension. Demo: https://huggingface.co/spaces/espnet/SingingSDS. Code: https://github.com/SingingSDS/SingingSDS.",
+    "published": "2025-11-26T01:57:03Z",
+    "updated": "2025-12-24T01:19:11Z",
+    "id": "2511.20972v2",
+    "authors": [
+      "Jionghao Han",
+      "Jiatong Shi",
+      "Masao Someki",
+      "Yuxun Tang",
+      "Lan Liu",
+      "Yiwen Zhao",
+      "Wenhao Feng",
+      "Shinji Watanabe"
+    ],
+    "arxiv_abstract_url": "http://arxiv.org/abs/2511.20972v2",
+    "arxiv_pdf_url": "http://arxiv.org/pdf/2511.20972v2.pdf",
+    "alphaxiv_url": "http://alphaxiv.org/abs/2511.20972v2",
+    "keywords": [
+      "LLM"
+    ],
+    "cls_reason": "The paper introduces a singing-capable spoken dialogue system using an ASR-LLM-SVS pipeline, which involves LLMs for language processing and integrates speech technologies for interactive applications.",
+    "llm_cls_result": [
+      "LLM"
+    ],
+    "rec_score": 3.5,
+    "rec_reason": "It innovatively applies LLMs to enable singing responses in dialogue systems, offering novelty in affective interaction, but it lacks detailed empirical evaluation and focuses more on system demonstration than rigorous evidence."
+  }
+}
