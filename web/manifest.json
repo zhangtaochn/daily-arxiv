@@ -1,21 +1,11 @@
 {
-  "current_update_time": "2026-01-03 22:41:50",
+  "current_update_time": "2026-01-04 22:38:25",
   "count_new_papers": {
-    "All": 184,
-    "Other": 155,
-    "LLM": 6,
-    "Memory": 2,
-    "Reasoning": 10,
-    "VLA": 8,
-    "Benchmark": 11,
-    "Scaling": 11,
-    "RL": 2,
-    "Dataset": 17,
-    "Pretrain": 4,
-    "MLLM": 5
+    "All": 0
   },
   "count_all_papers": {
     "All": 34872,
+    "Other": 8923,
     "LLM": 16124,
     "Reasoning": 9566,
     "Scaling": 3206,
@@ -23,12 +13,11 @@
     "Pretrain": 2478,
     "Benchmark": 9292,
     "Dataset": 6491,
+    "Memory": 1689,
     "VLA": 3067,
     "MLLM": 3452,
     "AGI": 528,
     "MoE": 1527,
-    "Memory": 1689,
-    "Other": 8923,
     "Transformer": 5,
     "Edge": 1,
     "Privacy": 1,
