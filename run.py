@@ -28,6 +28,11 @@ RECENT_DAYS = int(os.environ.get("RECENT_DAYS", 10))
 # Data retention policy: keep papers from last N days (default 90 days = 3 months)
 RETENTION_DAYS = int(os.environ.get("RETENTION_DAYS", 90))
 
+# Test mode settings
+TEST_MODE = os.environ.get("TEST_MODE", "").lower() in ("1", "true", "yes")
+TEST_MAX_RESULTS = int(os.environ.get("TEST_MAX_RESULTS", 10))
+TEST_MAX_CATEGORIES = int(os.environ.get("TEST_MAX_CATEGORIES", 0))  # 0 = all
+
 
 def get_openai_client():
     global _client
@@ -97,23 +102,32 @@ def search_arxiv_papers(search_query, max_results=1000):
 def fetch_papers_by_keywords(keywords):
     """Fetch papers for each keyword category"""
     all_papers = {}
-    for category, config in keywords['keywords'].items():
+    categories = list(keywords['keywords'].items())
+
+    # Test mode: limit number of categories
+    if TEST_MODE and TEST_MAX_CATEGORIES > 0:
+        categories = categories[:TEST_MAX_CATEGORIES]
+        print(f"[TEST MODE] Only processing {TEST_MAX_CATEGORIES} categories")
+
+    for category, config in categories:
         print(f"Searching for papers in category: {category}")
         print(f"Search terms: {config['search_query']}")
-        
+
+        max_results = TEST_MAX_RESULTS if TEST_MODE else 1000
+
         for _ in range(10):
             try:
-                papers = search_arxiv_papers(config['search_query'], max_results=1000)
+                papers = search_arxiv_papers(config['search_query'], max_results=max_results)
                 all_papers[category] = {
                     'papers': papers
                 }
                 print(f"Found {len(papers)} papers for {category}")
-                break 
+                break
             except Exception as e:
                 print(f"Error fetching papers for {category}: {e}")
                 all_papers[category] = {
                     'papers': []
-                } 
+                }
     return all_papers
 
 
@@ -272,11 +286,20 @@ Also provide a short recommendation_reason (1–2 sentences) that succinctly jus
 def paper_cls(papers, keywords):
     # derive topics list from keywords config
     topics_list = list(keywords.get('keywords', {}).keys())
+
+    # Test mode: only classify a small subset
+    if TEST_MODE:
+        paper_items = list(papers.items())[:TEST_MAX_RESULTS]
+        print(f"[TEST MODE] Only classifying {len(paper_items)} papers")
+        papers_to_process = dict(paper_items)
+    else:
+        papers_to_process = papers
+
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {executor.submit(classify_paper, paper, topics_list): pid for pid, paper in papers.items()}
+        futures = {executor.submit(classify_paper, paper, topics_list): pid for pid, paper in papers_to_process.items()}
         for future in as_completed(futures):
             paper = future.result()
-            papers[paper["id"]] = paper 
+            papers[paper["id"]] = paper
     return papers
 
 
@@ -464,7 +487,14 @@ def build_split_outputs(all_papers_list, count_new_papers, count_all_papers, cur
 
 
 def run_pipeline():
-    keywords = yaml.safe_load(KEYWORDS)
+    # Load keywords - if KEYWORDS looks like a file path, load from file
+    if os.path.exists(KEYWORDS):
+        print(f"Loading keywords from file: {KEYWORDS}")
+        with open(KEYWORDS, 'r', encoding='utf-8') as f:
+            keywords = yaml.safe_load(f)
+    else:
+        keywords = yaml.safe_load(KEYWORDS)
+
     papers_by_category = fetch_papers_by_keywords(keywords)
     papers_filtered = filter_papers(papers_by_category)
     papers_classified = paper_cls(papers_filtered, keywords)
