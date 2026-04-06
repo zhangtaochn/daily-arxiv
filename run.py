@@ -20,6 +20,7 @@ BASE_URL = os.environ.get("BASE_URL")
 MODEL = os.environ.get("MODEL")
 TOP_N = int(os.environ.get("TOP_N", -1))
 KEYWORDS = os.environ.get("KEYWORDS", "all")
+KEYWORDS_FILE = os.environ.get("KEYWORDS_FILE", "")
 # Lazy init client to avoid requiring API_KEY when only serving static files
 _client = None
 
@@ -487,10 +488,10 @@ def build_split_outputs(all_papers_list, count_new_papers, count_all_papers, cur
 
 
 def run_pipeline():
-    # Load keywords - if KEYWORDS looks like a file path, load from file
-    if os.path.exists(KEYWORDS):
-        print(f"Loading keywords from file: {KEYWORDS}")
-        with open(KEYWORDS, 'r', encoding='utf-8') as f:
+    # Load keywords - from KEYWORDS_FILE if provided, otherwise from KEYWORDS
+    if KEYWORDS_FILE and os.path.exists(KEYWORDS_FILE):
+        print(f"Loading keywords from file: {KEYWORDS_FILE}")
+        with open(KEYWORDS_FILE, 'r', encoding='utf-8') as f:
             keywords = yaml.safe_load(f)
     else:
         keywords = yaml.safe_load(KEYWORDS)
