@@ -34,6 +34,10 @@ TEST_MODE = os.environ.get("TEST_MODE", "").lower() in ("1", "true", "yes")
 TEST_MAX_RESULTS = int(os.environ.get("TEST_MAX_RESULTS", 10))
 TEST_MAX_CATEGORIES = int(os.environ.get("TEST_MAX_CATEGORIES", 0))  # 0 = all
 
+# Classification limit - only classify N papers (random sample if more)
+# Helps with API rate limits (0 = no limit)
+CLASSIFY_N = int(os.environ.get("CLASSIFY_N", 500))
+
 
 def get_openai_client():
     global _client
@@ -46,7 +50,8 @@ def get_openai_client():
 DATA_DIR = 'data'
 
 ARXIV_API_URL = 'https://export.arxiv.org/api/query'
-MAX_WORKERS = int(os.environ.get("MAX_WORKERS", 12))  # 并发数（可通过环境变量覆盖）
+MAX_WORKERS = int(os.environ.get("MAX_WORKERS", 3))  # 并发数（可通过环境变量覆盖）- reduced for rate limiting
+REQUEST_DELAY = float(os.environ.get("REQUEST_DELAY", 0.5))  # 每个请求之间的延迟（秒）
 
 # requests 会话 + 重试与 UA
 session = requests.Session()
@@ -215,13 +220,13 @@ Also provide a short recommendation_reason (1–2 sentences) that succinctly jus
 """
 
     prompt = f"""
-# Title: 
+# Title:
 - {title}
-# Abstract: 
+# Abstract:
 - {summary}
 """
 
-    backoff_base = 1.0
+    backoff_base = 2.0
     last_reason = ""
     last_categories = ["Classification Failed"]
     last_rec_score = None
@@ -264,10 +269,11 @@ Also provide a short recommendation_reason (1–2 sentences) that succinctly jus
                 break
             else:
                 raise ValueError("LLM returned non-JSON or invalid format")
-        except Exception:
+        except Exception as e:
             print(f"Classification attempt {attempt+1}/{retry} failed for {paper.get('id')}")
             traceback.print_exc()
-            delay = backoff_base * (2 ** attempt) + random.uniform(0, 0.5)
+            # Longer backoff for rate limiting
+            delay = backoff_base * (2 ** attempt) + random.uniform(1.0, 2.0)
             time.sleep(delay)
     else:
         reason = last_reason
@@ -281,6 +287,11 @@ Also provide a short recommendation_reason (1–2 sentences) that succinctly jus
         paper["rec_score"] = rec_score
     if rec_reason:
         paper["rec_reason"] = rec_reason
+
+    # Add delay between requests to respect rate limits
+    if REQUEST_DELAY > 0:
+        time.sleep(REQUEST_DELAY)
+
     return paper
 
 
@@ -295,6 +306,18 @@ def paper_cls(papers, keywords):
         papers_to_process = dict(paper_items)
     else:
         papers_to_process = papers
+
+    # Apply classification limit if set
+    if CLASSIFY_N > 0 and len(papers_to_process) > CLASSIFY_N:
+        # Sort by date first (newest first), then take first N
+        sorted_papers = sorted(
+            papers_to_process.items(),
+            key=lambda x: x[1].get('published', ''),
+            reverse=True
+        )
+        selected_papers = sorted_papers[:CLASSIFY_N]
+        print(f"[Rate Limit] Only classifying {len(selected_papers)} newest papers (of {len(papers_to_process)} total)")
+        papers_to_process = dict(selected_papers)
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {executor.submit(classify_paper, paper, topics_list): pid for pid, paper in papers_to_process.items()}
