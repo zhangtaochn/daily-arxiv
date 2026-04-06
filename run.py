@@ -25,6 +25,8 @@ _client = None
 
 # Recent window for web/recent.json (days)
 RECENT_DAYS = int(os.environ.get("RECENT_DAYS", 10))
+# Data retention policy: keep papers from last N days (default 90 days = 3 months)
+RETENTION_DAYS = int(os.environ.get("RETENTION_DAYS", 90))
 
 
 def get_openai_client():
@@ -37,7 +39,7 @@ def get_openai_client():
 
 DATA_DIR = 'data'
 
-ARXIV_API_URL = 'http://export.arxiv.org/api/query'
+ARXIV_API_URL = 'https://export.arxiv.org/api/query'
 MAX_WORKERS = int(os.environ.get("MAX_WORKERS", 12))  # 并发数（可通过环境变量覆盖）
 
 # requests 会话 + 重试与 UA
@@ -84,9 +86,9 @@ def search_arxiv_papers(search_query, max_results=1000):
             name = author.find('.//{http://www.w3.org/2005/Atom}name').text
             paper['authors'].append(name)
 
-        paper["arxiv_abstract_url"] = f"http://arxiv.org/abs/{paper['id']}"
-        paper["arxiv_pdf_url"] = f"http://arxiv.org/pdf/{paper['id']}.pdf"
-        paper["alphaxiv_url"] = f"http://alphaxiv.org/abs/{paper['id']}"
+        paper["arxiv_abstract_url"] = f"https://arxiv.org/abs/{paper['id']}"
+        paper["arxiv_pdf_url"] = f"https://arxiv.org/pdf/{paper['id']}.pdf"
+        paper["alphaxiv_url"] = f"https://alphaxiv.org/abs/{paper['id']}"
         papers.append(paper)
     
     return papers
@@ -278,6 +280,52 @@ def paper_cls(papers, keywords):
     return papers
 
 
+def cleanup_old_by_date_files(keep_dates: list):
+    """Remove by_date files that are not in keep_dates list."""
+    by_date_dir = os.path.join('web', 'by_date')
+    if not os.path.exists(by_date_dir):
+        return
+
+    removed_count = 0
+    for filename in os.listdir(by_date_dir):
+        if filename.endswith('.json'):
+            date_str = filename[:-5]  # remove .json
+            if date_str not in keep_dates:
+                try:
+                    os.remove(os.path.join(by_date_dir, filename))
+                    removed_count += 1
+                except Exception as e:
+                    print(f"Warning: could not remove {filename}: {e}")
+    if removed_count > 0:
+        print(f"Cleaned up {removed_count} old by_date files.")
+
+
+def cleanup_old_data_files(retention_days: int = RETENTION_DAYS):
+    """Remove data archive files older than retention_days."""
+    if not os.path.exists(DATA_DIR):
+        return
+
+    cutoff_date = datetime.now() - timedelta(days=retention_days)
+    removed_count = 0
+
+    for filename in os.listdir(DATA_DIR):
+        if filename.endswith('.json'):
+            try:
+                # Parse timestamp from filename (YYYYMMDDHHMMSS.json)
+                file_datetime = datetime.strptime(filename[:14], '%Y%m%d%H%M%S')
+                if file_datetime < cutoff_date:
+                    os.remove(os.path.join(DATA_DIR, filename))
+                    removed_count += 1
+            except (ValueError, IndexError):
+                # Skip files with invalid naming
+                continue
+            except Exception as e:
+                print(f"Warning: could not remove {filename}: {e}")
+
+    if removed_count > 0:
+        print(f"Cleaned up {removed_count} old data archive files.")
+
+
 def merge_papers(new_papers_file):
     paper_ids = set()
     all_papers_list = []
@@ -302,6 +350,23 @@ def merge_papers(new_papers_file):
                 all_papers_list.append(paper)
                 new_papers.append(paper)
                 paper_ids.add(paper_id)
+
+    # Apply data retention policy: filter out papers older than RETENTION_DAYS
+    cutoff_date = datetime.now().date() - timedelta(days=RETENTION_DAYS)
+    filtered_papers = []
+    removed_count = 0
+
+    for paper in all_papers_list:
+        pub_date_str = paper.get('published_date') or (paper.get('published', '')[:10])
+        pub_date = _date_from_str(pub_date_str)
+        if pub_date and pub_date >= cutoff_date:
+            filtered_papers.append(paper)
+        else:
+            removed_count += 1
+
+    all_papers_list = filtered_papers
+    if removed_count > 0:
+        print(f"Applied retention policy: removed {removed_count} papers older than {RETENTION_DAYS} days.")
 
     count_new_papers = defaultdict(int)
     count_new_papers["All"] = len(new_papers)
@@ -332,7 +397,7 @@ def merge_papers(new_papers_file):
         json.dump(output, f, ensure_ascii=False, indent=2)
 
     print(f"Added {len(new_papers)} new papers.")
-    print(f"Total papers: {len(all_papers_list)}.")
+    print(f"Total papers after retention: {len(all_papers_list)}.")
 
     return output
 
@@ -364,6 +429,12 @@ def build_split_outputs(all_papers_list, count_new_papers, count_all_papers, cur
         lst.sort(key=lambda i: i.get('updated', ''), reverse=True)
         with open(os.path.join('web', 'by_date', f'{d}.json'), 'w', encoding='utf-8') as f:
             json.dump(lst, f, ensure_ascii=False, separators=(',', ':'))
+
+    # Clean up old by_date files that are no longer in our dataset
+    cleanup_old_by_date_files(list(by_date_map.keys()))
+
+    # Clean up old data archive files
+    cleanup_old_data_files()
 
     # Build recent window
     today = datetime.now().date()

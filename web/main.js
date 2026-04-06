@@ -62,7 +62,14 @@ function renderScore(score) {
 }
 
 function escapeHtml(s) {
-  return s.replace(/[&<>"]+/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  if (typeof s !== 'string') return s;
+  return s.replace(/[&<>"']/g, c => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[c]));
 }
 
 function highlight(text, keyword) {
