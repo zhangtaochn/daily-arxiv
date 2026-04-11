@@ -1,10 +1,5 @@
-# Data files - these can be large and are regenerated daily
-# Note: If you want to keep data in git, comment out the lines below
+# Data files - data/ is daily run archives (not needed for GitHub Pages)
 data/
-web/all_papers.json
-web/by_date/
-web/recent.json
-web/manifest.json
 
 # Temporary files
 tmp
