@@ -1,10 +1,11 @@
 {
-  "current_update_time": "2026-06-05 00:13:52",
+  "current_update_time": "2026-06-05 22:37:10",
   "count_new_papers": {
-    "All": 0
+    "All": 7027,
+    "Classification Failed": 500
   },
   "count_all_papers": {
-    "All": 30598,
+    "All": 32848,
     "Other": 3416,
     "Scaling": 856,
     "LLM": 8205,
@@ -19,10 +20,12 @@
     "MoE": 410,
     "AGI": 51,
     "VLM": 1,
-    "Classification Failed": 681
+    "Classification Failed": 1181
   },
   "recent_days": 10,
   "dates": [
+    "2026-06-04",
+    "2026-06-03",
     "2026-06-02",
     "2026-06-01",
     "2026-05-31",
