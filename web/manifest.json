@@ -1,12 +1,12 @@
 {
-  "current_update_time": "2026-06-13 00:33:03",
+  "current_update_time": "2026-06-13 21:31:36",
   "count_new_papers": {
-    "All": 2969,
+    "All": 5486,
     "Classification Failed": 500
   },
   "count_all_papers": {
-    "All": 34353,
-    "Classification Failed": 3271,
+    "All": 35057,
+    "Classification Failed": 3771,
     "Other": 3412,
     "Scaling": 852,
     "LLM": 8193,
