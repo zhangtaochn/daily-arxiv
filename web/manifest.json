@@ -1,22 +1,22 @@
 {
-  "current_update_time": "2026-07-02 00:55:44",
+  "current_update_time": "2026-07-03 00:22:49",
   "count_new_papers": {
-    "All": 3283,
+    "All": 2916,
     "Classification Failed": 500
   },
   "count_all_papers": {
-    "All": 37119,
-    "Classification Failed": 9173,
-    "Other": 3378,
-    "Scaling": 833,
-    "LLM": 7781,
-    "Pretrain": 1297,
-    "MLLM": 1542,
-    "Reasoning": 3584,
-    "Dataset": 2794,
-    "Benchmark": 5406,
-    "RL": 2397,
-    "Memory": 1004,
+    "All": 36976,
+    "Classification Failed": 9447,
+    "Other": 3373,
+    "Scaling": 831,
+    "LLM": 7773,
+    "Pretrain": 1296,
+    "MLLM": 1541,
+    "Reasoning": 3578,
+    "Dataset": 2793,
+    "Benchmark": 5401,
+    "RL": 2395,
+    "Memory": 1002,
     "VLA": 415,
     "MoE": 397,
     "AGI": 40,
@@ -24,6 +24,7 @@
   },
   "recent_days": 10,
   "dates": [
+    "2026-07-01",
     "2026-06-30",
     "2026-06-29",
     "2026-06-28",
@@ -111,8 +112,7 @@
     "2026-04-07",
     "2026-04-06",
     "2026-04-05",
-    "2026-04-04",
-    "2026-04-03"
+    "2026-04-04"
   ],
   "by_date_base": "web/by_date/"
 }
