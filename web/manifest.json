@@ -1,7 +1,8 @@
 {
-  "current_update_time": "2026-07-26 00:15:54",
+  "current_update_time": "2026-07-26 23:06:50",
   "count_new_papers": {
-    "All": 0
+    "All": 2612,
+    "Classification Failed": 500
   },
   "count_all_papers": {
     "All": 37348,
