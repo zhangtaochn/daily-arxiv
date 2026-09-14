@@ -1,11 +1,11 @@
 {
-  "current_update_time": "2026-09-13 00:12:04",
+  "current_update_time": "2026-09-14 01:39:42",
   "count_new_papers": {
     "All": 0
   },
   "count_all_papers": {
-    "All": 32615,
-    "Classification Failed": 25935
+    "All": 32009,
+    "Classification Failed": 25369
   },
   "recent_days": 10,
   "dates": [
@@ -95,8 +95,7 @@
     "2026-06-19",
     "2026-06-18",
     "2026-06-17",
-    "2026-06-16",
-    "2026-06-15"
+    "2026-06-16"
   ],
   "by_date_base": "web/by_date/"
 }
