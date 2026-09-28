@@ -1,16 +1,17 @@
 {
-  "current_update_time": "2026-09-27 00:47:50",
+  "current_update_time": "2026-09-28 01:15:00",
   "count_new_papers": {
-    "All": 2658,
+    "All": 2708,
     "Classification Failed": 500
   },
   "count_all_papers": {
-    "All": 33822,
-    "Classification Failed": 25585,
+    "All": 33286,
+    "Classification Failed": 25313,
     "LLM": 2
   },
   "recent_days": 10,
   "dates": [
+    "2026-09-25",
     "2026-09-24",
     "2026-09-23",
     "2026-09-22",
@@ -97,8 +98,7 @@
     "2026-07-03",
     "2026-07-02",
     "2026-07-01",
-    "2026-06-30",
-    "2026-06-29"
+    "2026-06-30"
   ],
   "by_date_base": "web/by_date/"
 }
